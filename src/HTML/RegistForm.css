@@ -22,7 +22,7 @@ body {
   border-radius: 30px;
   box-shadow: 0px 20px 67px -12px #00000021;
   width: 379px;
-  height: 334px;
+  height: 385px;
   padding: 32px;
 }
 h1 {
@@ -83,39 +83,4 @@ button:hover {
 
 .link a:hover {
   text-decoration: underline;
-}
-@media screen and (max-width: 768px) {
-  .authform-container {
-    padding: 24px;
-    border-radius: 20px;
-  }
-
-  h1 {
-    font-size: 20px;
-    margin-bottom: 16px;
-  }
-
-  .form-group {
-    margin-bottom: 8px;
-  }
-
-  input[type="text"] {
-    padding: 10px;
-    font-size: 11px;
-  }
-
-  button {
-    padding: 12px;
-    font-size: 11px;
-    margin-top: 8px;
-  }
-
-  .link {
-    margin-top: 16px;
-    font-size: 11px;
-  }
-
-  .link p {
-    margin: 2px 0;
-  }
 }
