@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cost Analysis — Calendar & Chart</title>
+
+    <!-- Google Fonts: Montserrat (400,600,700) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../STYLED/CostAnalysis.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header" role="banner">
+        <h1>Анализ расходов</h1>
+      </header>
+
+      <main class="page-row" role="main">
+        <!-- ===== ЛЕВЫЙ БЛОК: Календарь (сохранился прежний) ===== -->
+        <section
+          class="period-card"
+          aria-labelledby="period-title"
+          role="region"
+        >
+          <div class="period-inner">
+            <div class="period-top">
+              <div class="header-row">
+                <h2 id="period-title">Период</h2>
+              </div>
+              <div class="weekdays" aria-hidden="true">
+                <div>пн</div>
+                <div>вт</div>
+                <div>ср</div>
+                <div>чт</div>
+                <div>пт</div>
+                <div>сб</div>
+                <div>вс</div>
+              </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div
+              class="calendar-scroll"
+              role="group"
+              aria-label="Календарь периода"
+            >
+              <!-- Июль 2024 -->
+              <div class="month" aria-labelledby="jul-2024">
+                <h3 id="jul-2024">Июль 2024</h3>
+                <div class="days-grid" role="grid" aria-label="Даты июля 2024">
+                  <button class="day" aria-pressed="false">1</button>
+                  <button class="day" aria-pressed="false">2</button>
+                  <button class="day" aria-pressed="false">3</button>
+                  <button class="day" aria-pressed="false">4</button>
+                  <button class="day" aria-pressed="false">5</button>
+                  <button class="day" aria-pressed="false">6</button>
+                  <button class="day" aria-pressed="false">7</button>
+
+                  <button class="day" aria-pressed="false">8</button>
+                  <button class="day" aria-pressed="false">9</button>
+                  <button class="day selected" aria-pressed="true">10</button>
+                  <button class="day" aria-pressed="false">11</button>
+                  <button class="day" aria-pressed="false">12</button>
+                  <button class="day" aria-pressed="false">13</button>
+                  <button class="day" aria-pressed="false">14</button>
+
+                  <button class="day" aria-pressed="false">15</button>
+                  <button class="day" aria-pressed="false">16</button>
+                  <button class="day" aria-pressed="false">17</button>
+                  <button class="day" aria-pressed="false">18</button>
+                  <button class="day" aria-pressed="false">19</button>
+                  <button class="day" aria-pressed="false">20</button>
+                  <button class="day" aria-pressed="false">21</button>
+
+                  <button class="day" aria-pressed="false">22</button>
+                  <button class="day" aria-pressed="false">23</button>
+                  <button class="day" aria-pressed="false">24</button>
+                  <button class="day" aria-pressed="false">25</button>
+                  <button class="day" aria-pressed="false">26</button>
+                  <button class="day" aria-pressed="false">27</button>
+                  <button class="day" aria-pressed="false">28</button>
+
+                  <button class="day" aria-pressed="false">29</button>
+                  <button class="day" aria-pressed="false">30</button>
+                  <button class="day" aria-pressed="false">31</button>
+                </div>
+              </div>
+
+              <!-- Август 2024 -->
+              <div class="month" aria-labelledby="aug-2024">
+                <h3 id="aug-2024">Август 2024</h3>
+                <div
+                  class="days-grid"
+                  role="grid"
+                  aria-label="Даты августа 2024"
+                >
+                  <div class="day empty" aria-hidden="true"></div>
+                  <div class="day empty" aria-hidden="true"></div>
+                  <div class="day empty" aria-hidden="true"></div>
+
+                  <button class="day" aria-pressed="false">1</button>
+                  <button class="day" aria-pressed="false">2</button>
+                  <button class="day" aria-pressed="false">3</button>
+                  <button class="day" aria-pressed="false">4</button>
+                  <button class="day" aria-pressed="false">5</button>
+                  <button class="day" aria-pressed="false">6</button>
+                  <button class="day" aria-pressed="false">7</button>
+
+                  <button class="day" aria-pressed="false">8</button>
+                  <button class="day" aria-pressed="false">9</button>
+                  <button class="day" aria-pressed="false">10</button>
+                  <button class="day" aria-pressed="false">11</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="decor-bar" aria-hidden="true"></div>
+        </section>
+
+        <!-- ===== ПРАВЫЙ БЛОК: Карточка графика расходов ===== -->
+        <section class="chart-card" aria-labelledby="chart-title" role="region">
+          <!-- Заголовок с суммой -->
+          <div class="chart-header">
+            <div class="chart-total">
+              <div class="total-value">9 581 ₽</div>
+              <div class="total-sub">
+                <span class="label-muted">Расходы за</span>
+                <span class="label-strong">10 июля 2024</span>
+              </div>
+            </div>
+            <!-- пустой элемент (по макету может понадобиться место/фьючер) -->
+            <div class="chart-actions" aria-hidden="true"></div>
+          </div>
+
+          <!-- Область столбчатой диаграммы -->
+          <div
+            class="chart-body"
+            role="group"
+            aria-label="График расходов по категориям"
+          >
+            <div class="bars-row">
+              <!-- Колонка: Еда -->
+              <div class="bar-column">
+                <div class="bar-value">3 590 ₽</div>
+                <div
+                  class="bar"
+                  style="height: 328px; background: #d9b6ff"
+                  data-amount="3 590 ₽"
+                  aria-hidden="false"
+                ></div>
+                <div class="bar-label">Еда</div>
+              </div>
+
+              <!-- Транспорт -->
+              <div class="bar-column">
+                <div class="bar-value">1 835 ₽</div>
+                <div
+                  class="bar"
+                  style="height: 169px; background: #ffb53d"
+                  data-amount="1 835 ₽"
+                ></div>
+                <div class="bar-label">Транспорт</div>
+              </div>
+
+              <!-- Жильё (0 р) -->
+              <div class="bar-column">
+                <div class="bar-value">0 ₽</div>
+                <div
+                  class="bar"
+                  style="
+                    height: 4px;
+                    background: #6ee4fe;
+                    transform: translateY(0);
+                  "
+                  data-amount="0 ₽"
+                ></div>
+                <div class="bar-label">Жильё</div>
+              </div>
+
+              <!-- Развлечения -->
+              <div class="bar-column">
+                <div class="bar-value">1 250 ₽</div>
+                <div
+                  class="bar"
+                  style="height: 109px; background: #b0aeff"
+                  data-amount="1 250 ₽"
+                ></div>
+                <div class="bar-label">Развлечения</div>
+              </div>
+
+              <!-- Образование -->
+              <div class="bar-column">
+                <div class="bar-value">600 ₽</div>
+                <div
+                  class="bar"
+                  style="height: 65px; background: #bcec30"
+                  data-amount="600 ₽"
+                ></div>
+                <div class="bar-label">Образование</div>
+              </div>
+
+              <!-- Другое -->
+              <div class="bar-column">
+                <div class="bar-value">2 306 ₽</div>
+                <div
+                  class="bar"
+                  style="height: 212px; background: #ffb9b8"
+                  data-amount="2 306 ₽"
+                ></div>
+                <div class="bar-label">Другое</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
