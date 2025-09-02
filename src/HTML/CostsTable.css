@@ -1,0 +1,109 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Montserrat;
+  cursor: pointer;
+}
+
+body {
+  background-color: #f4f8fb;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  background-color: #ffffff;
+  box-shadow: 0px 20px 67px -12px #00000021;
+  border-radius: 30px;
+  width: 789px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+  margin: 32px 32px 0px 32px;
+}
+
+.table-wrapper {
+  max-height: 500px;
+  overflow-y: auto;
+  position: relative;
+  padding: 18px 32px 32px 32px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 100px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 30px;
+  margin: 10px 0;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 30px;
+  opacity: 1;
+  min-height: 100px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #b8b8b8;
+}
+
+.table-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 197px;
+  right: 32px;
+  width: 6px;
+  height: 100px;
+  border-radius: 30px;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.table-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: #d9d9d9 transparent;
+}
+
+table {
+  width: 789px;
+  border-collapse: collapse;
+  height: 618px;
+  border-spacing: 0 14px;
+  padding: 32px 32px 32px 32px;
+}
+
+thead {
+  font-size: 12px;
+  position: sticky;
+  font-weight: 400;
+  top: 0;
+  z-index: 100;
+  border-bottom: 0.5px solid #999999;
+}
+
+thead th {
+  color: #999999 !important;
+  position: sticky;
+  z-index: 101;
+  background: transparent !important;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #000000;
+}
