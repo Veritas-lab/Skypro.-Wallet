@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HeaderForm from "./components/HeaderForm";
-import AuthForm from "./components/AuthForm";
-import RegistForm from "./components/RegistForm";
-import CostsTable from "./components/СostsTable";
-import NewCosts from "../NewCosts";
+import HeaderForm from "./HeaderForm";
+import AuthForm from "./AuthForm";
+import RegistForm from "./RegistForm";
+import CostsTable from "./CostsTable.jsx";
+import NewCosts from "./NewCosts";
 
 function AppRoutes() {
   const [isAuthenticated] = useState(false);
@@ -17,7 +17,7 @@ function AppRoutes() {
           <Route path="/" element={<AuthForm />} />
           <Route path="/register" element={<RegistForm />} />
           <Route path="/expenses" element={<CostsTable />} />
-          <Route path="/expenses" element={<NewCosts />} />
+          <Route path="/new-costs" element={<NewCosts />} />
         </Routes>
       </div>
     </Router>

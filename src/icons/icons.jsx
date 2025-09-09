@@ -1,11 +1,12 @@
-import FoodIcon from "./FoodIcon";
-import TransportIcon from "./TransportIcon";
-import HousingIcon from "./HousingIcon";
-import EntertainmentIcon from "./EntertainmentIcon";
-import EducationIcon from "./EducationIcon";
-import OtherIcon from "./OtherIcon";
-import logoIcon from "./logo";
-import penIcon from ".pen";
+import FoodIcon from "./FoodIcon.jsx";
+import TransportIcon from "./TransportIcon.jsx";
+import HousingIcon from "./HousingIcon.jsx";
+import EntertainmentIcon from "./EntertainmentIcon.jsx";
+import EducationIcon from "./EducationIcon.jsx";
+import OtherIcon from "./OtherIcon.jsx";
+import logoIcon from "./logoIcon.jsx";
+import penIcon from "./penIcon.jsx";
+
 // Экспортируем объект иконок
 export const CategoryIcons = {
   Food: FoodIcon,
