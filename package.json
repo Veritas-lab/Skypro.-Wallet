@@ -2,9 +2,21 @@
   "name": "skypro-wallet",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+
+    "dev": "vite",
+
+    "build": "vite build",
+
+    "lint": "eslint .",
+
+    "preview": "vite preview"
+
+  },
   "dependencies": {
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.2",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
