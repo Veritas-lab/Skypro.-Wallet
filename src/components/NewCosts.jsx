@@ -1,10 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Input from "./components/base/Input";
-import Button from "./components/base/Button";
-import Label from "./components/base/Label";
-import FormGroup from "./components/common/FormGroup";
-import CategorySelector from "./components/common/CategorySelector";
+import Input from "./base/Input";
+import Button from "./base/Button";
+import Label from "./base/Label";
+import FormGroup from "./common/FormGroup";
+import CategorySelector from "./common/CategorySelector";
 
 const Body = styled.div`
   font-family: Montserrat, sans-serif;
