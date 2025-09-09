@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import Input from './components/base/Input';
-import Button from './components/base/Button';
-import Label from './components/base/Label';
-import FormGroup from './components/common/FormGroup';
-import CategorySelector from './components/common/CategorySelector';
+import { useState } from "react";
+import styled from "styled-components";
+import Input from "./components/base/Input";
+import Button from "./components/base/Button";
+import Label from "./components/base/Label";
+import FormGroup from "./components/common/FormGroup";
+import CategorySelector from "./components/common/CategorySelector";
 
 const Body = styled.div`
   font-family: Montserrat, sans-serif;
@@ -33,16 +33,16 @@ const Title = styled.h2`
 
 const NewCosts = ({ initialData, onEditMode } = {}) => {
   const [formData, setFormData] = useState({
-    description: initialData?.description || '',
-    category: initialData?.category || '',
-    date: initialData?.date || '',
-    amount: initialData?.amount || '',
+    description: initialData?.description || "",
+    category: initialData?.category || "",
+    date: initialData?.date || "",
+    amount: initialData?.amount || "",
   });
   const [status, setStatus] = useState({
-    description: 'normal',
-    amount: 'normal',
+    description: "normal",
+    amount: "normal",
   });
-  const [mode, setMode] = useState('create');
+  const [mode, setMode] = useState("create");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -52,26 +52,26 @@ const NewCosts = ({ initialData, onEditMode } = {}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.amount) {
-      setStatus({ ...status, amount: 'error' });
+      setStatus({ ...status, amount: "error" });
       return;
     }
-    setStatus({ ...status, amount: 'success' });
+    setStatus({ ...status, amount: "success" });
     console.log(`${mode} mode submitted:`, formData);
     // Сброс формы после успешной отправки (только для create)
-    if (mode === 'create') {
-      setFormData({ description: '', category: '', date: '', amount: '' });
+    if (mode === "create") {
+      setFormData({ description: "", category: "", date: "", amount: "" });
     }
     // API call здесь
   };
 
   // Функция для переключения в режим редактирования
   const switchToEditMode = (data) => {
-    setMode('edit');
+    setMode("edit");
     setFormData({
-      description: data.description || '',
-      category: data.category || '',
-      date: data.date || '',
-      amount: data.amount || '',
+      description: data.description || "",
+      category: data.category || "",
+      date: data.date || "",
+      amount: data.amount || "",
     });
   };
 
@@ -83,7 +83,7 @@ const NewCosts = ({ initialData, onEditMode } = {}) => {
   return (
     <Body>
       <FormContainer>
-        <Title>{mode === 'create' ? 'Новый расход' : 'Редактирование'}</Title>
+        <Title>{mode === "create" ? "Новый расход" : "Редактирование"}</Title>
         <form onSubmit={handleSubmit}>
           <FormGroup>
             <Label htmlFor="description">Описание</Label>
@@ -127,7 +127,9 @@ const NewCosts = ({ initialData, onEditMode } = {}) => {
           </FormGroup>
 
           <Button type="submit" disabled={!formData.category}>
-            {mode === 'create' ? 'Добавить новый расход' : 'Сохранить изменения'}
+            {mode === "create"
+              ? "Добавить новый расход"
+              : "Сохранить изменения"}
           </Button>
         </form>
       </FormContainer>
