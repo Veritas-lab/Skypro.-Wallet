@@ -2,9 +2,17 @@
   --card-bg: #ffffff;
   --muted: #999999;
   --circle-bg: #f4f5f6;
-  --selected-bg: #f1ebfd;
-  --selected-color: #7334ea;
+  --selected-bg: #dbffe9;
+  --selected-color: #1fa46c;
   --shadow: 0px 20px 67px -12px rgba(0, 0, 0, 0.13);
+}
+
+html,
+body {
+  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 /* ========== Общие стили ========== */
@@ -75,9 +83,38 @@ body {
 }
 .period-inner {
   position: relative;
-  padding: 24px;
+  padding: 32px;
   height: 100%;
 }
+/* ----- Кнопка "Анализ расходов" (вверху overlay) ----- */
+.mobile-back {
+  display: none; /* по умолчанию скрыта, показывается когда period-card.open */
+  align-items: center;
+  gap: 6px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px; /* 150% = 18px при font-size 12 */
+  color: #999999;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0 0 8px 0;
+  cursor: pointer;
+  position: relative;
+  height: 18px;
+}
+
+/* Иконка стрелки слева */
+.mobile-back__icon {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  align-items: center;
+  justify-content: center;
+  color: #999999;
+}
+
 .period-top .header-row {
   display: flex;
   align-items: center;
@@ -89,10 +126,56 @@ body {
   line-height: 29px;
   color: #000;
 }
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.title-mobile {
+  display: none;
+}
+
+/* Переключатель (два слова с gap 12px) */
+.mode-switch {
+  display: flex;
+  gap: 12px; /* Расстояние между "Месяц" и "Год" */
+}
+
+.mode-btn {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 150%; /* 18px */
+  letter-spacing: 0;
+  text-align: center;
+  vertical-align: middle;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #000; /* Неактивный цвет */
+}
+
+/* Активная кнопка (точно по твоим стилям) */
+.mode-btn.active {
+  border-bottom: 1px solid #1fa46c; /* Border как указано */
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-style: normal; /* SemiBold обычно font-weight:600 в Montserrat */
+  font-size: 12px;
+  line-height: 150%; /* 18px */
+  letter-spacing: 0px;
+  text-align: center;
+  vertical-align: middle;
+  color: #1fa46c; /* Активный цвет */
+}
+
 .weekdays {
   display: flex;
   gap: 6px;
-  margin-top: 10px;
   color: var(--muted);
   font-size: 12px;
   line-height: 15px;
@@ -105,15 +188,20 @@ body {
   justify-content: center;
 }
 .divider {
-  margin: 12px 0 0 0;
+  margin: 0;
   border: none;
   border-top: 0.5px solid #999;
 }
 .calendar-scroll {
-  height: auto;
-  overflow: visible;
-  padding-right: 0;
+  max-height: 440px; /* Увеличено с 336px для запаса на отступы (24px сверху/снизу) */
+  overflow-y: auto;
 }
+
+.calendar-scroll::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
 .month h3 {
   margin: 24px 0 12px 0;
   font-weight: 600;
@@ -158,28 +246,73 @@ button.day.selected:focus {
   outline: none;
 }
 
-/* декоративная полоска календаря (thumb-only) */
+/* Секции режимов (show/hide) */
+.calendar-view {
+  display: none; /* Скрыто по умолчанию */
+}
+
+.calendar-view.active {
+  display: block; /* Показ для активного */
+}
+
+/* Year view стили (на усмотрение: заголовок и grid) */
+.year-title {
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0px;
+
+  margin: 24px 0 12px;
+  text-align: left;
+}
+
+.year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 столбца для 12 месяцев */
+  gap: 6px; /* Отступы между кнопками месяцев */
+}
+
+.month-item {
+  padding: 12px;
+  background: var(--circle-bg); /* Фон как у дней */
+  border: none;
+  border-radius: 30px;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.month-item.selected {
+  background: var(--selected-bg); /* Выделение как у дней */
+  color: var(--selected-color);
+}
+
+/* Декоративная полоска (теперь контейнер для thumb) */
 .decor-bar {
   position: absolute;
-  right: 0;
+  right: 0; /* Изменено с 6px обратно на 0 */
   top: 113px;
   width: 6px;
   height: 336px;
   background: transparent;
   border-radius: 30px;
   box-shadow: none;
+  display: block; /* По умолчанию видим, JS скроет если скролл не нужен */
 }
-.decor-bar::after {
-  content: "";
+
+/* Реальный элемент бегунка (вместо ::after) */
+.decor-bar .thumb {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 36px;
+  top: 0; /* Начальная позиция (JS будет менять) */
   width: 6px;
-  height: 100px;
+  height: 100px; /* Начальная высота (JS будет динамически менять) */
   background: #d9d9d9;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transition: top 0.2s ease, height 0.2s ease; /* Плавное движение и ресайз */
 }
 
 /* ========== ПРАВЫЙ БЛОК: карточка графика расходов ========== */
@@ -315,12 +448,424 @@ button.day.selected:focus {
   transform-origin: bottom;
 }
 
-/* Подгонки для точного визуального совпадения (по макету) */
-.chart-card .bar:nth-child(2) {
-  /* если нужно целевое изменение */
+.period-footer {
+  display: none; /* Скрыт по умолчанию (в десктопе) */
 }
 
-/* ========== Адаптив (минимальная) ========== */
-@media (max-width: 1200px) {
-  /* не делаем сложной адаптации — макет pixel-perfect для десктопа */
+.hidden {
+  display: none; /* Полностью скрывает */
+}
+
+/* ================== Mobile (<= 376px) — разъединённые селекторы ================== */
+@media (max-width: 376px) {
+  /*  Фон страницы */
+  body {
+    background: var(--card-bg);
+  }
+
+  .page {
+    max-width: 100%;
+    min-height: 100vh; /* Занимает весь экран без промежутков */
+    padding-left: 16px;
+    padding-right: 16px;
+    background: var(--card-bg);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* Обнуляем paddings, чтобы не создавать искусственные gaps */
+  }
+
+  .page-header {
+    padding-left: 16px;
+    padding-right: 16px;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  /* Заголовок */
+  .page-header h1 {
+    width: 100%;
+    margin: 0;
+    padding-top: 0px;
+    margin-top: 24px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0;
+    text-align: left;
+    vertical-align: middle;
+    box-sizing: border-box;
+  }
+
+  /* Верстаем колоночным потоком */
+  .page-row {
+    width: 100%;
+    max-width: 343px;
+    margin: 0 auto;
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+    justify-content: flex-start; /* Прижимает контент сверху, без gap над */
+    box-sizing: border-box;
+    flex: 1; /* Растягивает .page-row на оставшуюся высоту .page, заполняя gap до футера */
+    padding-bottom: 87px; /* Буфер точно под футер (его height) — визуально заполняет пространство */
+    margin-bottom: 0; /* Обнуляем margin снизу */
+  }
+
+  /* Карточки — chart-card  */
+  .chart-card {
+    background: var(--card-bg);
+    position: relative;
+    padding: 0;
+    padding-bottom: 31px;
+    margin: 0;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    overflow: visible;
+    flex: 1; /* Растягивает chart-card на всю высоту .page-row, заполняя content area (голубой) */
+    min-height: 100%; /* Гарантирует заполнение, чтобы фиолетовый padding не был виден как gap */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Контент прижат сверху внутри chart-card */
+    box-sizing: border-box;
+  }
+
+  /* chart-header  */
+  .chart-header {
+    position: static;
+    left: auto;
+    top: auto;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    align-items: flex-start;
+    margin-top: 24px;
+  }
+
+  /*  chart-body  */
+  .chart-body {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: static;
+    left: auto;
+    top: auto;
+    height: auto;
+    min-height: 0;
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    margin-top: 24px;
+  }
+
+  /* total-value */
+  .total-value {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0;
+    display: flex;
+    align-items: center;
+    width: auto;
+    height: auto;
+  }
+
+  /* total-sub */
+  .total-sub {
+    display: flex;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .chart-total {
+    gap: 12px;
+  }
+
+  /*  bars-row */
+  .bars-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center; /* Центрирует колонки, фиксированные gaps, без "раздувания" */
+    gap: 6px; /* Фиксированный gap, не увеличивается */
+    margin: 0 auto; /* Центрирует внутри chart-body */
+    padding: 0;
+    height: auto;
+    box-sizing: border-box;
+    overflow-x: hidden; /* Скрывает любой overflow без скролла */
+  }
+
+  .bar-column {
+    width: 52px; /* Уменьшено с 52px для запаса на текст (общая ~330px <343px) */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    box-sizing: border-box;
+  }
+
+  .bars-row .bar {
+    width: 52px; /* Соответственно уменьшено */
+    border-radius: 8px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    display: block;
+  }
+
+  .bar-value {
+    font-size: 10px; /* Уменьшено с 10px для fit текста (e.g. "3 590 ₽" ~45px) */
+    line-height: 11px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%; /* Ограничивает шириной колонки */
+  }
+
+  .bar-label {
+    font-size: 10px;
+    line-height: 12px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    box-sizing: border-box;
+    white-space: nowrap; /* Текст в одну строку, без переноса */
+    overflow: hidden; /* Скрывает вылезающий текст */
+    text-overflow: ellipsis; /* Добавляет "..." в конце, если текст шире контейнера */
+    max-width: 100%; /* Ограничивает шириной колонки (52px), чтобы обрезание сработало */
+    padding: 0 2px; /* Небольшой отступ по бокам для красоты, чтобы "..." не прилипало (опционально, удали если не нужно) */
+  }
+
+  /*  Явное переопределение высот столбцов (по порядку) */
+  .bars-row .bar-column:nth-child(1) .bar {
+    height: 182px;
+  }
+  .bars-row .bar-column:nth-child(2) .bar {
+    height: 93px;
+  }
+  .bars-row .bar-column:nth-child(3) .bar {
+    height: 2px;
+    transform: translateY(0);
+  }
+  .bars-row .bar-column:nth-child(4) .bar {
+    height: 60px;
+  }
+  .bars-row .bar-column:nth-child(5) .bar {
+    height: 36px;
+  }
+  .bars-row .bar-column:nth-child(6) .bar {
+    height: 117px;
+  }
+
+  /* Подправка для очень тонкого столбца */
+  .bars-row .bar[style*="height:2px"] {
+    border-radius: 4px;
+  }
+
+  /* Карточки — period-card  */
+  .period-card {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: visible;
+    margin: 0;
+    display: none;
+  }
+
+  .period-card.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0; /* Full-width для перекрытия всего (или left:16px, если нужны отступы) */
+    right: 0;
+    bottom: 87px; /* Оставляем место для футера (его height); удали, если оверлей должен перекрывать футер */
+    width: 100%;
+    height: auto;
+    min-height: calc(
+      100vh - 87px
+    ); /* Растягиваем на доступную высоту, без gaps (учитывая футер) */
+    z-index: 2000; /* Выше всего, включая header */
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    background: var(--card-bg);
+    border-radius: 0; /* Full-screen без скруглений; или 16px сверху для стиля */
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+    box-shadow: none; /* Убираем тени, если не нужны */
+  }
+
+  /* Растяжка внутреннего контента оверлея */
+  .period-card.open .period-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px; /* Отступы для календаря */
+    overflow: auto;
+    min-height: 100%; /* Заполняет оверлей без внутренних gaps */
+  }
+
+  .period-card[aria-hidden="true"] {
+    display: none;
+  }
+
+  .mobile-back {
+    display: flex;
+  }
+
+  .title-desktop {
+    display: none;
+  }
+
+  .title-mobile {
+    display: block;
+  }
+
+  .weekdays {
+    margin-top: 12px;
+  }
+
+  .weekdays div {
+    width: 44px;
+    height: 27px;
+  }
+
+  .days-grid {
+    grid-template-columns: repeat(7, 44px);
+    grid-auto-rows: 44px;
+  }
+
+  .day {
+    width: 44px;
+    height: 44px;
+  }
+
+  .mode-btn {
+    font-size: 12px; /* Matches твои стили */
+  }
+
+  .year-grid {
+    gap: 8px; /* Меньше в mobile */
+  }
+
+  .month-item {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .decor-bar {
+    display: none;
+  }
+
+  .decor-bar .thumb {
+    display: none;
+  }
+
+  /*  Footer (фиксированный) с кнопкой посередине */
+  .period-footer {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 87px;
+    background: #ffffff;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+    z-index: 2001;
+    box-shadow: 0px -20px 67px -12px rgba(0, 0, 0, 0.13);
+  }
+
+  .period-action {
+    position: absolute;
+    top: 24px;
+    left: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    gap: 12px;
+    width: 343px;
+    height: 39px;
+    background: #7334ea;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+  }
+
+  .period-action__text {
+    width: 108px; /* По макету */
+    height: 15px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+
+  /*  Очистки и защита: отменяем оставшиеся абсолютные правила */
+  .chart-card .bar,
+  .chart-header,
+  .chart-body,
+  .page-row,
+  .page,
+  .period-card {
+    -webkit-transform: none !important;
+    transform: none !important;
+  }
+
+  .period-card,
+  .chart-card,
+  .period-inner,
+  .decor-bar::after,
+  .bar,
+  .bar:hover,
+  .day.selected,
+  .period-card.open {
+    box-shadow: none;
+  }
+
+  .overlay-active .page-header,
+  .overlay-active .chart-card {
+    display: none; /* Скрываем, чтобы оверлей "заменял" их, без gaps и конфликтов */
+  }
 }
