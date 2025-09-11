@@ -4,8 +4,8 @@ import HousingIcon from "./HousingIcon.jsx";
 import EntertainmentIcon from "./EntertainmentIcon.jsx";
 import EducationIcon from "./EducationIcon.jsx";
 import OtherIcon from "./OtherIcon.jsx";
-import logoIcon from "./logoIcon.jsx";
-import penIcon from "./penIcon.jsx";
+import LogoIcon from "./LogoIcon.jsx";
+import PenIcon from "./penIcon.jsx";
 
 // Экспортируем объект иконок
 export const CategoryIcons = {
@@ -15,6 +15,6 @@ export const CategoryIcons = {
   Entertainment: EntertainmentIcon,
   Education: EducationIcon,
   Other: OtherIcon,
-  logo: logoIcon,
-  pen: penIcon,
+  logo: LogoIcon,
+  pen: PenIcon,
 };
