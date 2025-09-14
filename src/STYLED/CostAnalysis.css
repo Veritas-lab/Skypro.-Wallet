@@ -15,15 +15,16 @@ body {
   padding: 0;
 }
 
-/* ========== Общие стили ========== */
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   background: #f5f5f6;
   -webkit-font-smoothing: antialiased;
 }
+
 .period-card,
 .chart-card {
   font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto,
@@ -34,36 +35,33 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  max-width: calc(100% - 240px); /* гарантирует минимум 120px слева/справа */
-  margin: 0 auto; /* центрирует контейнер */
+  max-width: calc(100% - 240px);
+  margin: 0 auto;
 }
 
-/* Заголовок страницы */
-.page-header h1 {
-  width: 1200px; /* фиксированная ширина контента (как в макете) */
-  margin: 0 auto; /* центрирование на широких экранах */
+.page-title {
+  width: 1200px;
+  margin: 0 auto;
   padding-top: 36px;
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
   font-size: 32px;
-  line-height: 150%; /* как в макете */
+  line-height: 150%;
   color: #000000;
 }
 
-/* Ряд с карточками — располагаем по центру, слева календарь, справа график */
 .page-row {
-  width: 1200px; /* фиксированная ширина контента (как в макете) */
-  margin: 0 auto; /* центрирование на широких экранах */
+  width: 1200px;
+  margin: 0 auto;
   padding-top: 32px;
   box-sizing: border-box;
   display: flex;
   align-items: flex-start;
-  gap: 32px; /* расстояние между карточками — при необходимости подправим */
+  gap: 32px;
   justify-content: center;
 }
 
-/* ========== ЛЕВЫЙ БЛОК: календарь (сохранён) ========== */
 .period-card {
   position: relative;
   left: auto;
@@ -76,25 +74,23 @@ body {
   box-shadow: var(--shadow);
   border-radius: 30px;
   overflow: hidden;
-}
-.period-card,
-.period-card * {
   font-family: "Montserrat", sans-serif;
 }
+
 .period-inner {
   position: relative;
   padding: 32px;
   height: 100%;
 }
-/* ----- Кнопка "Анализ расходов" (вверху overlay) ----- */
+
 .mobile-back {
-  display: none; /* по умолчанию скрыта, показывается когда period-card.open */
+  display: none;
   align-items: center;
   gap: 6px;
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
   font-size: 12px;
-  line-height: 18px; /* 150% = 18px при font-size 12 */
+  line-height: 18px;
   color: #999999;
   background: transparent;
   border: none;
@@ -105,7 +101,6 @@ body {
   height: 18px;
 }
 
-/* Иконка стрелки слева */
 .mobile-back__icon {
   display: inline-flex;
   width: 14px;
@@ -119,7 +114,8 @@ body {
   display: flex;
   align-items: center;
 }
-.period-top h2 {
+
+.period-title {
   margin: 0;
   font-weight: 700;
   font-size: 24px;
@@ -133,14 +129,14 @@ body {
   justify-content: space-between;
   margin-bottom: 24px;
 }
+
 .title-mobile {
   display: none;
 }
 
-/* Переключатель (два слова с gap 12px) */
 .mode-switch {
   display: flex;
-  gap: 12px; /* Расстояние между "Месяц" и "Год" */
+  gap: 12px;
 }
 
 .mode-btn {
@@ -148,7 +144,7 @@ body {
   font-weight: 400;
   font-style: normal;
   font-size: 12px;
-  line-height: 150%; /* 18px */
+  line-height: 150%;
   letter-spacing: 0;
   text-align: center;
   vertical-align: middle;
@@ -156,21 +152,20 @@ body {
   border: none;
   cursor: pointer;
   padding: 0;
-  color: #000; /* Неактивный цвет */
+  color: #000;
 }
 
-/* Активная кнопка (точно по твоим стилям) */
 .mode-btn.active {
-  border-bottom: 1px solid #1fa46c; /* Border как указано */
+  border-bottom: 1px solid #1fa46c;
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
-  font-style: normal; /* SemiBold обычно font-weight:600 в Montserrat */
+  font-style: normal;
   font-size: 12px;
-  line-height: 150%; /* 18px */
+  line-height: 150%;
   letter-spacing: 0px;
   text-align: center;
   vertical-align: middle;
-  color: #1fa46c; /* Активный цвет */
+  color: #1fa46c;
 }
 
 .weekdays {
@@ -180,20 +175,23 @@ body {
   font-size: 12px;
   line-height: 15px;
 }
-.weekdays div {
+
+.weekday {
   width: 39.8px;
   height: 27px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .divider {
   margin: 0;
   border: none;
   border-top: 0.5px solid #999;
 }
+
 .calendar-scroll {
-  max-height: 440px; /* Увеличено с 336px для запаса на отступы (24px сверху/снизу) */
+  max-height: 440px;
   overflow-y: auto;
 }
 
@@ -202,12 +200,13 @@ body {
   background: transparent;
 }
 
-.month h3 {
+.month-title {
   margin: 24px 0 12px 0;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
 }
+
 .days-grid {
   display: grid;
   grid-template-columns: repeat(7, 40px);
@@ -229,53 +228,54 @@ body {
   font-size: 12px;
   color: #000;
 }
+
 .day.empty {
   visibility: hidden;
   pointer-events: none;
 }
+
 .day.selected {
   background: var(--selected-bg);
   color: var(--selected-color);
   box-shadow: none;
 }
-button.day:focus:not(.selected) {
+
+.day:focus:not(.selected) {
   outline: none;
   box-shadow: 0 0 0 3px rgba(115, 52, 234, 0.06);
 }
-button.day.selected:focus {
+
+.day.selected:focus {
   outline: none;
 }
 
-/* Секции режимов (show/hide) */
 .calendar-view {
-  display: none; /* Скрыто по умолчанию */
+  display: none;
 }
 
 .calendar-view.active {
-  display: block; /* Показ для активного */
+  display: block;
 }
 
-/* Year view стили (на усмотрение: заголовок и grid) */
 .year-title {
   font-weight: 600;
   font-style: SemiBold;
   font-size: 16px;
   line-height: 100%;
   letter-spacing: 0px;
-
   margin: 24px 0 12px;
   text-align: left;
 }
 
 .year-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 столбца для 12 месяцев */
-  gap: 6px; /* Отступы между кнопками месяцев */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
 }
 
 .month-item {
   padding: 12px;
-  background: var(--circle-bg); /* Фон как у дней */
+  background: var(--circle-bg);
   border: none;
   border-radius: 30px;
   font-size: 12px;
@@ -284,39 +284,35 @@ button.day.selected:focus {
 }
 
 .month-item.selected {
-  background: var(--selected-bg); /* Выделение как у дней */
+  background: var(--selected-bg);
   color: var(--selected-color);
 }
 
-/* Декоративная полоска (теперь контейнер для thumb) */
 .decor-bar {
   position: absolute;
-  right: 0; /* Изменено с 6px обратно на 0 */
+  right: 0;
   top: 113px;
   width: 6px;
   height: 336px;
   background: transparent;
   border-radius: 30px;
   box-shadow: none;
-  display: block; /* По умолчанию видим, JS скроет если скролл не нужен */
+  display: block;
 }
 
-/* Реальный элемент бегунка (вместо ::after) */
 .decor-bar .thumb {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 0; /* Начальная позиция (JS будет менять) */
+  top: 0;
   width: 6px;
-  height: 100px; /* Начальная высота (JS будет динамически менять) */
+  height: 100px;
   background: #d9d9d9;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  transition: top 0.2s ease, height 0.2s ease; /* Плавное движение и ресайз */
+  transition: top 0.2s ease, height 0.2s ease;
 }
 
-/* ========== ПРАВЫЙ БЛОК: карточка графика расходов ========== */
-/* контейнер карточки — точные размеры и позиция по макету */
 .chart-card {
   position: relative;
   left: auto;
@@ -331,7 +327,6 @@ button.day.selected:focus {
   overflow: visible;
 }
 
-/* header (сумма и дата) */
 .chart-header {
   position: absolute;
   left: 32px;
@@ -342,11 +337,13 @@ button.day.selected:focus {
   align-items: center;
   gap: 10px;
 }
+
 .chart-total {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
+
 .total-value {
   font-weight: 700;
   font-size: 24px;
@@ -357,6 +354,7 @@ button.day.selected:focus {
   display: flex;
   align-items: center;
 }
+
 .total-sub {
   display: flex;
   gap: 8px;
@@ -364,12 +362,12 @@ button.day.selected:focus {
   font-size: 12px;
   line-height: 15px;
 }
-.total-sub .label-strong {
+
+.label-strong {
   font-weight: 600;
   color: var(--muted);
 }
 
-/* область диаграммы */
 .chart-body {
   position: absolute;
   left: 32px;
@@ -381,7 +379,6 @@ button.day.selected:focus {
   justify-content: center;
 }
 
-/* ряд колонок с gap 32px (по макету) */
 .bars-row {
   display: flex;
   flex-direction: row;
@@ -391,10 +388,9 @@ button.day.selected:focus {
   justify-content: space-between;
 }
 
-/* каждая колонка — фиксированная ширина 94px */
 .bar-column {
   width: 94px;
-  height: 387px; /* по макету */
+  height: 387px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -402,7 +398,6 @@ button.day.selected:focus {
   gap: 12px;
 }
 
-/* значение над столбцом */
 .bar-value {
   font-weight: 600;
   font-size: 16px;
@@ -414,16 +409,13 @@ button.day.selected:focus {
   justify-content: center;
 }
 
-/* сам столбец (высота задаётся inline style в HTML) */
 .bar {
   width: 94px;
   border-radius: 12px;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
-  /* чтобы при hover подниматься визуально */
   display: block;
 }
 
-/* метка категории под столбцом */
 .bar-label {
   font-weight: 400;
   font-size: 12px;
@@ -435,44 +427,71 @@ button.day.selected:focus {
   justify-content: center;
 }
 
-/* псевдо-интерактив: при hover столбец слегка поднимается */
 .bar:hover {
   transform: translateY(-8px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   cursor: pointer;
 }
 
-/* Специальный вид для очень низких столбцов (чтобы не терялись) */
-.bar[style*="height:4px"] {
+.bar-column--food .bar {
+  height: 328px;
+  background: #d9b6ff;
+}
+
+.bar-column--transport .bar {
+  height: 169px;
+  background: #ffb53d;
+}
+
+.bar-column--housing .bar {
+  height: 4px;
+  background: #6ee4fe;
+  transform: translateY(0);
+}
+
+.bar-column--entertainment .bar {
+  height: 109px;
+  background: #b0aeff;
+}
+
+.bar-column--education .bar {
+  height: 65px;
+  background: #bcec30;
+}
+
+.bar-column--other .bar {
+  height: 212px;
+  background: #ffb9b8;
+}
+
+.bar--minimal {
   border-radius: 6px;
   transform-origin: bottom;
 }
 
 .period-footer {
-  display: none; /* Скрыт по умолчанию (в десктопе) */
+  display: none;
 }
 
 .hidden {
-  display: none; /* Полностью скрывает */
+  display: none;
 }
 
-/* ================== Mobile (<= 376px) — разъединённые селекторы ================== */
 @media (max-width: 376px) {
-  /*  Фон страницы */
   body {
     background: var(--card-bg);
   }
 
   .page {
     max-width: 100%;
-    min-height: 100vh; /* Занимает весь экран без промежутков */
+    min-height: 100vh;
     padding-left: 16px;
     padding-right: 16px;
     background: var(--card-bg);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    padding: 0; /* Обнуляем paddings, чтобы не создавать искусственные gaps */
+    padding: 0;
   }
 
   .page-header {
@@ -482,8 +501,7 @@ button.day.selected:focus {
     box-sizing: border-box;
   }
 
-  /* Заголовок */
-  .page-header h1 {
+  .page-title {
     width: 100%;
     margin: 0;
     padding-top: 0px;
@@ -499,7 +517,6 @@ button.day.selected:focus {
     box-sizing: border-box;
   }
 
-  /* Верстаем колоночным потоком */
   .page-row {
     width: 100%;
     max-width: 343px;
@@ -509,14 +526,13 @@ button.day.selected:focus {
     flex-direction: column;
     gap: 16px;
     align-items: stretch;
-    justify-content: flex-start; /* Прижимает контент сверху, без gap над */
+    justify-content: flex-start;
     box-sizing: border-box;
-    flex: 1; /* Растягивает .page-row на оставшуюся высоту .page, заполняя gap до футера */
-    padding-bottom: 87px; /* Буфер точно под футер (его height) — визуально заполняет пространство */
-    margin-bottom: 0; /* Обнуляем margin снизу */
+    flex: 1;
+    padding-bottom: 87px;
+    margin-bottom: 0;
   }
 
-  /* Карточки — chart-card  */
   .chart-card {
     background: var(--card-bg);
     position: relative;
@@ -527,15 +543,14 @@ button.day.selected:focus {
     height: auto;
     border-radius: 16px;
     overflow: visible;
-    flex: 1; /* Растягивает chart-card на всю высоту .page-row, заполняя content area (голубой) */
-    min-height: 100%; /* Гарантирует заполнение, чтобы фиолетовый padding не был виден как gap */
+    flex: 1;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Контент прижат сверху внутри chart-card */
+    justify-content: flex-start;
     box-sizing: border-box;
   }
 
-  /* chart-header  */
   .chart-header {
     position: static;
     left: auto;
@@ -550,7 +565,6 @@ button.day.selected:focus {
     margin-top: 24px;
   }
 
-  /*  chart-body  */
   .chart-body {
     display: flex;
     align-items: flex-end;
@@ -567,7 +581,6 @@ button.day.selected:focus {
     margin-top: 24px;
   }
 
-  /* total-value */
   .total-value {
     font-family: "Montserrat", sans-serif;
     font-weight: 700;
@@ -581,7 +594,6 @@ button.day.selected:focus {
     height: auto;
   }
 
-  /* total-sub */
   .total-sub {
     display: flex;
     gap: 8px;
@@ -594,23 +606,22 @@ button.day.selected:focus {
     gap: 12px;
   }
 
-  /*  bars-row */
   .bars-row {
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    justify-content: center; /* Центрирует колонки, фиксированные gaps, без "раздувания" */
-    gap: 6px; /* Фиксированный gap, не увеличивается */
-    margin: 0 auto; /* Центрирует внутри chart-body */
+    justify-content: center;
+    gap: 6px;
+    margin: 0 auto;
     padding: 0;
     height: auto;
     box-sizing: border-box;
-    overflow-x: hidden; /* Скрывает любой overflow без скролла */
+    overflow-x: hidden;
   }
 
   .bar-column {
-    width: 52px; /* Уменьшено с 52px для запаса на текст (общая ~330px <343px) */
+    width: 52px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -620,15 +631,15 @@ button.day.selected:focus {
     box-sizing: border-box;
   }
 
-  .bars-row .bar {
-    width: 52px; /* Соответственно уменьшено */
+  .bar {
+    width: 52px;
     border-radius: 8px;
     transition: transform 0.18s ease, box-shadow 0.18s ease;
     display: block;
   }
 
   .bar-value {
-    font-size: 10px; /* Уменьшено с 10px для fit текста (e.g. "3 590 ₽" ~45px) */
+    font-size: 10px;
     line-height: 11px;
     height: auto;
     display: flex;
@@ -638,7 +649,7 @@ button.day.selected:focus {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%; /* Ограничивает шириной колонки */
+    width: 100%;
   }
 
   .bar-label {
@@ -649,40 +660,48 @@ button.day.selected:focus {
     align-items: center;
     justify-content: left;
     box-sizing: border-box;
-    white-space: nowrap; /* Текст в одну строку, без переноса */
-    overflow: hidden; /* Скрывает вылезающий текст */
-    text-overflow: ellipsis; /* Добавляет "..." в конце, если текст шире контейнера */
-    max-width: 100%; /* Ограничивает шириной колонки (52px), чтобы обрезание сработало */
-    padding: 0 2px; /* Небольшой отступ по бокам для красоты, чтобы "..." не прилипало (опционально, удали если не нужно) */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    padding: 0 2px;
   }
 
-  /*  Явное переопределение высот столбцов (по порядку) */
-  .bars-row .bar-column:nth-child(1) .bar {
+  .bar-column--food .bar {
     height: 182px;
+    background: #d9b6ff;
   }
-  .bars-row .bar-column:nth-child(2) .bar {
+
+  .bar-column--transport .bar {
     height: 93px;
+    background: #ffb53d;
   }
-  .bars-row .bar-column:nth-child(3) .bar {
+
+  .bar-column--housing .bar {
     height: 2px;
+    background: #6ee4fe;
     transform: translateY(0);
   }
-  .bars-row .bar-column:nth-child(4) .bar {
+
+  .bar-column--entertainment .bar {
     height: 60px;
-  }
-  .bars-row .bar-column:nth-child(5) .bar {
-    height: 36px;
-  }
-  .bars-row .bar-column:nth-child(6) .bar {
-    height: 117px;
+    background: #b0aeff;
   }
 
-  /* Подправка для очень тонкого столбца */
-  .bars-row .bar[style*="height:2px"] {
+  .bar-column--education .bar {
+    height: 36px;
+    background: #bcec30;
+  }
+
+  .bar-column--other .bar {
+    height: 117px;
+    background: #ffb9b8;
+  }
+
+  .bar--minimal {
     border-radius: 4px;
   }
 
-  /* Карточки — period-card  */
   .period-card {
     width: 100%;
     height: auto;
@@ -699,33 +718,30 @@ button.day.selected:focus {
     flex-direction: column;
     position: fixed;
     top: 0;
-    left: 0; /* Full-width для перекрытия всего (или left:16px, если нужны отступы) */
+    left: 0;
     right: 0;
-    bottom: 87px; /* Оставляем место для футера (его height); удали, если оверлей должен перекрывать футер */
+    bottom: 87px;
     width: 100%;
     height: auto;
-    min-height: calc(
-      100vh - 87px
-    ); /* Растягиваем на доступную высоту, без gaps (учитывая футер) */
-    z-index: 2000; /* Выше всего, включая header */
+    min-height: calc(100vh - 87px);
+    z-index: 2000;
     margin: 0;
     padding: 0;
     overflow: auto;
     background: var(--card-bg);
-    border-radius: 0; /* Full-screen без скруглений; или 16px сверху для стиля */
+    border-radius: 0;
     -webkit-overflow-scrolling: touch;
     box-sizing: border-box;
-    box-shadow: none; /* Убираем тени, если не нужны */
+    box-shadow: none;
   }
 
-  /* Растяжка внутреннего контента оверлея */
   .period-card.open .period-inner {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 24px 16px; /* Отступы для календаря */
+    padding: 24px 16px;
     overflow: auto;
-    min-height: 100%; /* Заполняет оверлей без внутренних gaps */
+    min-height: 100%;
   }
 
   .period-card[aria-hidden="true"] {
@@ -748,7 +764,7 @@ button.day.selected:focus {
     margin-top: 12px;
   }
 
-  .weekdays div {
+  .weekday {
     width: 44px;
     height: 27px;
   }
@@ -764,11 +780,11 @@ button.day.selected:focus {
   }
 
   .mode-btn {
-    font-size: 12px; /* Matches твои стили */
+    font-size: 12px;
   }
 
   .year-grid {
-    gap: 8px; /* Меньше в mobile */
+    gap: 8px;
   }
 
   .month-item {
@@ -784,7 +800,6 @@ button.day.selected:focus {
     display: none;
   }
 
-  /*  Footer (фиксированный) с кнопкой посередине */
   .period-footer {
     display: flex;
     position: fixed;
@@ -817,7 +832,6 @@ button.day.selected:focus {
     border-radius: 6px;
     border: none;
     cursor: pointer;
-    /* Inside auto layout */
     flex: none;
     order: 0;
     align-self: stretch;
@@ -825,7 +839,7 @@ button.day.selected:focus {
   }
 
   .period-action__text {
-    width: 108px; /* По макету */
+    width: 108px;
     height: 15px;
     font-family: "Montserrat";
     font-style: normal;
@@ -836,14 +850,12 @@ button.day.selected:focus {
     align-items: center;
     text-align: center;
     color: #ffffff;
-    /* Inside auto layout */
     flex: none;
     order: 0;
     flex-grow: 0;
   }
 
-  /*  Очистки и защита: отменяем оставшиеся абсолютные правила */
-  .chart-card .bar,
+  .bar,
   .chart-header,
   .chart-body,
   .page-row,
@@ -856,7 +868,6 @@ button.day.selected:focus {
   .period-card,
   .chart-card,
   .period-inner,
-  .decor-bar::after,
   .bar,
   .bar:hover,
   .day.selected,
@@ -866,6 +877,6 @@ button.day.selected:focus {
 
   .overlay-active .page-header,
   .overlay-active .chart-card {
-    display: none; /* Скрываем, чтобы оверлей "заменял" их, без gaps и конфликтов */
+    display: none;
   }
 }

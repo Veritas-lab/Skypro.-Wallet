@@ -4,24 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cost Analysis — Calendar & Chart</title>
-
-    <!-- Google Fonts: Montserrat (400,600,700) -->
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-
     <link rel="stylesheet" href="../STYLED/CostAnalysis.css" />
   </head>
   <body class="debug-active">
     <div class="page">
       <header class="page-header" role="banner">
-        <h1>Анализ расходов</h1>
+        <h1 class="page-title">Анализ расходов</h1>
       </header>
-
       <main class="page-row" role="main">
-        <!-- ===== ЛЕВЫЙ БЛОК: Календарь (сохранился прежний) ===== -->
-
         <section
           class="period-card"
           aria-labelledby="period-title"
@@ -52,15 +46,13 @@
                 </svg>
                 <span class="mobile-back__text">Анализ расходов</span>
               </button>
-
-              <!-- Замени существующий .header-row в .period-top -->
-
               <div class="header-row">
-                <!-- Заголовок слева -->
-                <h2 id="period-title" class="title-desktop">Период</h2>
-                <h2 class="title-mobile" aria-hidden="true">Выбор периода</h2>
-
-                <!-- Новый переключатель режимов (справа, с gap 12px) -->
+                <h2 id="period-title" class="period-title title-desktop">
+                  Период
+                </h2>
+                <h2 class="period-title title-mobile" aria-hidden="true">
+                  Выбор периода
+                </h2>
                 <div class="mode-switch">
                   <button class="mode-btn active" data-mode="month">
                     Месяц
@@ -68,29 +60,25 @@
                   <button class="mode-btn" data-mode="year">Год</button>
                 </div>
               </div>
-
               <div class="weekdays" aria-hidden="true">
-                <div>пн</div>
-                <div>вт</div>
-                <div>ср</div>
-                <div>чт</div>
-                <div>пт</div>
-                <div>сб</div>
-                <div>вс</div>
+                <div class="weekday">пн</div>
+                <div class="weekday">вт</div>
+                <div class="weekday">ср</div>
+                <div class="weekday">чт</div>
+                <div class="weekday">пт</div>
+                <div class="weekday">сб</div>
+                <div class="weekday">вс</div>
               </div>
             </div>
-
             <hr class="divider" />
-
             <div id="month-view" class="calendar-view active">
               <div
                 class="calendar-scroll"
                 role="group"
                 aria-label="Календарь периода"
               >
-                <!-- Июль 2024 -->
                 <div class="month" aria-labelledby="jul-2024">
-                  <h3 id="jul-2024">Июль 2024</h3>
+                  <h3 id="jul-2024" class="month-title">Июль 2024</h3>
                   <div
                     class="days-grid"
                     role="grid"
@@ -103,7 +91,6 @@
                     <button class="day" aria-pressed="false">5</button>
                     <button class="day" aria-pressed="false">6</button>
                     <button class="day" aria-pressed="false">7</button>
-
                     <button class="day" aria-pressed="false">8</button>
                     <button class="day" aria-pressed="false">9</button>
                     <button class="day selected" aria-pressed="true">10</button>
@@ -111,7 +98,6 @@
                     <button class="day" aria-pressed="false">12</button>
                     <button class="day" aria-pressed="false">13</button>
                     <button class="day" aria-pressed="false">14</button>
-
                     <button class="day" aria-pressed="false">15</button>
                     <button class="day" aria-pressed="false">16</button>
                     <button class="day" aria-pressed="false">17</button>
@@ -119,7 +105,6 @@
                     <button class="day" aria-pressed="false">19</button>
                     <button class="day" aria-pressed="false">20</button>
                     <button class="day" aria-pressed="false">21</button>
-
                     <button class="day" aria-pressed="false">22</button>
                     <button class="day" aria-pressed="false">23</button>
                     <button class="day" aria-pressed="false">24</button>
@@ -127,16 +112,13 @@
                     <button class="day" aria-pressed="false">26</button>
                     <button class="day" aria-pressed="false">27</button>
                     <button class="day" aria-pressed="false">28</button>
-
                     <button class="day" aria-pressed="false">29</button>
                     <button class="day" aria-pressed="false">30</button>
                     <button class="day" aria-pressed="false">31</button>
                   </div>
                 </div>
-
-                <!-- Август 2024 -->
                 <div class="month" aria-labelledby="aug-2024">
-                  <h3 id="aug-2024">Август 2024</h3>
+                  <h3 id="aug-2024" class="month-title">Август 2024</h3>
                   <div
                     class="days-grid"
                     role="grid"
@@ -145,7 +127,6 @@
                     <div class="day empty" aria-hidden="true"></div>
                     <div class="day empty" aria-hidden="true"></div>
                     <div class="day empty" aria-hidden="true"></div>
-
                     <button class="day" aria-pressed="false">1</button>
                     <button class="day" aria-pressed="false">2</button>
                     <button class="day" aria-pressed="false">3</button>
@@ -153,7 +134,6 @@
                     <button class="day" aria-pressed="false">5</button>
                     <button class="day" aria-pressed="false">6</button>
                     <button class="day" aria-pressed="false">7</button>
-
                     <button class="day" aria-pressed="false">8</button>
                     <button class="day" aria-pressed="false">9</button>
                     <button class="day" aria-pressed="false">10</button>
@@ -161,7 +141,6 @@
                     <button class="day" aria-pressed="false">12</button>
                     <button class="day" aria-pressed="false">13</button>
                     <button class="day" aria-pressed="false">14</button>
-
                     <button class="day" aria-pressed="false">15</button>
                     <button class="day" aria-pressed="false">16</button>
                     <button class="day" aria-pressed="false">17</button>
@@ -169,7 +148,6 @@
                     <button class="day" aria-pressed="false">19</button>
                     <button class="day" aria-pressed="false">20</button>
                     <button class="day" aria-pressed="false">21</button>
-
                     <button class="day" aria-pressed="false">22</button>
                     <button class="day" aria-pressed="false">23</button>
                     <button class="day" aria-pressed="false">24</button>
@@ -177,7 +155,6 @@
                     <button class="day" aria-pressed="false">26</button>
                     <button class="day" aria-pressed="false">27</button>
                     <button class="day" aria-pressed="false">28</button>
-
                     <button class="day" aria-pressed="false">29</button>
                     <button class="day" aria-pressed="false">30</button>
                     <button class="day" aria-pressed="false">31</button>
@@ -185,8 +162,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Year view (на моё усмотрение: grid месяцев для 2024, с примером selected) -->
             <div id="year-view" class="calendar-view">
               <div
                 class="calendar-scroll"
@@ -195,82 +170,44 @@
               >
                 <h3 class="year-title">2024</h3>
                 <div class="year-grid" role="grid" aria-label="Месяцы 2024">
-                  <button class="month-item" aria-pressed="false">
-                    Январь
-                  </button>
-                  <button class="month-item" aria-pressed="false">
-                    Февраль
-                  </button>
+                  <button class="month-item" aria-pressed="false">Январь</button>
+                  <button class="month-item" aria-pressed="false">Февраль</button>
                   <button class="month-item" aria-pressed="false">Март</button>
-                  <button class="month-item" aria-pressed="false">
-                    Апрель
-                  </button>
+                  <button class="month-item" aria-pressed="false">Апрель</button>
                   <button class="month-item" aria-pressed="false">Май</button>
                   <button class="month-item" aria-pressed="false">Июнь</button>
                   <button class="month-item selected" aria-pressed="true">
                     Июль
                   </button>
-                  <!-- Пример selected -->
-                  <button class="month-item" aria-pressed="false">
-                    Август
-                  </button>
-                  <button class="month-item" aria-pressed="false">
-                    Сентябрь
-                  </button>
-                  <button class="month-item" aria-pressed="false">
-                    Октябрь
-                  </button>
-                  <button class="month-item" aria-pressed="false">
-                    Ноябрь
-                  </button>
-                  <button class="month-item" aria-pressed="false">
-                    Декабрь
-                  </button>
+                  <button class="month-item" aria-pressed="false">Август</button>
+                  <button class="month-item" aria-pressed="false">Сентябрь</button>
+                  <button class="month-item" aria-pressed="false">Октябрь</button>
+                  <button class="month-item" aria-pressed="false">Ноябрь</button>
+                  <button class="month-item" aria-pressed="false">Декабрь</button>
                 </div>
-
                 <h3 class="year-title">2025</h3>
                 <div class="year-grid" role="grid" aria-label="Месяцы 2024">
-                  <button class="month-item" aria-pressed="false">
-                    Январь
-                  </button>
-                  <button class="month-item" aria-pressed="false">
-                    Февраль
-                  </button>
+                  <button class="month-item" aria-pressed="false">Январь</button>
+                  <button class="month-item" aria-pressed="false">Февраль</button>
                   <button class="month-item" aria-pressed="false">Март</button>
-                  <button class="month-item" aria-pressed="false">
-                    Апрель
-                  </button>
+                  <button class="month-item" aria-pressed="false">Апрель</button>
                   <button class="month-item" aria-pressed="false">Май</button>
                   <button class="month-item" aria-pressed="false">Июнь</button>
                   <button class="month-item" aria-pressed="false">Июль</button>
-                  <!-- Пример selected -->
-                  <button class="month-item" aria-pressed="false">
-                    Август
-                  </button>
-                  <button class="month-item" aria-pressed="false">
-                    Сентябрь
-                  </button>
-                  <button class="month-item" aria-pressed="false">
-                    Октябрь
-                  </button>
-                  <button class="month-item" aria-pressed="false">
-                    Ноябрь
-                  </button>
-                  <button class="month-item" aria-pressed="false">
-                    Декабрь
-                  </button>
+                  <button class="month-item" aria-pressed="false">Август</button>
+                  <button class="month-item" aria-pressed="false">Сентябрь</button>
+                  <button class="month-item" aria-pressed="false">Октябрь</button>
+                  <button class="month-item" aria-pressed="false">Ноябрь</button>
+                  <button class="month-item" aria-pressed="false">Декабрь</button>
                 </div>
               </div>
             </div>
           </div>
-
           <div class="decor-bar" aria-hidden="true">
             <div class="thumb"></div>
           </div>
         </section>
-        <!-- ===== ПРАВЫЙ БЛОК: Карточка графика расходов ===== -->
         <section class="chart-card" aria-labelledby="chart-title" role="region">
-          <!-- Заголовок с суммой -->
           <div class="chart-header">
             <div class="chart-total">
               <div class="total-value">9 581 ₽</div>
@@ -279,93 +216,48 @@
                 <span class="label-strong">10 июля 2024</span>
               </div>
             </div>
-            <!-- пустой элемент (по макету может понадобиться место/фьючер) -->
             <div class="chart-actions" aria-hidden="true"></div>
           </div>
-
-          <!-- Область столбчатой диаграммы -->
           <div
             class="chart-body"
             role="group"
             aria-label="График расходов по категориям"
           >
             <div class="bars-row">
-              <!-- Колонка: Еда -->
-              <div class="bar-column">
+              <div class="bar-column bar-column--food">
                 <div class="bar-value">3 590 ₽</div>
-                <div
-                  class="bar"
-                  style="height: 328px; background: #d9b6ff"
-                  data-amount="3 590 ₽"
-                  aria-hidden="false"
-                ></div>
+                <div class="bar" data-amount="3 590 ₽" aria-hidden="false"></div>
                 <div class="bar-label">Еда</div>
               </div>
-
-              <!-- Транспорт -->
-              <div class="bar-column">
+              <div class="bar-column bar-column--transport">
                 <div class="bar-value">1 835 ₽</div>
-                <div
-                  class="bar"
-                  style="height: 169px; background: #ffb53d"
-                  data-amount="1 835 ₽"
-                ></div>
+                <div class="bar" data-amount="1 835 ₽"></div>
                 <div class="bar-label">Транспорт</div>
               </div>
-
-              <!-- Жильё (0 р) -->
-              <div class="bar-column">
+              <div class="bar-column bar-column--housing">
                 <div class="bar-value">0 ₽</div>
-                <div
-                  class="bar"
-                  style="
-                    height: 4px;
-                    background: #6ee4fe;
-                    transform: translateY(0);
-                  "
-                  data-amount="0 ₽"
-                ></div>
+                <div class="bar bar--minimal" data-amount="0 ₽"></div>
                 <div class="bar-label">Жильё</div>
               </div>
-
-              <!-- Развлечения -->
-              <div class="bar-column">
+              <div class="bar-column bar-column--entertainment">
                 <div class="bar-value">1 250 ₽</div>
-                <div
-                  class="bar"
-                  style="height: 109px; background: #b0aeff"
-                  data-amount="1 250 ₽"
-                ></div>
+                <div class="bar" data-amount="1 250 ₽"></div>
                 <div class="bar-label">Развлечения</div>
               </div>
-
-              <!-- Образование -->
-              <div class="bar-column">
+              <div class="bar-column bar-column--education">
                 <div class="bar-value">600 ₽</div>
-                <div
-                  class="bar"
-                  style="height: 65px; background: #bcec30"
-                  data-amount="600 ₽"
-                ></div>
+                <div class="bar" data-amount="600 ₽"></div>
                 <div class="bar-label">Образование</div>
               </div>
-
-              <!-- Другое -->
-              <div class="bar-column">
+              <div class="bar-column bar-column--other">
                 <div class="bar-value">2 306 ₽</div>
-                <div
-                  class="bar"
-                  style="height: 212px; background: #ffb9b8"
-                  data-amount="2 306 ₽"
-                ></div>
+                <div class="bar" data-amount="2 306 ₽"></div>
                 <div class="bar-label">Другое</div>
               </div>
             </div>
           </div>
         </section>
       </main>
-
-      <!-- Footer (mobile only) -->
       <footer class="period-footer">
         <button id="open-period-btn" class="period-action">
           <span class="period-action__text">Выбрать другой период</span>
@@ -377,87 +269,69 @@
         const footerBtn = document.getElementById("open-period-btn");
         const periodCard = document.querySelector(".period-card");
         const backBtn = document.getElementById("back-analysis");
-
         const FOOTER_TEXT_OPEN = "Выбрать период";
         const FOOTER_TEXT_CLOSED = "Выбрать другой период";
-
-        // Переключатель режимов
         const modeBtns = document.querySelectorAll(".mode-btn");
         const monthView = document.getElementById("month-view");
         const yearView = document.getElementById("year-view");
-        const weekdays = document.querySelector(".weekdays"); // Находим блок дней недели
-
+        const weekdays = document.querySelector(".weekdays");
         modeBtns.forEach((btn) => {
           btn.addEventListener("click", () => {
             modeBtns.forEach((b) => b.classList.remove("active"));
             btn.classList.add("active");
-
             const mode = btn.dataset.mode;
             if (mode === "month") {
               monthView.classList.add("active");
               yearView.classList.remove("active");
-              if (weekdays) weekdays.classList.remove("hidden"); // Показываем .weekdays в "Месяц"
+              if (weekdays) weekdays.classList.remove("hidden");
             } else {
               yearView.classList.add("active");
               monthView.classList.remove("active");
-              if (weekdays) weekdays.classList.add("hidden"); // Скрываем .weekdays в "Год"
+              if (weekdays) weekdays.classList.add("hidden");
             }
-            updateScrollbar(); // Обновляем скроллбар после смены вида
+            updateScrollbar();
           });
         });
-
-        // Инициализация (по умолчанию "Месяц", .weekdays visible)
         document.querySelector('[data-mode="month"]').classList.add("active");
         monthView.classList.add("active");
         if (weekdays) weekdays.classList.remove("hidden");
-
         if (footerBtn) {
           const textSpan = footerBtn.querySelector(".period-action__text");
           if (textSpan && !textSpan.dataset.initial) {
             textSpan.dataset.initial = textSpan.textContent.trim();
           }
         }
-
         function openCalendar() {
-          if (window.innerWidth > 376) return; // Игнорируем в десктопе
-
+          if (window.innerWidth > 376) return;
           if (!periodCard) return;
           periodCard.classList.add("open");
           periodCard.setAttribute("aria-hidden", "false");
-          document.body.classList.add("overlay-active"); // Активируем скрытие header и chart-card
-          document.body.style.overflow = "hidden"; // Блокировка скролла
-
+          document.body.classList.add("overlay-active");
+          document.body.style.overflow = "hidden";
           if (backBtn) backBtn.setAttribute("aria-hidden", "false");
-
           if (footerBtn) {
             const ts = footerBtn.querySelector(".period-action__text");
             if (ts) ts.textContent = FOOTER_TEXT_OPEN;
           }
-
           const firstInteractive = periodCard.querySelector(
             "button, [tabindex], a"
           );
           if (firstInteractive) firstInteractive.focus();
         }
-
         function closeCalendar() {
-          if (window.innerWidth > 376) return; // Игнорируем в десктопе
-
+          if (window.innerWidth > 376) return;
           if (!periodCard) return;
           periodCard.classList.remove("open");
           periodCard.setAttribute("aria-hidden", "true");
-          document.body.classList.remove("overlay-active"); // Восстанавливаем видимость
-          document.body.style.overflow = ""; // Восстановление скролла
-
+          document.body.classList.remove("overlay-active");
+          document.body.style.overflow = "";
           if (backBtn) backBtn.setAttribute("aria-hidden", "true");
-
           if (footerBtn) {
             const ts = footerBtn.querySelector(".period-action__text");
             if (ts) ts.textContent = FOOTER_TEXT_CLOSED;
             footerBtn.focus();
           }
         }
-
         if (footerBtn) {
           footerBtn.addEventListener("click", function (e) {
             if (periodCard && periodCard.classList.contains("open")) {
@@ -467,13 +341,11 @@
             }
           });
         }
-
         if (backBtn) {
           backBtn.addEventListener("click", function (e) {
             closeCalendar();
           });
         }
-
         document.addEventListener("keydown", function (e) {
           if (
             e.key === "Escape" &&
@@ -483,8 +355,6 @@
             closeCalendar();
           }
         });
-
-        // Инициализация: закрываем оверлей в десктопе при загрузке, если он случайно открыт
         if (
           window.innerWidth > 376 &&
           periodCard &&
@@ -492,17 +362,11 @@
         ) {
           closeCalendar();
         }
-
-        // НОВАЯ ЛОГИКА: Управление декоративным скроллбаром
         const decorBar = document.querySelector(".decor-bar");
         const thumb = decorBar ? decorBar.querySelector(".thumb") : null;
-
-        let activeScrollListener = null; // Для хранения слушателя активного скроллера
-
+        let activeScrollListener = null;
         function updateScrollbar() {
           if (!decorBar || !thumb) return;
-
-          // Находим ��ктивный .calendar-scroll (в .calendar-view.active)
           const activeCalendarView = document.querySelector(
             ".calendar-view.active"
           );
@@ -510,45 +374,33 @@
           const calendarScroll =
             activeCalendarView.querySelector(".calendar-scroll");
           if (!calendarScroll) return;
-
-          // Удаляем старый слушатель, если был
           if (activeScrollListener) {
             activeScrollListener.removeEventListener("scroll", updateScrollbar);
           }
-          // Добавляем новый слушатель на текущий активный скроллер
           calendarScroll.addEventListener("scroll", updateScrollbar);
           activeScrollListener = calendarScroll;
-
-          const totalHeight = calendarScroll.scrollHeight; // Полная высота контента
-          const visibleHeight = calendarScroll.clientHeight; // Видимая высота
-          const decorHeight = decorBar.clientHeight; // Высота decor-bar (336px)
-
+          const totalHeight = calendarScroll.scrollHeight;
+          const visibleHeight = calendarScroll.clientHeight;
+          const decorHeight = decorBar.clientHeight;
           if (totalHeight <= visibleHeight) {
-            // Скрываем, если скролл не нужен
             decorBar.classList.add("hidden");
             return;
           } else {
             decorBar.classList.remove("hidden");
           }
-
-          // Вычисляем высоту thumb
           const thumbHeight = Math.max(
             20,
             (visibleHeight / totalHeight) * decorHeight
-          ); // Мин. 20px для видимости
+          );
           thumb.style.height = `${thumbHeight}px`;
-
-          // Вычисляем позицию top thumb
           const scrollTop = calendarScroll.scrollTop;
           const maxScroll = totalHeight - visibleHeight;
           const maxThumbTop = decorHeight - thumbHeight;
           const thumbTop = (scrollTop / maxScroll) * maxThumbTop;
           thumb.style.top = `${thumbTop}px`;
         }
-
-        // Инициализация и слушатели
-        window.addEventListener("resize", updateScrollbar); // На случай ресайза
-        updateScrollbar(); // Начальное обновление
+        window.addEventListener("resize", updateScrollbar);
+        updateScrollbar();
       })();
     </script>
   </body>
