@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "./base/Button";
+import RegistForm from "./RegistForm";
 
 const AuthContent = styled.div`
   display: flex;
@@ -18,19 +19,19 @@ const AuthContent = styled.div`
 const AuthFormContainer = styled.div`
   background-color: #ffffff;
   border-radius: 30px;
-  box-shadow: 0px 20px 67px -12px #00000021;
-  width: 379px;
-  padding: 32px;
+  padding: 40px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* Увеличена тень для лучшего эффекта */
+  max-width: 400px; /* Ограничение ширины */
+  width: 100%; /* Адаптивность */
 
   @media (max-width: 768px) {
-    width: 343px;
-    padding: 24px;
-    border-radius: 0px;
+    padding: 20px; /* Уменьшение отступов на мобильных устройствах */
+    border-radius: 15px; /* Меньший радиус */
   }
 `;
 
 const Title = styled.h1`
-  color: #000000;
+  color: #333333; /* Более мягкий чёрный цвет */
   font-weight: 700;
   font-size: 24px;
   margin-bottom: 24px;
@@ -125,6 +126,26 @@ const StyledButton = styled(Button)`
 `;
 
 const AuthForm = () => {
+  const [showRegistration, setShowRegistration] = React.useState(false);
+
+  const handleRegisterClick = (e) => {
+    e.preventDefault();
+    setShowRegistration(true);
+  };
+
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+    setShowRegistration(false);
+  };
+
+  if (showRegistration) {
+    return (
+      <AuthContent>
+        <RegistForm onLoginClick={handleLoginClick} />
+      </AuthContent>
+    );
+  }
+
   return (
     <AuthContent>
       <AuthFormContainer>
@@ -139,7 +160,9 @@ const AuthForm = () => {
         <LinkContainer>
           <LinkParagraph>Нужно зарегистрироваться?</LinkParagraph>
           <LinkParagraph>
-            <StyledLink href="#register">Регистрируйтесь здесь</StyledLink>
+            <StyledLink href="#register" onClick={handleRegisterClick}>
+              Регистрируйтесь здесь
+            </StyledLink>
           </LinkParagraph>
         </LinkContainer>
       </AuthFormContainer>
