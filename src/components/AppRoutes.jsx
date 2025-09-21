@@ -5,6 +5,7 @@ import AuthForm from "./AuthForm";
 import RegistForm from "./RegistForm";
 import CostsTable from "./CostsTable.jsx";
 import NewCosts from "./NewCosts";
+import CostAnalysis from "./CostAnalysis/CostAnalysis";
 
 function AppRoutes() {
   const [isAuthenticated] = useState(false);
@@ -18,6 +19,7 @@ function AppRoutes() {
           <Route path="/register" element={<RegistForm />} />
           <Route path="/expenses" element={<CostsTable />} />
           <Route path="/new-costs" element={<NewCosts />} />
+          <Route path="/cost-analysis" element={<CostAnalysis />} />
         </Routes>
       </div>
     </Router>
