@@ -73,15 +73,95 @@ const Container = styled.div`
   }
 `;
 
+const TableHeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 32px 0px 32px;
+`;
+
 const Subtitle = styled.h2`
   font-size: 24px;
   font-weight: 700;
   color: #000000;
-  padding: 32px 32px 0px 32px;
 
   @media (max-width: 768px) {
     display: none;
   }
+`;
+
+const FiltersContainer = styled.div`
+  display: flex;
+  gap: 86px;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const FilterGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const FilterLabel = styled.label`
+  font-family: Montserrat;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 150%;
+  letter-spacing: 0px;
+  text-align: center;
+  vertical-align: middle;
+  color: #999999;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+`;
+
+const CustomSelectWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+  min-width: 150px;
+`;
+
+const CustomSelect = styled.select`
+  font-family: Montserrat;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 150%;
+  letter-spacing: 0px;
+  color: #000000;
+  border: 0.5px solid #999999;
+  border-radius: 6px;
+  padding: 8px 30px 8px 12px;
+  background-color: white;
+  cursor: pointer;
+  width: 100%;
+  appearance: none;
+
+  &:focus {
+    outline: none;
+    border-color: #7334ea;
+  }
+`;
+
+const CustomSelectArrow = styled.div`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 7px;
+  height: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const TableWrapper = styled.div`
@@ -209,6 +289,32 @@ const TableCell = styled.td`
   }
 `;
 
+const IconCell = styled.td`
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #000000;
+
+  @media (max-width: 768px) {
+    padding: 8px 10px;
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  svg {
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+`;
+
+const IconsContainer = styled.div`
+  display: flex;
+  gap: 12px;
+  align-items: center;
+`;
+
 const MobileAddButton = styled.button`
   display: none;
 
@@ -332,6 +438,15 @@ const CostsTable = () => {
     },
   ];
 
+  // Категории как на скриншоте
+  const categories = [
+    "Все категории",
+    "Еда",
+    "Транспорт",
+    "Развлечения",
+    "Другое",
+  ];
+
   return (
     <PageContainer>
       <Header>
@@ -355,9 +470,65 @@ const CostsTable = () => {
         </NewExpenseButton>
       </Header>
       <Container>
-        <div>
+        <TableHeaderContainer>
           <Subtitle>Таблица расходов</Subtitle>
-        </div>
+          <FiltersContainer>
+            <FilterGroup>
+              <FilterLabel htmlFor="category-filter">
+                Фильтровать по категории
+              </FilterLabel>
+              <CustomSelectWrapper>
+                <CustomSelect id="category-filter" defaultValue="">
+                  {categories.map((category, index) => (
+                    <option
+                      key={index}
+                      value={category === "Все категории" ? "" : category}
+                    >
+                      {category}
+                    </option>
+                  ))}
+                </CustomSelect>
+                <CustomSelectArrow>
+                  <svg
+                    width="7"
+                    height="6"
+                    viewBox="0 0 7 6"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3.5 5.5L0.468911 0.25L6.53109 0.25L3.5 5.5Z"
+                      fill="black"
+                    />
+                  </svg>
+                </CustomSelectArrow>
+              </CustomSelectWrapper>
+            </FilterGroup>
+            <FilterGroup>
+              <FilterLabel htmlFor="date-sort">Сортировать по дате</FilterLabel>
+              <CustomSelectWrapper>
+                <CustomSelect id="date-sort" defaultValue="newest">
+                  <option value="newest">Сначала новые</option>
+                  <option value="oldest">Сначала старые</option>
+                </CustomSelect>
+                <CustomSelectArrow>
+                  <svg
+                    width="7"
+                    height="6"
+                    viewBox="0 0 7 6"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3.5 5.5L0.468911 0.25L6.53109 0.25L3.5 5.5Z"
+                      fill="black"
+                    />
+                  </svg>
+                </CustomSelectArrow>
+              </CustomSelectWrapper>
+            </FilterGroup>
+          </FiltersContainer>
+        </TableHeaderContainer>
         <TableWrapper>
           <Table>
             <TableHead>
@@ -376,24 +547,46 @@ const CostsTable = () => {
                   <TableCell>{expense.category}</TableCell>
                   <TableCell>{expense.date}</TableCell>
                   <TableCell>{expense.amount}</TableCell>
-                  <TableCell>
-                    <svg
-                      width="12"
-                      height="13"
-                      viewBox="0 0 12 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M9.62 3.29003H9.42L7.73 1.60003C7.595 1.46503 7.375 1.46503 7.235 1.60003C7.1 1.73503 7.1 1.95503 7.235 2.09503L8.43 3.29003H3.57L4.765 2.09503C4.9 1.96003 4.9 1.74003 4.765 1.60003C4.63 1.46503 4.41 1.46503 4.27 1.60003L2.585 3.29003H2.385C1.935 3.29003 1 3.29003 1 4.57003C1 5.05503 1.1 5.37503 1.31 5.58503C1.43 5.71003 1.575 5.77503 1.73 5.81003C1.875 5.84503 2.03 5.85003 2.18 5.85003H9.82C9.975 5.85003 10.12 5.84003 10.26 5.81003C10.68 5.71003 11 5.41003 11 4.57003C11 3.29003 10.065 3.29003 9.62 3.29003Z"
-                        fill="#999999"
-                      />
-                      <path
-                        d="M9.52502 6.5H2.43502C2.12502 6.5 1.89002 6.775 1.94002 7.08L2.36002 9.65C2.50002 10.51 2.87502 11.5 4.54002 11.5H7.34502C9.03002 11.5 9.33002 10.655 9.51002 9.71L10.015 7.095C10.075 6.785 9.84002 6.5 9.52502 6.5ZM5.30502 9.725C5.30502 9.92 5.15002 10.075 4.96002 10.075C4.76502 10.075 4.61002 9.92 4.61002 9.725V8.075C4.61002 7.885 4.76502 7.725 4.96002 7.725C5.15002 7.725 5.30502 7.885 5.30502 8.075V9.725ZM7.44502 9.725C7.44502 9.92 7.29002 10.075 7.09502 10.075C6.90502 10.075 6.74502 9.92 6.74502 9.725V8.075C6.74502 7.885 6.90502 7.725 7.09502 7.725C7.29002 7.725 7.44502 7.885 7.44502 8.075V9.725Z"
-                        fill="#999999"
-                      />
-                    </svg>
-                  </TableCell>
+                  <IconCell>
+                    <IconsContainer>
+                      <svg
+                        width="12"
+                        height="13"
+                        viewBox="0 0 12 13"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.5 11.5H1.5C1.295 11.5 1.125 11.33 1.125 11.125C1.125 10.92 1.295 10.75 1.5 10.75H10.5C10.705 10.75 10.875 10.92 10.875 11.125C10.875 11.33 10.705 11.5 10.5 11.5Z"
+                          fill="#999999"
+                        />
+                        <path
+                          d="M9.51004 2.24002C8.54004 1.27002 7.59004 1.24502 6.59504 2.24002L5.99004 2.84502C5.94004 2.89502 5.92004 2.97502 5.94004 3.04502C6.32004 4.37002 7.38004 5.43002 8.70504 5.81002C8.72504 5.81502 8.74504 5.82002 8.76504 5.82002C8.82004 5.82002 8.87004 5.80002 8.91004 5.76002L9.51004 5.15502C10.005 4.66502 10.245 4.19002 10.245 3.71002C10.25 3.21502 10.01 2.73502 9.51004 2.24002Z"
+                          fill="#999999"
+                        />
+                        <path
+                          d="M7.80491 6.26502C7.65991 6.19502 7.51992 6.12502 7.38492 6.04502C7.27492 5.98002 7.16992 5.91002 7.06492 5.83502C6.97992 5.78002 6.87991 5.70002 6.78491 5.62002C6.77491 5.61502 6.73991 5.58502 6.69991 5.54502C6.53491 5.40502 6.34992 5.22502 6.18492 5.02502C6.16992 5.01502 6.14492 4.98002 6.10992 4.93502C6.05992 4.87502 5.97492 4.77502 5.89992 4.66002C5.83992 4.58502 5.76992 4.47502 5.70492 4.36502C5.62492 4.23002 5.55492 4.09502 5.48492 3.95502C5.39314 3.75835 5.13501 3.69993 4.98155 3.85339L2.16992 6.66502C2.10492 6.73002 2.04492 6.85502 2.02992 6.94002L1.75992 8.85502C1.70992 9.19502 1.80492 9.51502 2.01492 9.73002C2.19492 9.90502 2.44492 10 2.71492 10C2.77492 10 2.83492 9.99502 2.89492 9.98502L4.81492 9.71502C4.90492 9.70002 5.02992 9.64002 5.08992 9.57502L7.90618 6.75875C8.05658 6.60836 8.00007 6.34959 7.80491 6.26502Z"
+                          fill="#999999"
+                        />
+                      </svg>
+                      <svg
+                        width="12"
+                        height="13"
+                        viewBox="0 0 12 13"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9.62 3.29003H9.42L7.73 1.60003C7.595 1.46503 7.375 1.46503 7.235 1.60003C7.1 1.73503 7.1 1.95503 7.235 2.09503L8.43 3.29003H3.57L4.765 2.09503C4.9 1.96003 4.9 1.74003 4.765 1.60003C4.63 1.46503 4.41 1.46503 4.27 1.60003L2.585 3.29003H2.385C1.935 3.29003 1 3.29003 1 4.57003C1 5.05503 1.1 5.37503 1.31 5.58503C1.43 5.71003 1.575 5.77503 1.73 5.81003C1.875 5.84503 2.03 5.85003 2.18 5.85003H9.82C9.975 5.85003 10.12 5.84003 10.26 5.81003C10.68 5.71003 11 5.41003 11 4.57003C11 3.29003 10.065 3.29003 9.62 3.29003Z"
+                          fill="#999999"
+                        />
+                        <path
+                          d="M9.52502 6.5H2.43502C2.12502 6.5 1.89002 6.775 1.94002 7.08L2.36002 9.65C2.50002 10.51 2.87502 11.5 4.54002 11.5H7.34502C9.03002 11.5 9.33002 10.655 9.51002 9.71L10.015 7.095C10.075 6.785 9.84002 6.5 9.52502 6.5ZM5.30502 9.725C5.30502 9.92 5.15002 10.075 4.96002 10.075C4.76502 10.075 4.61002 9.92 4.61002 9.725V8.075C4.61002 7.885 4.76502 7.725 4.96002 7.725C5.15002 7.725 5.30502 7.885 5.30502 8.075V9.725ZM7.44502 9.725C7.44502 9.92 7.29002 10.075 7.09502 10.075C6.90502 10.075 6.74502 9.92 6.74502 9.725V8.075C6.74502 7.885 6.90502 7.725 7.09502 7.725C7.29002 7.725 7.44502 7.885 7.44502 8.075V9.725Z"
+                          fill="#999999"
+                        />
+                      </svg>
+                    </IconsContainer>
+                  </IconCell>
                 </TableRow>
               ))}
             </tbody>
