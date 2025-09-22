@@ -1,10 +1,230 @@
-// import { useState } from "react";
-// import styled from "styled-components";
-// import Input from "./components/base/Input";
-// import Button from "./components/base/Button";
-// import Label from "./components/base/Label";
-// import FormGroup from "./components/common/FormGroup";
-// import CategorySelector from "./components/common/CategorySelector";
+import React from "react";
+import styled from "styled-components";
+
+const PageContainer = styled.div`
+  padding-left: calc(50% - 600px);
+  padding-right: calc(50% - 600px);
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+`;
+
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    margin: 22px 16px 22px 0px;
+  }
+`;
+
+const Title = styled.h1`
+  font-size: 32px;
+  font-weight: 700;
+  color: #000000;
+  margin: 32px 120px 36px 0px;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+    white-space: nowrap;
+    margin: 22px 16px 22px 0px;
+  }
+`;
+
+const NewExpenseButton = styled.button`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    color: #000000;
+    background-color: transparent;
+    border-radius: none;
+    border: none;
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 12px;
+  }
+`;
+
+const ButtonIcon = styled.div`
+  display: flex;
+  margin-right: 8px;
+`;
+
+const Container = styled.div`
+  background-color: #ffffff;
+  box-shadow: 0px 20px 67px -12px #00000021;
+  border-radius: 30px;
+  width: 789px;
+  margin: 32px 120px 36px 0px;
+
+  @media (max-width: 768px) {
+    border-radius: 20px;
+    width: 100%;
+    margin: 0;
+  }
+`;
+
+const Subtitle = styled.h2`
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+  padding: 32px 32px 0px 32px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const TableWrapper = styled.div`
+  max-height: 500px;
+  overflow-y: auto;
+  position: relative;
+  padding: 18px 32px 32px 32px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 100px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 30px;
+    margin: 10px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #d9d9d9;
+    border-radius: 30px;
+    opacity: 1;
+    min-height: 100px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #b8b8b8;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 197px;
+    right: 32px;
+    width: 6px;
+    height: 100px;
+    border-radius: 30px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: #d9d9d9 transparent;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    max-height: 650px;
+    padding: 16px;
+  }
+`;
+
+const Table = styled.table`
+  width: 789px;
+  border-collapse: collapse;
+  height: 618px;
+  border-spacing: 0 14px;
+  padding: 32px;
+
+  @media (max-width: 768px) {
+    width: 348px;
+    border-collapse: collapse;
+    height: 618px;
+    border-spacing: 0 16px;
+    padding: 0;
+  }
+`;
+
+const TableHead = styled.thead`
+  font-size: 12px;
+  position: sticky;
+  font-weight: 400;
+  top: 0;
+  z-index: 100;
+  border-bottom: 0.5px solid #999999;
+
+  th {
+    color: #999999 !important;
+    position: sticky;
+    z-index: 101;
+    background: transparent !important;
+    font-size: 12px;
+    font-weight: 400;
+
+    @media (max-width: 768px) {
+      font-size: 10px;
+    }
+  }
+`;
+
+const TableRow = styled.tr``;
+
+const TableHeader = styled.th`
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #000000;
+
+  @media (max-width: 768px) {
+    padding: 8px 10px;
+    font-size: 10px;
+    white-space: nowrap;
+  }
+`;
+
+const TableCell = styled.td`
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #000000;
+
+  @media (max-width: 768px) {
+    padding: 8px 10px;
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  svg {
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+`;
+
+const MobileAddButton = styled.button`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: inline;
+    width: 343px;
+    height: 38px;
+    padding: 12px 120px;
+    border-radius: 6px;
+    background-color: #7334ea;
+    color: white;
+    font-size: 12px;
+    border: none;
+    margin-top: 16px;
+  }
+`;
 
 const CostsTable = () => {
   const expenses = [
@@ -113,11 +333,11 @@ const CostsTable = () => {
   ];
 
   return (
-    <div className="center">
-      <header>
-        <h1>Мои расходы</h1>
-        <button className="new-expense-btn">
-          <div className="btn-icon">
+    <PageContainer>
+      <Header>
+        <Title>Мои расходы</Title>
+        <NewExpenseButton>
+          <ButtonIcon>
             <svg
               width="12"
               height="12"
@@ -130,33 +350,33 @@ const CostsTable = () => {
                 fill="black"
               />
             </svg>
-          </div>
+          </ButtonIcon>
           Новый расход
-        </button>
-      </header>
-      <div className="container">
+        </NewExpenseButton>
+      </Header>
+      <Container>
         <div>
-          <h2>Таблица расходов</h2>
+          <Subtitle>Таблица расходов</Subtitle>
         </div>
-        <div className="table-wrapper">
-          <table>
-            <thead>
+        <TableWrapper>
+          <Table>
+            <TableHead>
               <tr>
-                <th>Описание</th>
-                <th>Категория</th>
-                <th>Дата</th>
-                <th>Сумма</th>
-                <th></th>
+                <TableHeader>Описание</TableHeader>
+                <TableHeader>Категория</TableHeader>
+                <TableHeader>Дата</TableHeader>
+                <TableHeader>Сумма</TableHeader>
+                <TableHeader></TableHeader>
               </tr>
-            </thead>
+            </TableHead>
             <tbody>
               {expenses.map((expense, index) => (
-                <tr key={index}>
-                  <td>{expense.description}</td>
-                  <td>{expense.category}</td>
-                  <td>{expense.date}</td>
-                  <td>{expense.amount}</td>
-                  <td>
+                <TableRow key={index}>
+                  <TableCell>{expense.description}</TableCell>
+                  <TableCell>{expense.category}</TableCell>
+                  <TableCell>{expense.date}</TableCell>
+                  <TableCell>{expense.amount}</TableCell>
+                  <TableCell>
                     <svg
                       width="12"
                       height="13"
@@ -173,15 +393,15 @@ const CostsTable = () => {
                         fill="#999999"
                       />
                     </svg>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
             </tbody>
-          </table>
-          <button className="mobile-add-button">Удалить расход</button>
-        </div>
-      </div>
-    </div>
+          </Table>
+          <MobileAddButton>Удалить расход</MobileAddButton>
+        </TableWrapper>
+      </Container>
+    </PageContainer>
   );
 };
 

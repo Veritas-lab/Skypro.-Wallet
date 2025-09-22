@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "./base/Button";
 
@@ -111,25 +112,37 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const RegistForm = ({ onLoginClick }) => {
+const RegistForm = ({ onLoginClick, setAuth }) => {
+  const navigate = useNavigate();
+
   const handleLoginClick = (e) => {
     e.preventDefault();
     onLoginClick(e);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Здесь должна быть логика регистрации
+    // После успешной регистрации перенаправляем на страницу расходов
+    setAuth(true);
+    navigate("/expenses");
+  };
+
   return (
     <AuthFormContainer>
       <Title>Регистрация</Title>
-      <FormGroup>
-        <Input type="text" placeholder="Имя" required />
-      </FormGroup>
-      <FormGroup>
-        <Input type="text" placeholder="Эл. почта" required />
-      </FormGroup>
-      <FormGroup>
-        <Input type="password" placeholder="Пароль" required />
-      </FormGroup>
-      <StyledButton>Зарегистрироваться</StyledButton>
+      <form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Input type="text" placeholder="Имя" required />
+        </FormGroup>
+        <FormGroup>
+          <Input type="text" placeholder="Эл. почта" required />
+        </FormGroup>
+        <FormGroup>
+          <Input type="password" placeholder="Пароль" required />
+        </FormGroup>
+        <StyledButton type="submit">Зарегистрироваться</StyledButton>
+      </form>
       <LinkContainer>
         <LinkParagraph>Уже есть аккаунт?</LinkParagraph>
         <LinkParagraph>
