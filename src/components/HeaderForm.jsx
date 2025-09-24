@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+
 const LogoIcon = () => {
   return (
     <svg
@@ -68,6 +69,8 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
+  padding-left: calc(50% - 600px);
+  padding-right: calc(50% - 600px);
   background-color: #fff;
   border-bottom: 1px solid #e0e0e0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -80,45 +83,69 @@ const LogoContainer = styled.div`
 
 const Nav = styled.nav`
   display: flex;
-  gap: 30px;
+  align-items: center;
 `;
 
 const NavItem = styled.a`
   color: #333;
   text-decoration: none;
-  font-family: Montserrat, sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 20px;
+  font-family: Montserrat;
   transition: all 0.3s ease;
 
-  &:hover {
-    background-color: #f5f5f5;
-    color: #000;
+  &.active {
+    color: #2e8b57;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    font-size: 14px;
   }
 
-  &.nav-item_1 {
-    color: #666;
+  &:not(.active) {
+    font-weight: 400;
+    font-size: 14px;
+  }
 
-    &:hover {
-      background-color: #e0e0e0;
+  &.logout {
+    font-weight: 600;
+    font-size: 14px;
+    margin-left: 414px;
+  }
+
+  &:hover {
+    color: #2e8b57;
+
+    &:not(.active):not(.logout) {
+      font-weight: 600;
     }
   }
 `;
 
+const Spacer = styled.div`
+  width: 48px;
+`;
+
 const HeaderForm = () => {
+  const isMyExpensesActive = true;
+
   return (
     <Header>
       <LogoContainer>
         <LogoIcon />
       </LogoContainer>
       <Nav>
-        <NavItem href="#" className="nav-item_1">
-          Features
+        <NavItem href="#" className={isMyExpensesActive ? "active" : ""}>
+          Мои расходы
         </NavItem>
-        <NavItem href="#">Pricing</NavItem>
-        <NavItem href="#">Contact</NavItem>
+
+        <Spacer />
+
+        <NavItem href="#" className={!isMyExpensesActive ? "active" : ""}>
+          Анализ расходов
+        </NavItem>
+
+        <NavItem href="#" className="logout">
+          Выйти
+        </NavItem>
       </Nav>
     </Header>
   );
