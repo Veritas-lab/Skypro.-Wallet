@@ -6,15 +6,15 @@ import Label from "./base/Label";
 import FormGroup from "./common/FormGroup";
 import CategorySelector from "./common/CategorySelector";
 
-const Body = styled.div`
-  font-family: Montserrat, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #f5f5f5;
-`;
+// const Body = styled.div`
+//   font-family: Montserrat, sans-serif;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 100vh;
+//   margin: 0;
+//   background-color: #f5f5f5;
+// `;
 
 const FormContainer = styled.div`
   padding: 32px;
@@ -81,7 +81,7 @@ const NewCosts = ({ initialData, onEditMode } = {}) => {
   }
 
   return (
-    <Body>
+
       <FormContainer>
         <Title>{mode === "create" ? "Новый расход" : "Редактирование"}</Title>
         <form onSubmit={handleSubmit}>
@@ -133,7 +133,7 @@ const NewCosts = ({ initialData, onEditMode } = {}) => {
           </Button>
         </form>
       </FormContainer>
-    </Body>
+    
   );
 };
 

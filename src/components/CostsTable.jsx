@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import NewCosts from "./NewCosts";
+import { CATEGORIES } from "../constants/categories";
 
 const PageContainer = styled.div`
   padding-left: calc(50% - 600px);
@@ -46,7 +48,6 @@ const NewExpenseButton = styled.button`
     align-items: center;
     color: #000000;
     background-color: transparent;
-    border-radius: none;
     border: none;
     padding: 14px 20px;
     font-weight: 600;
@@ -104,6 +105,7 @@ const FilterGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+  position: relative;
 `;
 
 const FilterLabel = styled.label`
@@ -120,16 +122,97 @@ const FilterLabel = styled.label`
   display: flex;
   align-items: center;
   gap: 8px;
-  cursor: pointer;
 `;
 
-const CustomSelectWrapper = styled.div`
+const FilterText = styled.span`
+  cursor: default;
+`;
+
+const CustomSelectArrow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+  transition: transform 0.2s ease;
+`;
+
+const SelectedDisplay = styled.div`
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-weight: 400;
+  color: #1FA46C;
+  background-color: #DBFFE9;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
+  min-width: 150px;
+  margin-top: 4px;
+`;
+
+const DropdownList = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  margin-top: 8px;
+  padding: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+`;
+
+const DropdownCategoryGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+const DropdownCategoryButton = styled.label`
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
+  background-color: ${({ checked }) => (checked ? '#DBFFE9' : '#F4F5F6')};
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: ${({ checked }) => (checked ? '#1FA46C' : 'black')};
+  white-space: nowrap;
+
+  svg {
+    fill: ${({ checked }) => (checked ? '#1FA46C' : 'black')};
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover {
+    background-color: ${({ checked }) => (checked ? '#DBFFE9' : '#e8e8e8')};
+  }
+`;
+
+const HiddenRadio = styled.input.attrs({ type: 'radio' })`
+  display: none;
+`;
+
+const DateSelectWrapper = styled.div`
   position: relative;
   display: inline-block;
   min-width: 150px;
 `;
 
-const CustomSelect = styled.select`
+const DateSelect = styled.select`
   font-family: Montserrat;
   font-weight: 400;
   font-style: normal;
@@ -149,19 +232,6 @@ const CustomSelect = styled.select`
     outline: none;
     border-color: #7334ea;
   }
-`;
-
-const CustomSelectArrow = styled.div`
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  width: 7px;
-  height: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const TableWrapper = styled.div`
@@ -394,58 +464,35 @@ const CostsTable = () => {
       date: "29.06.2024",
       amount: "4 300 ₽",
     },
-    {
-      description: "Яндекс Такси",
-      category: "Транспорт",
-      date: "28.06.2024",
-      amount: "320 ₽",
-    },
-    {
-      description: "Перекресток",
-      category: "Еда",
-      date: "28.06.2024",
-      amount: "1 360 ₽",
-    },
-    {
-      description: "Деливери",
-      category: "Еда",
-      date: "28.06.2024",
-      amount: "2 320 ₽",
-    },
-    {
-      description: "Вкусвилл",
-      category: "Еда",
-      date: "27.06.2024",
-      amount: "1 220 ₽",
-    },
-    {
-      description: "Кофейня №1",
-      category: "Еда",
-      date: "27.06.2024",
-      amount: "920 ₽",
-    },
-    {
-      description: "Вкусвилл",
-      category: "Еда",
-      date: "26.06.2024",
-      amount: "840 ₽",
-    },
-    {
-      description: "Кофейня №1",
-      category: "Еда",
-      date: "26.06.2024",
-      amount: "920 ₽",
-    },
   ];
 
-  // Категории как на скриншоте
-  const categories = [
-    "Все категории",
-    "Еда",
-    "Транспорт",
-    "Развлечения",
-    "Другое",
-  ];
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Функция для получения имени категории по ID
+  const getCategoryNameById = (id) => {
+    const category = CATEGORIES.find((cat) => cat.id === id);
+    return category ? category.name : "";
+  };
+
+  // Фильтрация расходов по выбранной категории
+  const filteredExpenses = selectedCategory
+    ? expenses.filter((expense) => expense.category === getCategoryNameById(selectedCategory))
+    : expenses;
+
+  const handleCategorySelect = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setIsDropdownOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  // // Получаем текущую выбранную категорию для отображения
+  // const currentCategory = selectedCategory 
+  //   ? CATEGORIES.find(cat => cat.id === selectedCategory)
+  //   : null;
 
   return (
     <PageContainer>
@@ -474,21 +521,9 @@ const CostsTable = () => {
           <Subtitle>Таблица расходов</Subtitle>
           <FiltersContainer>
             <FilterGroup>
-              <FilterLabel htmlFor="category-filter">
-                Фильтровать по категории
-              </FilterLabel>
-              <CustomSelectWrapper>
-                <CustomSelect id="category-filter" defaultValue="">
-                  {categories.map((category, index) => (
-                    <option
-                      key={index}
-                      value={category === "Все категории" ? "" : category}
-                    >
-                      {category}
-                    </option>
-                  ))}
-                </CustomSelect>
-                <CustomSelectArrow>
+              <FilterLabel>
+                <FilterText>Фильтровать по категории</FilterText>
+                <CustomSelectArrow onClick={toggleDropdown} isOpen={isDropdownOpen}>
                   <svg
                     width="7"
                     height="6"
@@ -502,15 +537,84 @@ const CostsTable = () => {
                     />
                   </svg>
                 </CustomSelectArrow>
-              </CustomSelectWrapper>
+              </FilterLabel>
+
+              {/* <SelectedDisplay onClick={toggleDropdown}>
+                <span>
+                  {currentCategory ? (
+                    <>
+                      {currentCategory.icon && <currentCategory.icon />}
+                      {currentCategory.name}
+                    </>
+                  ) : (
+                    "Все категории"
+                  )}
+                </span>
+                <CustomSelectArrow isOpen={isDropdownOpen}>
+                  <svg
+                    width="7"
+                    height="6"
+                    viewBox="0 0 7 6"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3.5 5.5L0.468911 0.25L6.53109 0.25L3.5 5.5Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </CustomSelectArrow>
+              </SelectedDisplay> */}
+
+              {isDropdownOpen && (
+                <DropdownList>
+                  <DropdownCategoryGroup>
+                    {/* Кнопка для сброса фильтра */}
+                    <div key="all">
+                      <HiddenRadio
+                        id="filter-all"
+                        name="category-filter"
+                        checked={!selectedCategory}
+                        onChange={() => handleCategorySelect(null)}
+                      />
+                      <DropdownCategoryButton
+                        htmlFor="filter-all"
+                        checked={!selectedCategory}
+                      >
+                        Все категории
+                      </DropdownCategoryButton>
+                    </div>
+                    
+                    {/* Категории из CATEGORIES */}
+                    {CATEGORIES.map((category) => (
+                      <div key={category.id}>
+                        <HiddenRadio
+                          id={`filter-${category.id}`}
+                          name="category-filter"
+                          checked={selectedCategory === category.id}
+                          onChange={() => handleCategorySelect(category.id)}
+                        />
+                        <DropdownCategoryButton
+                          htmlFor={`filter-${category.id}`}
+                          checked={selectedCategory === category.id}
+                        >
+                          {category.icon && <category.icon />}
+                          {category.name}
+                        </DropdownCategoryButton>
+                      </div>
+                    ))}
+                  </DropdownCategoryGroup>
+                </DropdownList>
+              )}
             </FilterGroup>
+
             <FilterGroup>
-              <FilterLabel htmlFor="date-sort">Сортировать по дате</FilterLabel>
-              <CustomSelectWrapper>
-                <CustomSelect id="date-sort" defaultValue="newest">
+              <FilterLabel>Сортировать по дате</FilterLabel>
+              <DateSelectWrapper>
+                <DateSelect defaultValue="newest">
                   <option value="newest">Сначала новые</option>
                   <option value="oldest">Сначала старые</option>
-                </CustomSelect>
+                </DateSelect>
                 <CustomSelectArrow>
                   <svg
                     width="7"
@@ -525,7 +629,7 @@ const CostsTable = () => {
                     />
                   </svg>
                 </CustomSelectArrow>
-              </CustomSelectWrapper>
+              </DateSelectWrapper>
             </FilterGroup>
           </FiltersContainer>
         </TableHeaderContainer>
@@ -541,7 +645,7 @@ const CostsTable = () => {
               </tr>
             </TableHead>
             <tbody>
-              {expenses.map((expense, index) => (
+              {filteredExpenses.map((expense, index) => (
                 <TableRow key={index}>
                   <TableCell>{expense.description}</TableCell>
                   <TableCell>{expense.category}</TableCell>
@@ -591,8 +695,8 @@ const CostsTable = () => {
               ))}
             </tbody>
           </Table>
-          <MobileAddButton>Удалить расход</MobileAddButton>
         </TableWrapper>
+        <NewCosts />
       </Container>
     </PageContainer>
   );
