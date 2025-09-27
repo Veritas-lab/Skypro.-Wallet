@@ -16,7 +16,6 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
 
   @media (max-width: 768px) {
     display: flex;
@@ -31,7 +30,7 @@ const Title = styled.h1`
   font-size: 32px;
   font-weight: 700;
   color: #000000;
-  margin: 32px 120px 36px 0px;
+  margin: 32px 120px 0px 0px;
 
   @media (max-width: 768px) {
     font-size: 24px;
@@ -161,7 +160,7 @@ const SelectedCategoryText = styled.span`
   font-size: 12px;
   text-align: center;
   vertical-align: middle;
-  color: #1FA46C;
+  color: #1fa46c;
   text-decoration: underline;
   margin-left: 8px;
 `;
@@ -171,7 +170,7 @@ const CustomSelectArrow = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+  transform: ${({ isOpen }) => (isOpen ? "rotate(180deg)" : "rotate(0deg)")};
   transition: transform 0.2s ease;
   margin-left: 8px;
 `;
@@ -208,7 +207,7 @@ const DropdownCategoryButton = styled.label`
   padding: 8px 16px;
   border: 1px solid #e0e0e0;
   border-radius: 30px;
-  background-color: ${({ checked }) => (checked ? '#DBFFE9' : '#F4F5F6')};
+  background-color: ${({ checked }) => (checked ? "#DBFFE9" : "#F4F5F6")};
   text-align: center;
   font-size: 12px;
   font-weight: 400;
@@ -216,17 +215,17 @@ const DropdownCategoryButton = styled.label`
   display: flex;
   align-items: center;
   gap: 6px;
-  color: ${({ checked }) => (checked ? '#1FA46C' : 'black')};
+  color: ${({ checked }) => (checked ? "#1FA46C" : "black")};
   white-space: nowrap;
 
   svg {
-    fill: ${({ checked }) => (checked ? '#1FA46C' : 'black')};
+    fill: ${({ checked }) => (checked ? "#1FA46C" : "black")};
     width: 14px;
     height: 14px;
   }
 
   &:hover {
-    background-color: ${({ checked }) => (checked ? '#DBFFE9' : '#e8e8e8')};
+    background-color: ${({ checked }) => (checked ? "#DBFFE9" : "#e8e8e8")};
   }
 `;
 
@@ -234,20 +233,20 @@ const SortOptionButton = styled.label`
   padding: 8px 16px;
   border: 1px solid #e0e0e0;
   border-radius: 30px;
-  background-color: ${({ checked }) => (checked ? '#DBFFE9' : '#F4F5F6')};
+  background-color: ${({ checked }) => (checked ? "#DBFFE9" : "#F4F5F6")};
   text-align: center;
   font-size: 12px;
   font-weight: 400;
   cursor: pointer;
-  color: ${({ checked }) => (checked ? '#1FA46C' : 'black')};
+  color: ${({ checked }) => (checked ? "#1FA46C" : "black")};
   white-space: nowrap;
 
   &:hover {
-    background-color: ${({ checked }) => (checked ? '#DBFFE9' : '#e8e8e8')};
+    background-color: ${({ checked }) => (checked ? "#DBFFE9" : "#e8e8e8")};
   }
 `;
 
-const HiddenRadio = styled.input.attrs({ type: 'radio' })`
+const HiddenRadio = styled.input.attrs({ type: "radio" })`
   display: none;
 `;
 
@@ -408,7 +407,7 @@ const CostsTable = () => {
       date: "03.07.2024",
       amount: "3 500 ₽",
       timestamp: new Date(2024, 6, 3),
-      amountValue: 3500
+      amountValue: 3500,
     },
     {
       description: "Яндекс Такси",
@@ -416,7 +415,7 @@ const CostsTable = () => {
       date: "03.07.2024",
       amount: "730 ₽",
       timestamp: new Date(2024, 6, 3),
-      amountValue: 730
+      amountValue: 730,
     },
     {
       description: "Аптека Вита",
@@ -424,7 +423,7 @@ const CostsTable = () => {
       date: "03.07.2024",
       amount: "1 200 ₽",
       timestamp: new Date(2024, 6, 3),
-      amountValue: 1200
+      amountValue: 1200,
     },
     {
       description: "Бургер Кинг",
@@ -432,7 +431,7 @@ const CostsTable = () => {
       date: "03.07.2024",
       amount: "950 ₽",
       timestamp: new Date(2024, 6, 3),
-      amountValue: 950
+      amountValue: 950,
     },
     {
       description: "Деливери",
@@ -440,7 +439,7 @@ const CostsTable = () => {
       date: "02.07.2024",
       amount: "1 320 ₽",
       timestamp: new Date(2024, 6, 2),
-      amountValue: 1320
+      amountValue: 1320,
     },
     {
       description: "Кофейня №1",
@@ -448,7 +447,7 @@ const CostsTable = () => {
       date: "02.07.2024",
       amount: "400 ₽",
       timestamp: new Date(2024, 6, 2),
-      amountValue: 400
+      amountValue: 400,
     },
     {
       description: "Бильярд",
@@ -456,7 +455,7 @@ const CostsTable = () => {
       date: "29.06.2024",
       amount: "600 ₽",
       timestamp: new Date(2024, 5, 29),
-      amountValue: 600
+      amountValue: 600,
     },
     {
       description: "Перекресток",
@@ -464,7 +463,7 @@ const CostsTable = () => {
       date: "29.06.2024",
       amount: "2 360 ₽",
       timestamp: new Date(2024, 5, 29),
-      amountValue: 2360
+      amountValue: 2360,
     },
     {
       description: "Лукойл",
@@ -472,7 +471,7 @@ const CostsTable = () => {
       date: "29.06.2024",
       amount: "1 000 ₽",
       timestamp: new Date(2024, 5, 29),
-      amountValue: 1000
+      amountValue: 1000,
     },
     {
       description: "Летуаль",
@@ -480,7 +479,7 @@ const CostsTable = () => {
       date: "29.06.2024",
       amount: "4 300 ₽",
       timestamp: new Date(2024, 5, 29),
-      amountValue: 4300
+      amountValue: 4300,
     },
   ];
 
@@ -498,18 +497,20 @@ const CostsTable = () => {
 
   // Фильтрация расходов по выбранной категории
   const filteredExpenses = selectedCategory
-    ? expenses.filter((expense) => expense.category === getCategoryNameById(selectedCategory))
+    ? expenses.filter(
+        (expense) => expense.category === getCategoryNameById(selectedCategory)
+      )
     : expenses;
 
   // Сортировка расходов
   const sortedExpenses = [...filteredExpenses].sort((a, b) => {
     if (sortBy === "date") {
-      return sortOrder === "desc" 
-        ? b.timestamp - a.timestamp 
+      return sortOrder === "desc"
+        ? b.timestamp - a.timestamp
         : a.timestamp - b.timestamp;
     } else if (sortBy === "amount") {
-      return sortOrder === "desc" 
-        ? b.amountValue - a.amountValue 
+      return sortOrder === "desc"
+        ? b.amountValue - a.amountValue
         : a.amountValue - b.amountValue;
     }
     return 0;
@@ -541,8 +542,8 @@ const CostsTable = () => {
   };
 
   // Получаем текущую выбранную категорию для отображения
-  const currentCategory = selectedCategory 
-    ? CATEGORIES.find(cat => cat.id === selectedCategory)
+  const currentCategory = selectedCategory
+    ? CATEGORIES.find((cat) => cat.id === selectedCategory)
     : null;
 
   // Получаем текст для отображения выбранной сортировки
@@ -577,7 +578,7 @@ const CostsTable = () => {
           Новый расход
         </NewExpenseButton>
       </Header>
-      
+
       <MainContainer>
         <TableContainer>
           <TableHeaderContainer>
@@ -591,7 +592,10 @@ const CostsTable = () => {
                       {currentCategory.name.toLowerCase()}
                     </SelectedCategoryText>
                   )}
-                  <CustomSelectArrow onClick={toggleCategoryDropdown} isOpen={isCategoryDropdownOpen}>
+                  <CustomSelectArrow
+                    onClick={toggleCategoryDropdown}
+                    isOpen={isCategoryDropdownOpen}
+                  >
                     <svg
                       width="7"
                       height="6"
@@ -625,7 +629,7 @@ const CostsTable = () => {
                           Все категории
                         </DropdownCategoryButton>
                       </div>
-                      
+
                       {/* Категории из CATEGORIES */}
                       {CATEGORIES.map((category) => (
                         <div key={category.id}>
@@ -655,7 +659,10 @@ const CostsTable = () => {
                   <SelectedCategoryText>
                     {getSortDisplayText()}
                   </SelectedCategoryText>
-                  <CustomSelectArrow onClick={toggleSortDropdown} isOpen={isSortDropdownOpen}>
+                  <CustomSelectArrow
+                    onClick={toggleSortDropdown}
+                    isOpen={isSortDropdownOpen}
+                  >
                     <svg
                       width="7"
                       height="6"
@@ -685,7 +692,9 @@ const CostsTable = () => {
                           htmlFor="sort-date"
                           checked={sortBy === "date"}
                         >
-                          Дате {sortBy === "date" && (sortOrder === "desc" ? "↓" : "↑")}
+                          Дате{" "}
+                          {sortBy === "date" &&
+                            (sortOrder === "desc" ? "↓" : "↑")}
                         </SortOptionButton>
                       </div>
                       <div>
@@ -699,7 +708,9 @@ const CostsTable = () => {
                           htmlFor="sort-amount"
                           checked={sortBy === "amount"}
                         >
-                          Сумме {sortBy === "amount" && (sortOrder === "desc" ? "↓" : "↑")}
+                          Сумме{" "}
+                          {sortBy === "amount" &&
+                            (sortOrder === "desc" ? "↓" : "↑")}
                         </SortOptionButton>
                       </div>
                     </SortDropdownGroup>
