@@ -128,6 +128,17 @@ const FilterText = styled.span`
   cursor: default;
 `;
 
+const SelectedCategoryText = styled.span`
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  color: #1FA46C;
+  text-decoration: underline;
+  margin-left: 8px;
+`;
+
 const CustomSelectArrow = styled.div`
   display: flex;
   align-items: center;
@@ -135,23 +146,7 @@ const CustomSelectArrow = styled.div`
   cursor: pointer;
   transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
   transition: transform 0.2s ease;
-`;
-
-const SelectedDisplay = styled.div`
-  padding: 8px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  font-family: Montserrat;
-  font-size: 12px;
-  font-weight: 400;
-  color: #1FA46C;
-  background-color: #DBFFE9;
-  border: 1px solid #e0e0e0;
-  border-radius: 30px;
-  min-width: 150px;
-  margin-top: 4px;
+  margin-left: 8px;
 `;
 
 const DropdownList = styled.div`
@@ -385,23 +380,6 @@ const IconsContainer = styled.div`
   align-items: center;
 `;
 
-const MobileAddButton = styled.button`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: inline;
-    width: 343px;
-    height: 38px;
-    padding: 12px 120px;
-    border-radius: 6px;
-    background-color: #7334ea;
-    color: white;
-    font-size: 12px;
-    border: none;
-    margin-top: 16px;
-  }
-`;
-
 const CostsTable = () => {
   const expenses = [
     {
@@ -489,10 +467,10 @@ const CostsTable = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // // Получаем текущую выбранную категорию для отображения
-  // const currentCategory = selectedCategory 
-  //   ? CATEGORIES.find(cat => cat.id === selectedCategory)
-  //   : null;
+  // Получаем текущую выбранную категорию для отображения
+  const currentCategory = selectedCategory 
+    ? CATEGORIES.find(cat => cat.id === selectedCategory)
+    : null;
 
   return (
     <PageContainer>
@@ -523,6 +501,11 @@ const CostsTable = () => {
             <FilterGroup>
               <FilterLabel>
                 <FilterText>Фильтровать по категории</FilterText>
+                {currentCategory && (
+                  <SelectedCategoryText>
+                    {currentCategory.name.toLowerCase()}
+                  </SelectedCategoryText>
+                )}
                 <CustomSelectArrow onClick={toggleDropdown} isOpen={isDropdownOpen}>
                   <svg
                     width="7"
@@ -538,33 +521,6 @@ const CostsTable = () => {
                   </svg>
                 </CustomSelectArrow>
               </FilterLabel>
-
-              {/* <SelectedDisplay onClick={toggleDropdown}>
-                <span>
-                  {currentCategory ? (
-                    <>
-                      {currentCategory.icon && <currentCategory.icon />}
-                      {currentCategory.name}
-                    </>
-                  ) : (
-                    "Все категории"
-                  )}
-                </span>
-                <CustomSelectArrow isOpen={isDropdownOpen}>
-                  <svg
-                    width="7"
-                    height="6"
-                    viewBox="0 0 7 6"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M3.5 5.5L0.468911 0.25L6.53109 0.25L3.5 5.5Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </CustomSelectArrow>
-              </SelectedDisplay> */}
 
               {isDropdownOpen && (
                 <DropdownList>
