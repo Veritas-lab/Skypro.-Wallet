@@ -197,6 +197,23 @@ const DropdownCategoryButton = styled.label`
   }
 `;
 
+const SortOptionButton = styled.label`
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
+  background-color: ${({ checked }) => (checked ? '#DBFFE9' : '#F4F5F6')};
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  color: ${({ checked }) => (checked ? '#1FA46C' : 'black')};
+  white-space: nowrap;
+
+  &:hover {
+    background-color: ${({ checked }) => (checked ? '#DBFFE9' : '#e8e8e8')};
+  }
+`;
+
 const HiddenRadio = styled.input.attrs({ type: 'radio' })`
   display: none;
 `;
@@ -387,65 +404,87 @@ const CostsTable = () => {
       category: "Еда",
       date: "03.07.2024",
       amount: "3 500 ₽",
+      timestamp: new Date(2024, 6, 3), // Для сортировки по дате
+      amountValue: 3500 // Для сортировки по сумме
     },
     {
       description: "Яндекс Такси",
       category: "Транспорт",
       date: "03.07.2024",
       amount: "730 ₽",
+      timestamp: new Date(2024, 6, 3),
+      amountValue: 730
     },
     {
       description: "Аптека Вита",
       category: "Другое",
       date: "03.07.2024",
       amount: "1 200 ₽",
+      timestamp: new Date(2024, 6, 3),
+      amountValue: 1200
     },
     {
       description: "Бургер Кинг",
       category: "Еда",
       date: "03.07.2024",
       amount: "950 ₽",
+      timestamp: new Date(2024, 6, 3),
+      amountValue: 950
     },
     {
       description: "Деливери",
       category: "Еда",
       date: "02.07.2024",
       amount: "1 320 ₽",
+      timestamp: new Date(2024, 6, 2),
+      amountValue: 1320
     },
     {
       description: "Кофейня №1",
       category: "Еда",
       date: "02.07.2024",
       amount: "400 ₽",
+      timestamp: new Date(2024, 6, 2),
+      amountValue: 400
     },
     {
       description: "Бильярд",
       category: "Развлечения",
       date: "29.06.2024",
       amount: "600 ₽",
+      timestamp: new Date(2024, 5, 29),
+      amountValue: 600
     },
     {
       description: "Перекресток",
       category: "Еда",
       date: "29.06.2024",
       amount: "2 360 ₽",
+      timestamp: new Date(2024, 5, 29),
+      amountValue: 2360
     },
     {
       description: "Лукойл",
       category: "Транспорт",
       date: "29.06.2024",
       amount: "1 000 ₽",
+      timestamp: new Date(2024, 5, 29),
+      amountValue: 1000
     },
     {
       description: "Летуаль",
       category: "Другое",
       date: "29.06.2024",
       amount: "4 300 ₽",
+      timestamp: new Date(2024, 5, 29),
+      amountValue: 4300
     },
   ];
 
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [sortBy, setSortBy] = useState("date");
+  const [sortOrder, setSortOrder] = useState("desc");
 
   // Функция для получения имени категории по ID
   const getCategoryNameById = (id) => {
@@ -458,13 +497,38 @@ const CostsTable = () => {
     ? expenses.filter((expense) => expense.category === getCategoryNameById(selectedCategory))
     : expenses;
 
+  // Сортировка расходов
+  const sortedExpenses = [...filteredExpenses].sort((a, b) => {
+    if (sortBy === "date") {
+      return sortOrder === "desc" 
+        ? b.timestamp - a.timestamp 
+        : a.timestamp - b.timestamp;
+    } else if (sortBy === "amount") {
+      return sortOrder === "desc" 
+        ? b.amountValue - a.amountValue 
+        : a.amountValue - b.amountValue;
+    }
+    return 0;
+  });
+
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId);
-    setIsDropdownOpen(false);
+    setIsCategoryDropdownOpen(false);
   };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const toggleCategoryDropdown = () => {
+    setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
+  };
+
+  const handleSortSelect = (sortType) => {
+    if (sortBy === sortType) {
+      // Если уже сортируем по этому полю, меняем порядок
+      setSortOrder(sortOrder === "desc" ? "asc" : "desc");
+    } else {
+      // Если выбираем новое поле для сортировки, устанавливаем его и порядок по умолчанию
+      setSortBy(sortType);
+      setSortOrder("desc");
+    }
   };
 
   // Получаем текущую выбранную категорию для отображения
@@ -506,7 +570,7 @@ const CostsTable = () => {
                     {currentCategory.name.toLowerCase()}
                   </SelectedCategoryText>
                 )}
-                <CustomSelectArrow onClick={toggleDropdown} isOpen={isDropdownOpen}>
+                <CustomSelectArrow onClick={toggleCategoryDropdown} isOpen={isCategoryDropdownOpen}>
                   <svg
                     width="7"
                     height="6"
@@ -522,7 +586,7 @@ const CostsTable = () => {
                 </CustomSelectArrow>
               </FilterLabel>
 
-              {isDropdownOpen && (
+              {isCategoryDropdownOpen && (
                 <DropdownList>
                   <DropdownCategoryGroup>
                     {/* Кнопка для сброса фильтра */}
@@ -565,27 +629,37 @@ const CostsTable = () => {
             </FilterGroup>
 
             <FilterGroup>
-              <FilterLabel>Сортировать по дате</FilterLabel>
-              <DateSelectWrapper>
-                <DateSelect defaultValue="newest">
-                  <option value="newest">Сначала новые</option>
-                  <option value="oldest">Сначала старые</option>
-                </DateSelect>
-                <CustomSelectArrow>
-                  <svg
-                    width="7"
-                    height="6"
-                    viewBox="0 0 7 6"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+              <FilterLabel>Сортировать по</FilterLabel>
+              <DropdownCategoryGroup style={{ marginTop: '4px' }}>
+                <div>
+                  <HiddenRadio
+                    id="sort-date"
+                    name="sort-by"
+                    checked={sortBy === "date"}
+                    onChange={() => handleSortSelect("date")}
+                  />
+                  <SortOptionButton
+                    htmlFor="sort-date"
+                    checked={sortBy === "date"}
                   >
-                    <path
-                      d="M3.5 5.5L0.468911 0.25L6.53109 0.25L3.5 5.5Z"
-                      fill="black"
-                    />
-                  </svg>
-                </CustomSelectArrow>
-              </DateSelectWrapper>
+                    Дате {sortBy === "date" && (sortOrder === "desc" ? "↓" : "↑")}
+                  </SortOptionButton>
+                </div>
+                <div>
+                  <HiddenRadio
+                    id="sort-amount"
+                    name="sort-by"
+                    checked={sortBy === "amount"}
+                    onChange={() => handleSortSelect("amount")}
+                  />
+                  <SortOptionButton
+                    htmlFor="sort-amount"
+                    checked={sortBy === "amount"}
+                  >
+                    Сумме {sortBy === "amount" && (sortOrder === "desc" ? "↓" : "↑")}
+                  </SortOptionButton>
+                </div>
+              </DropdownCategoryGroup>
             </FilterGroup>
           </FiltersContainer>
         </TableHeaderContainer>
@@ -601,7 +675,7 @@ const CostsTable = () => {
               </tr>
             </TableHead>
             <tbody>
-              {filteredExpenses.map((expense, index) => (
+              {sortedExpenses.map((expense, index) => (
                 <TableRow key={index}>
                   <TableCell>{expense.description}</TableCell>
                   <TableCell>{expense.category}</TableCell>
