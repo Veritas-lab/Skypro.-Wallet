@@ -93,11 +93,13 @@ const Subtitle = styled.h2`
 
 const FiltersContainer = styled.div`
   display: flex;
-  gap: 86px;
+  gap: 24px;
   align-items: center;
+  margin-right: 34px;
 
   @media (max-width: 768px) {
     display: none;
+    margin-right: 0;
   }
 `;
 
@@ -152,15 +154,15 @@ const CustomSelectArrow = styled.div`
 const DropdownList = styled.div`
   position: absolute;
   top: 100%;
-  left: 0;
   right: 0;
   background-color: white;
   border: 1px solid #e0e0e0;
-  border-radius: 20px;
+  border-radius: 6px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  margin-top: 8px;
-  padding: 8px;
+  margin-top: 6px;
+  padding: 12px;
+  padding-top: 12px;
   max-height: 300px;
   overflow-y: auto;
 `;
@@ -168,7 +170,13 @@ const DropdownList = styled.div`
 const DropdownCategoryGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
+`;
+
+const SortDropdownGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 `;
 
 const DropdownCategoryButton = styled.label`
@@ -668,7 +676,7 @@ const CostsTable = () => {
 
               {isSortDropdownOpen && (
                 <DropdownList>
-                  <DropdownCategoryGroup>
+                  <SortDropdownGroup>
                     <div>
                       <HiddenRadio
                         id="sort-date"
@@ -697,7 +705,7 @@ const CostsTable = () => {
                         Сумме {sortBy === "amount" && (sortOrder === "desc" ? "↓" : "↑")}
                       </SortOptionButton>
                     </div>
-                  </DropdownCategoryGroup>
+                  </SortDropdownGroup>
                 </DropdownList>
               )}
             </FilterGroup>
