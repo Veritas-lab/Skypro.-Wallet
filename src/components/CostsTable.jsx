@@ -404,8 +404,8 @@ const CostsTable = () => {
       category: "Еда",
       date: "03.07.2024",
       amount: "3 500 ₽",
-      timestamp: new Date(2024, 6, 3), // Для сортировки по дате
-      amountValue: 3500 // Для сортировки по сумме
+      timestamp: new Date(2024, 6, 3),
+      amountValue: 3500
     },
     {
       description: "Яндекс Такси",
@@ -485,6 +485,7 @@ const CostsTable = () => {
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [sortBy, setSortBy] = useState("date");
   const [sortOrder, setSortOrder] = useState("desc");
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
   // Функция для получения имени категории по ID
   const getCategoryNameById = (id) => {
@@ -520,6 +521,10 @@ const CostsTable = () => {
     setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
   };
 
+  const toggleSortDropdown = () => {
+    setIsSortDropdownOpen(!isSortDropdownOpen);
+  };
+
   const handleSortSelect = (sortType) => {
     if (sortBy === sortType) {
       // Если уже сортируем по этому полю, меняем порядок
@@ -529,12 +534,23 @@ const CostsTable = () => {
       setSortBy(sortType);
       setSortOrder("desc");
     }
+    setIsSortDropdownOpen(false);
   };
 
   // Получаем текущую выбранную категорию для отображения
   const currentCategory = selectedCategory 
     ? CATEGORIES.find(cat => cat.id === selectedCategory)
     : null;
+
+  // Получаем текст для отображения выбранной сортировки
+  const getSortDisplayText = () => {
+    if (sortBy === "date") {
+      return `дате ${sortOrder === "desc" ? "↓" : "↑"}`;
+    } else if (sortBy === "amount") {
+      return `сумме ${sortOrder === "desc" ? "↓" : "↑"}`;
+    }
+    return "дате ↓";
+  };
 
   return (
     <PageContainer>
@@ -629,37 +645,61 @@ const CostsTable = () => {
             </FilterGroup>
 
             <FilterGroup>
-              <FilterLabel>Сортировать по</FilterLabel>
-              <DropdownCategoryGroup style={{ marginTop: '4px' }}>
-                <div>
-                  <HiddenRadio
-                    id="sort-date"
-                    name="sort-by"
-                    checked={sortBy === "date"}
-                    onChange={() => handleSortSelect("date")}
-                  />
-                  <SortOptionButton
-                    htmlFor="sort-date"
-                    checked={sortBy === "date"}
+              <FilterLabel>
+                <FilterText>Сортировать по</FilterText>
+                <SelectedCategoryText>
+                  {getSortDisplayText()}
+                </SelectedCategoryText>
+                <CustomSelectArrow onClick={toggleSortDropdown} isOpen={isSortDropdownOpen}>
+                  <svg
+                    width="7"
+                    height="6"
+                    viewBox="0 0 7 6"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    Дате {sortBy === "date" && (sortOrder === "desc" ? "↓" : "↑")}
-                  </SortOptionButton>
-                </div>
-                <div>
-                  <HiddenRadio
-                    id="sort-amount"
-                    name="sort-by"
-                    checked={sortBy === "amount"}
-                    onChange={() => handleSortSelect("amount")}
-                  />
-                  <SortOptionButton
-                    htmlFor="sort-amount"
-                    checked={sortBy === "amount"}
-                  >
-                    Сумме {sortBy === "amount" && (sortOrder === "desc" ? "↓" : "↑")}
-                  </SortOptionButton>
-                </div>
-              </DropdownCategoryGroup>
+                    <path
+                      d="M3.5 5.5L0.468911 0.25L6.53109 0.25L3.5 5.5Z"
+                      fill="black"
+                    />
+                  </svg>
+                </CustomSelectArrow>
+              </FilterLabel>
+
+              {isSortDropdownOpen && (
+                <DropdownList>
+                  <DropdownCategoryGroup>
+                    <div>
+                      <HiddenRadio
+                        id="sort-date"
+                        name="sort-by"
+                        checked={sortBy === "date"}
+                        onChange={() => handleSortSelect("date")}
+                      />
+                      <SortOptionButton
+                        htmlFor="sort-date"
+                        checked={sortBy === "date"}
+                      >
+                        Дате {sortBy === "date" && (sortOrder === "desc" ? "↓" : "↑")}
+                      </SortOptionButton>
+                    </div>
+                    <div>
+                      <HiddenRadio
+                        id="sort-amount"
+                        name="sort-by"
+                        checked={sortBy === "amount"}
+                        onChange={() => handleSortSelect("amount")}
+                      />
+                      <SortOptionButton
+                        htmlFor="sort-amount"
+                        checked={sortBy === "amount"}
+                      >
+                        Сумме {sortBy === "amount" && (sortOrder === "desc" ? "↓" : "↑")}
+                      </SortOptionButton>
+                    </div>
+                  </DropdownCategoryGroup>
+                </DropdownList>
+              )}
             </FilterGroup>
           </FiltersContainer>
         </TableHeaderContainer>
