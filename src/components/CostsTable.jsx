@@ -85,6 +85,8 @@ const Subtitle = styled.h2`
   font-size: 24px;
   font-weight: 700;
   color: #000000;
+  margin: 0px;
+  padding: 0px;
 
   @media (max-width: 768px) {
     display: none;
@@ -95,7 +97,7 @@ const FiltersContainer = styled.div`
   display: flex;
   gap: 24px;
   align-items: center;
-  margin-right: 34px;
+  padding-top: 10px;
 
   @media (max-width: 768px) {
     display: none;
@@ -119,11 +121,11 @@ const FilterLabel = styled.label`
   letter-spacing: 0px;
   text-align: center;
   vertical-align: middle;
-  color: #999999;
+  color: #000000;
   white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 `;
 
 const FilterText = styled.span`
