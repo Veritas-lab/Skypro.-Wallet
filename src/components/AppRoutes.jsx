@@ -57,12 +57,6 @@ function AppRoutes() {
               isAuthenticated ? <NewCosts /> : <Navigate to="/" replace />
             }
           />
-          <Route
-            path="/cost-analysis"
-            element={
-              isAuthenticated ? <CostAnalysis /> : <Navigate to="/" replace />
-            }
-          />
         </Routes>
       </div>
     </Router>
