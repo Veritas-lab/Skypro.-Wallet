@@ -1,25 +1,68 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import HeaderForm from "./HeaderForm";
 import AuthForm from "./AuthForm";
 import RegistForm from "./RegistForm";
-import CostsTable from "./CostsTable.jsx";
+import CostsTable from "./CostsTable";
 import NewCosts from "./NewCosts";
 import CostAnalysis from "./CostAnalysis/CostAnalysis";
 
 function AppRoutes() {
-  const [isAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Функция для установки аутентификации
+  const setAuth = (value) => {
+    setIsAuthenticated(value);
+  };
 
   return (
     <Router>
       <div className="AppRoutes">
-        {isAuthenticated && <HeaderForm />}
+        {isAuthenticated && <HeaderForm setAuth={setAuth} />}
         <Routes>
-          <Route path="/" element={<AuthForm />} />
-          <Route path="/register" element={<RegistForm />} />
-          <Route path="/expenses" element={<CostsTable />} />
-          <Route path="/new-costs" element={<NewCosts />} />
-          <Route path="/cost-analysis" element={<CostAnalysis />} />
+          <Route
+            path="/"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/expenses" replace />
+              ) : (
+                <AuthForm setAuth={setAuth} />
+              )
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/expenses" replace />
+              ) : (
+                <RegistForm setAuth={setAuth} />
+              )
+            }
+          />
+          <Route
+            path="/expenses"
+            element={
+              isAuthenticated ? <CostsTable /> : <Navigate to="/" replace />
+            }
+          />
+          <Route
+            path="/new-costs"
+            element={
+              isAuthenticated ? <NewCosts /> : <Navigate to="/" replace />
+            }
+          />
+          <Route
+            path="/cost-analysis"
+            element={
+              isAuthenticated ? <CostAnalysis /> : <Navigate to="/" replace />
+            }
+          />
         </Routes>
       </div>
     </Router>
