@@ -10,6 +10,7 @@ import AuthForm from "./AuthForm";
 import RegistForm from "./RegistForm";
 import CostsTable from "./CostsTable";
 import NewCosts from "./NewCosts";
+import CostAnalysis from "./CostAnalysis/CostAnalysis";
 
 function AppRoutes() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
