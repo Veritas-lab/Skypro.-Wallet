@@ -16,13 +16,27 @@ function AppRoutes() {
   return (
     <Router>
       <div className="AppRoutes">
-        <HeaderForm />
         <Routes>
           <Route path="/" element={<AuthForm />} />
           <Route path="/register" element={<RegistForm />} />
-          <Route path="/expenses" element={<CostsTable />} />
-          <Route path="/new-costs" element={<NewCosts />} />
-          <Route path="/cost-analysis" element={<CostAnalysis />} />
+          <Route path="/expenses" element={
+            <>
+              <HeaderForm />
+              <CostsTable />
+            </>
+          } />
+          <Route path="/new-costs" element={
+            <>
+              <HeaderForm />
+              <NewCosts />
+            </>
+          } />
+          <Route path="/cost-analysis" element={
+            <>
+              <HeaderForm />
+              <CostAnalysis />
+            </>
+          } />
         </Routes>
       </div>
     </Router>

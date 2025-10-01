@@ -129,7 +129,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const AuthForm = ({ setAuth }) => {
+const AuthForm = () => {
   const [showRegistration, setShowRegistration] = React.useState(false);
   const navigate = useNavigate();
 
@@ -145,9 +145,7 @@ const AuthForm = ({ setAuth }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Здесь должна быть логика авторизации
-    // После успешной авторизации перенаправляем на страницу расходов
-    setAuth(true);
+    // Убираем setAuth и используем навигацию напрямую
     navigate("/expenses");
   };
 
@@ -156,7 +154,7 @@ const AuthForm = ({ setAuth }) => {
       <PageContainer>
         <LogoOnlyHeader />
         <AuthContent>
-          <RegistForm onLoginClick={handleLoginClick} setAuth={setAuth} />
+          <RegistForm onLoginClick={handleLoginClick} />
         </AuthContent>
       </PageContainer>
     );

@@ -112,7 +112,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const RegistForm = ({ onLoginClick, setAuth }) => {
+const RegistForm = ({ onLoginClick }) => {
   const navigate = useNavigate();
 
   const handleLoginClick = (e) => {
@@ -122,9 +122,7 @@ const RegistForm = ({ onLoginClick, setAuth }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Здесь должна быть логика регистрации
-    // После успешной регистрации перенаправляем на страницу расходов
-    setAuth(true);
+    // Убираем setAuth и используем навигацию напрямую
     navigate("/expenses");
   };
 
