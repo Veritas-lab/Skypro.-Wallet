@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,53 +10,19 @@ import AuthForm from "./AuthForm";
 import RegistForm from "./RegistForm";
 import CostsTable from "./CostsTable";
 import NewCosts from "./NewCosts";
-import CostAnalysis from "./CostAnalysis/CostAnalysis";
+import CostAnalysis from "./CostAnalysis/CostAnalysis.jsx";
 
 function AppRoutes() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Функция для установки аутентификации
-  const setAuth = (value) => {
-    setIsAuthenticated(value);
-  };
-
   return (
     <Router>
       <div className="AppRoutes">
-        {isAuthenticated && <HeaderForm setAuth={setAuth} />}
+        <HeaderForm />
         <Routes>
-          <Route
-            path="/"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/expenses" replace />
-              ) : (
-                <AuthForm setAuth={setAuth} />
-              )
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/expenses" replace />
-              ) : (
-                <RegistForm setAuth={setAuth} />
-              )
-            }
-          />
-          <Route
-            path="/expenses"
-            element={
-              isAuthenticated ? <CostsTable /> : <Navigate to="/" replace />
-            }
-          />
-          <Route
-            path="/new-costs"
-            element={
-              isAuthenticated ? <NewCosts /> : <Navigate to="/" replace />
-            }
-          />
+          <Route path="/" element={<AuthForm />} />
+          <Route path="/register" element={<RegistForm />} />
+          <Route path="/expenses" element={<CostsTable />} />
+          <Route path="/new-costs" element={<NewCosts />} />
+          <Route path="/cost-analysis" element={<CostAnalysis />} />
         </Routes>
       </div>
     </Router>

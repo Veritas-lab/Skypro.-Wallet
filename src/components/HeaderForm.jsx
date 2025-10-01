@@ -133,13 +133,13 @@ const HeaderForm = () => {
         <LogoIcon />
       </LogoContainer>
       <Nav>
-        <NavItem href="#" className={isMyExpensesActive ? "active" : ""}>
+        <NavItem href="/expenses" className={isMyExpensesActive ? "active" : ""}>
           Мои расходы
         </NavItem>
 
         <Spacer />
 
-        <NavItem href="#" className={!isMyExpensesActive ? "active" : ""}>
+        <NavItem href="/cost-analysis" className={!isMyExpensesActive ? "active" : ""}>
           Анализ расходов
         </NavItem>
 
