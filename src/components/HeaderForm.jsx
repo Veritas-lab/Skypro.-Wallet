@@ -143,7 +143,7 @@ const HeaderForm = () => {
           Анализ расходов
         </NavItem>
 
-        <NavItem href="#" className="logout">
+        <NavItem href="/" className="logout">
           Выйти
         </NavItem>
       </Nav>
