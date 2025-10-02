@@ -1,4 +1,6 @@
 import React from "react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,11 +14,22 @@ import CostsTable from "./CostsTable";
 import NewCosts from "./NewCosts";
 import CostAnalysis from "./CostAnalysis/CostAnalysis.jsx";
 
+function ProtectedRoute({ children }) {
+  const { isAuth } = useContext(AuthContext);
+ 
+  return isAuth ? children : <Navigate to="/login" replace />;
+}
+
 function AppRoutes() {
   return (
     <Router>
       <div className="AppRoutes">
-        <Routes>
+        <Routes
+        element={
+          <ProtectedRoute>
+
+          </ProtectedRoute>
+        }>
           <Route path="/" element={<AuthForm />} />
           <Route path="/register" element={<RegistForm />} />
           <Route path="/expenses" element={

@@ -4,6 +4,9 @@ import styled from "styled-components";
 import Button from "./base/Button";
 import RegistForm from "./RegistForm";
 import LogoOnlyHeader from "./LogoOnlyHeader";
+import { useState, useContext } from "react";
+import { loginUser } from "../services/auth";
+import { AuthContext } from "../context/AuthContext";
 
 const PageContainer = styled.div`
   display: flex;
@@ -132,6 +135,10 @@ const StyledButton = styled(Button)`
 const AuthForm = () => {
   const [showRegistration, setShowRegistration] = React.useState(false);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+  const [formLogin, setFormLogin] = useState("");
+  const [formPassword, setFormPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleRegisterClick = (e) => {
     e.preventDefault();
@@ -143,10 +150,21 @@ const AuthForm = () => {
     setShowRegistration(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Убираем setAuth и используем навигацию напрямую
     navigate("/expenses");
+
+    try {
+      const userData = await loginUser({ 
+        login: formLogin, 
+        password: formPassword 
+      });
+      login(userData);
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Ошибка авторизации. Проверьте логин и пароль.");
+    }
   };
 
   if (showRegistration) {
@@ -168,11 +186,18 @@ const AuthForm = () => {
           <Title>Вход</Title>
           <form onSubmit={handleSubmit}>
             <FormGroup>
-              <Input type="text" placeholder="Эл. почта" required />
+              <Input type="text"
+          placeholder="Эл.почта"
+          value={formLogin}
+          onChange={(e) => setFormLogin(e.target.value)} />
             </FormGroup>
             <FormGroup>
-              <Input type="password" placeholder="Пароль" required />
+              <Input type="password"
+          placeholder="Пароль"
+          value={formPassword}
+          onChange={(e) => setFormPassword(e.target.value)} />
             </FormGroup>
+            {error && <ErrorMessage>{error}</ErrorMessage>}
             <StyledButton type="submit">Войти</StyledButton>
           </form>
           <LinkContainer>
