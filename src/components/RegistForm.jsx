@@ -2,6 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "./base/Button";
+import { useState, useContext } from "react";
+import { registerUser } from "../services/auth";
+import { AuthContext } from "../context/AuthContext";
 
 const AuthFormContainer = styled.div`
   background-color: #ffffff;
@@ -114,16 +117,40 @@ const StyledButton = styled(Button)`
 
 const RegistForm = ({ onLoginClick }) => {
   const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    login: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleLoginClick = (e) => {
     e.preventDefault();
     onLoginClick(e);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Убираем setAuth и используем навигацию напрямую
     navigate("/expenses");
+
+    try {
+      const user = await registerUser(formData);
+      login(user);
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Ошибка регистрации. Проверьте данные и попробуйте снова.");
+    }
   };
 
   return (
@@ -131,14 +158,29 @@ const RegistForm = ({ onLoginClick }) => {
       <Title>Регистрация</Title>
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <Input type="text" placeholder="Имя" required />
+          <Input type="text"
+          name="name"
+          placeholder="Имя"
+          value={formData.name}
+          onChange={handleChange}/>
         </FormGroup>
         <FormGroup>
-          <Input type="text" placeholder="Эл. почта" required />
+          <Input type="text"
+          name="login"
+          placeholder="Эл. почта"
+          value={formData.login}
+          onChange={handleChange}
+          required />
         </FormGroup>
         <FormGroup>
-          <Input type="password" placeholder="Пароль" required />
+          <Input type="password"
+          name="password"
+          placeholder="Пароль"
+          value={formData.password}
+          onChange={handleChange}
+          required />
         </FormGroup>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <StyledButton type="submit">Зарегистрироваться</StyledButton>
       </form>
       <LinkContainer>
