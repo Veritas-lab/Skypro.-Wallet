@@ -24,31 +24,29 @@ function AppRoutes() {
   return (
     <Router>
       <div className="AppRoutes">
-        <Routes
-        element={
-          <ProtectedRoute>
-
-          </ProtectedRoute>
-        }>
-          <Route path="/" element={<AuthForm />} />
+        <Routes>
+          <Route path="/login" element={<AuthForm />} />
           <Route path="/register" element={<RegistForm />} />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          
+          {/* Защищенные маршруты */}
           <Route path="/expenses" element={
-            <>
+            <ProtectedRoute>
               <HeaderForm />
               <CostsTable />
-            </>
+            </ProtectedRoute>
           } />
           <Route path="/new-costs" element={
-            <>
+            <ProtectedRoute>
               <HeaderForm />
               <NewCosts />
-            </>
+            </ProtectedRoute>
           } />
           <Route path="/cost-analysis" element={
-            <>
+            <ProtectedRoute>
               <HeaderForm />
               <CostAnalysis />
-            </>
+            </ProtectedRoute>
           } />
         </Routes>
       </div>
