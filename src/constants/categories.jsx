@@ -1,41 +1,38 @@
 export const CATEGORIES = [
   {
     id: "food",
+    apiKey: "food",
     name: "Еда",
-    apiValue: "food",
+    icon: CategoryIcons.Food,
   },
   {
     id: "transport",
+    apiKey: "transport",
     name: "Транспорт",
-    apiValue: "transport",
+    icon: CategoryIcons.Transport,
   },
   {
     id: "housing",
+    apiKey: "housing",
     name: "Жилье",
-    apiValue: "housing",
+    icon: CategoryIcons.Housing,
   },
   {
     id: "joy",
+    apiKey: "joy",
     name: "Развлечения",
-    apiValue: "joy",
+    icon: CategoryIcons.Entertainment,
   },
   {
     id: "education",
+    apiKey: "education",
     name: "Образование",
-    apiValue: "education",
+    icon: CategoryIcons.Education,
   },
   {
-    id: "others",
+    id: "other",
+    apiKey: "others",
     name: "Другое",
-    apiValue: "others",
+    icon: CategoryIcons.Other,
   },
 ];
-
-export const CATEGORY_MAP = {
-  food: "Еда",
-  transport: "Транспорт",
-  housing: "Жилье",
-  joy: "Развлечения",
-  education: "Образование",
-  others: "Другое",
-};
