@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import NewCosts from "./NewCosts";
+import { TransactionContext } from "../context/TransactionContext";
+import { AuthContext } from "../context/AuthContext";
 import { CATEGORIES } from "../constants/categories";
 
 const PageContainer = styled.div`
@@ -400,118 +402,58 @@ const IconsContainer = styled.div`
 `;
 
 const CostsTable = () => {
-  const expenses = [
-    {
-      description: "Пятерочка",
-      category: "Еда",
-      date: "03.07.2024",
-      amount: "3 500 ₽",
-      timestamp: new Date(2024, 6, 3),
-      amountValue: 3500,
-    },
-    {
-      description: "Яндекс Такси",
-      category: "Транспорт",
-      date: "03.07.2024",
-      amount: "730 ₽",
-      timestamp: new Date(2024, 6, 3),
-      amountValue: 730,
-    },
-    {
-      description: "Аптека Вита",
-      category: "Другое",
-      date: "03.07.2024",
-      amount: "1 200 ₽",
-      timestamp: new Date(2024, 6, 3),
-      amountValue: 1200,
-    },
-    {
-      description: "Бургер Кинг",
-      category: "Еда",
-      date: "03.07.2024",
-      amount: "950 ₽",
-      timestamp: new Date(2024, 6, 3),
-      amountValue: 950,
-    },
-    {
-      description: "Деливери",
-      category: "Еда",
-      date: "02.07.2024",
-      amount: "1 320 ₽",
-      timestamp: new Date(2024, 6, 2),
-      amountValue: 1320,
-    },
-    {
-      description: "Кофейня №1",
-      category: "Еда",
-      date: "02.07.2024",
-      amount: "400 ₽",
-      timestamp: new Date(2024, 6, 2),
-      amountValue: 400,
-    },
-    {
-      description: "Бильярд",
-      category: "Развлечения",
-      date: "29.06.2024",
-      amount: "600 ₽",
-      timestamp: new Date(2024, 5, 29),
-      amountValue: 600,
-    },
-    {
-      description: "Перекресток",
-      category: "Еда",
-      date: "29.06.2024",
-      amount: "2 360 ₽",
-      timestamp: new Date(2024, 5, 29),
-      amountValue: 2360,
-    },
-    {
-      description: "Лукойл",
-      category: "Транспорт",
-      date: "29.06.2024",
-      amount: "1 000 ₽",
-      timestamp: new Date(2024, 5, 29),
-      amountValue: 1000,
-    },
-    {
-      description: "Летуаль",
-      category: "Другое",
-      date: "29.06.2024",
-      amount: "4 300 ₽",
-      timestamp: new Date(2024, 5, 29),
-      amountValue: 4300,
-    },
-  ];
-
+  const { transactions, loading, error, loadTransactions, removeTransaction } = useContext(TransactionContext);
+  const { isAuth } = useContext(AuthContext);
+  
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [sortBy, setSortBy] = useState("date");
   const [sortOrder, setSortOrder] = useState("desc");
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState(null);
 
-  // Функция для получения имени категории по ID
-  const getCategoryNameById = (id) => {
-    const category = CATEGORIES.find((cat) => cat.id === id);
-    return category ? category.name : "";
+  useEffect(() => {
+    if (isAuth) {
+      loadTransactions();
+    }
+  }, [isAuth, loadTransactions]);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
   };
 
-  // Фильтрация расходов по выбранной категории
-  const filteredExpenses = selectedCategory
-    ? expenses.filter(
-        (expense) => expense.category === getCategoryNameById(selectedCategory)
-      )
-    : expenses;
+  const formatAmount = (amount) => {
+    return new Intl.NumberFormat('ru-RU').format(amount) + ' ₽';
+  };
 
-  // Сортировка расходов
-  const sortedExpenses = [...filteredExpenses].sort((a, b) => {
+  const getCategoryNameByKey = (categoryKey) => {
+    const category = CATEGORIES.find(cat => cat.apiKey === categoryKey);
+    return category ? category.name : "Другое";
+  };
+
+  const getCategoryKeyById = (categoryId) => {
+    const category = CATEGORIES.find(cat => cat.id === categoryId);
+    return category ? category.apiKey : "others";
+  };
+
+  const filteredTransactions = selectedCategory
+    ? transactions.filter(
+        (transaction) => transaction.category === getCategoryKeyById(selectedCategory)
+      )
+    : transactions;
+
+  const sortedTransactions = [...filteredTransactions].sort((a, b) => {
     if (sortBy === "date") {
-      return sortOrder === "desc"
-        ? b.timestamp - a.timestamp
-        : a.timestamp - b.timestamp;
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
     } else if (sortBy === "amount") {
-      return sortOrder === "desc"
-        ? b.amountValue - a.amountValue
-        : a.amountValue - b.amountValue;
+      return sortOrder === "desc" ? b.sum - a.sum : a.sum - b.sum;
     }
     return 0;
   });
@@ -519,6 +461,9 @@ const CostsTable = () => {
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId);
     setIsCategoryDropdownOpen(false);
+    
+    const filterValue = categoryId ? getCategoryKeyById(categoryId) : null;
+    loadTransactions(sortBy, filterValue);
   };
 
   const toggleCategoryDropdown = () => {
@@ -530,23 +475,42 @@ const CostsTable = () => {
   };
 
   const handleSortSelect = (sortType) => {
-    if (sortBy === sortType) {
-      // Если уже сортируем по этому полю, меняем порядок
-      setSortOrder(sortOrder === "desc" ? "asc" : "desc");
-    } else {
-      // Если выбираем новое поле для сортировки, устанавливаем его и порядок по умолчанию
-      setSortBy(sortType);
-      setSortOrder("desc");
-    }
+    const newSortBy = sortType;
+    const newSortOrder = sortBy === sortType ? (sortOrder === "desc" ? "asc" : "desc") : "desc";
+    
+    setSortBy(newSortBy);
+    setSortOrder(newSortOrder);
     setIsSortDropdownOpen(false);
+    
+    loadTransactions(newSortBy, selectedCategory ? getCategoryKeyById(selectedCategory) : null);
   };
 
-  // Получаем текущую выбранную категорию для отображения
+  const handleEdit = (transaction) => {
+    setEditingTransaction(transaction);
+  };
+
+  const handleDelete = async (transactionId) => {
+    if (window.confirm("Вы уверены, что хотите удалить эту транзакцию?")) {
+      const success = await removeTransaction(transactionId);
+      if (success) {
+        console.log("Транзакция успешно удалена");
+      }
+    }
+  };
+
+  const handleTransactionCreated = () => {
+    loadTransactions(sortBy, selectedCategory ? getCategoryKeyById(selectedCategory) : null);
+  };
+
+  const handleTransactionUpdated = () => {
+    setEditingTransaction(null);
+    loadTransactions(sortBy, selectedCategory ? getCategoryKeyById(selectedCategory) : null);
+  };
+
   const currentCategory = selectedCategory
     ? CATEGORIES.find((cat) => cat.id === selectedCategory)
     : null;
 
-  // Получаем текст для отображения выбранной сортировки
   const getSortDisplayText = () => {
     if (sortBy === "date") {
       return `дате ${sortOrder === "desc" ? "↓" : "↑"}`;
@@ -555,6 +519,14 @@ const CostsTable = () => {
     }
     return "дате ↓";
   };
+
+  if (loading && transactions.length === 0) {
+    return <div>Загрузка транзакций...</div>;
+  }
+
+  if (error) {
+    return <div>Ошибка: {error}</div>;
+  }
 
   return (
     <PageContainer>
@@ -614,7 +586,6 @@ const CostsTable = () => {
                 {isCategoryDropdownOpen && (
                   <DropdownList>
                     <DropdownCategoryGroup>
-                      {/* Кнопка для сброса фильтра */}
                       <div key="all">
                         <HiddenRadio
                           id="filter-all"
@@ -630,7 +601,6 @@ const CostsTable = () => {
                         </DropdownCategoryButton>
                       </div>
 
-                      {/* Категории из CATEGORIES */}
                       {CATEGORIES.map((category) => (
                         <div key={category.id}>
                           <HiddenRadio
@@ -731,20 +701,22 @@ const CostsTable = () => {
                 </tr>
               </TableHead>
               <tbody>
-                {sortedExpenses.map((expense, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{expense.description}</TableCell>
-                    <TableCell>{expense.category}</TableCell>
-                    <TableCell>{expense.date}</TableCell>
-                    <TableCell>{expense.amount}</TableCell>
+                {sortedTransactions.map((transaction) => (
+                  <TableRow key={transaction._id}>
+                    <TableCell>{transaction.description}</TableCell>
+                    <TableCell>{getCategoryNameByKey(transaction.category)}</TableCell>
+                    <TableCell>{formatDate(transaction.date)}</TableCell>
+                    <TableCell>{formatAmount(transaction.sum)}</TableCell>
                     <IconCell>
                       <IconsContainer>
                         <svg
+                          onClick={() => handleEdit(transaction)}
                           width="12"
                           height="13"
                           viewBox="0 0 12 13"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
+                          style={{ cursor: 'pointer' }}
                         >
                           <path
                             d="M10.5 11.5H1.5C1.295 11.5 1.125 11.33 1.125 11.125C1.125 10.92 1.295 10.75 1.5 10.75H10.5C10.705 10.75 10.875 10.92 10.875 11.125C10.875 11.33 10.705 11.5 10.5 11.5Z"
@@ -760,11 +732,13 @@ const CostsTable = () => {
                           />
                         </svg>
                         <svg
+                          onClick={() => handleDelete(transaction._id)}
                           width="12"
                           height="13"
                           viewBox="0 0 12 13"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
+                          style={{ cursor: 'pointer' }}
                         >
                           <path
                             d="M9.62 3.29003H9.42L7.73 1.60003C7.595 1.46503 7.375 1.46503 7.235 1.60003C7.1 1.73503 7.1 1.95503 7.235 2.09503L8.43 3.29003H3.57L4.765 2.09503C4.9 1.96003 4.9 1.74003 4.765 1.60003C4.63 1.46503 4.41 1.46503 4.27 1.60003L2.585 3.29003H2.385C1.935 3.29003 1 3.29003 1 4.57003C1 5.05503 1.1 5.37503 1.31 5.58503C1.43 5.71003 1.575 5.77503 1.73 5.81003C1.875 5.84503 2.03 5.85003 2.18 5.85003H9.82C9.975 5.85003 10.12 5.84003 10.26 5.81003C10.68 5.71003 11 5.41003 11 4.57003C11 3.29003 10.065 3.29003 9.62 3.29003Z"
@@ -785,7 +759,12 @@ const CostsTable = () => {
         </TableContainer>
 
         <FormContainerWrapper>
-          <NewCosts />
+          <NewCosts 
+            initialData={editingTransaction}
+            onTransactionCreated={handleTransactionCreated}
+            onTransactionUpdated={handleTransactionUpdated}
+            isEditing={!!editingTransaction}
+          />
         </FormContainerWrapper>
       </MainContainer>
     </PageContainer>

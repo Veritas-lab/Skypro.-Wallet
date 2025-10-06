@@ -115,6 +115,13 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const ErrorMessage = styled.div`
+  color: #ff0000;
+  font-size: 12px;
+  margin-bottom: 12px;
+  text-align: center;
+`;
+
 const RegistForm = ({ onLoginClick }) => {
   const navigate = useNavigate();
     const { login } = useContext(AuthContext);
@@ -141,13 +148,11 @@ const RegistForm = ({ onLoginClick }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Убираем setAuth и используем навигацию напрямую
-    navigate("/expenses");
 
     try {
       const user = await registerUser(formData);
       login(user);
-      navigate("/");
+      navigate("/expenses");
     } catch (err) {
       setError(err.message || "Ошибка регистрации. Проверьте данные и попробуйте снова.");
     }

@@ -1,20 +1,11 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import Input from "./base/Input";
 import Button from "./base/Button";
 import Label from "./base/Label";
 import FormGroup from "./common/FormGroup";
 import CategorySelector from "./common/CategorySelector";
-
-// const Body = styled.div`
-//   font-family: Montserrat, sans-serif;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 100vh;
-//   margin: 0;
-//   background-color: #f5f5f5;
-// `;
+import { TransactionContext } from "../context/TransactionContext";
 
 const FormContainer = styled.div`
   padding: 32px;
@@ -32,109 +23,197 @@ const Title = styled.h2`
   margin-bottom: 24px;
 `;
 
-const NewCosts = ({ initialData, onEditMode } = {}) => {
+const NewCosts = ({ 
+  initialData, 
+  onTransactionCreated, 
+  onTransactionUpdated,
+  isEditing = false 
+}) => {
+  const { createTransaction, editTransaction, loading } = useContext(TransactionContext);
+  
   const [formData, setFormData] = useState({
-    description: initialData?.description || "",
-    category: initialData?.category || "",
-    date: initialData?.date || "",
-    amount: initialData?.amount || "",
+    description: "",
+    category: "",
+    date: "",
+    sum: ""
   });
   const [status, setStatus] = useState({
     description: "normal",
-    amount: "normal",
+    sum: "normal",
   });
-  const [mode, setMode] = useState("create");
+
+  useEffect(() => {
+    if (initialData && isEditing) {
+      setFormData({
+        description: initialData.description || "",
+        category: initialData.category || "",
+        date: formatDateForInput(initialData.date) || "",
+        sum: initialData.sum?.toString() || ""
+      });
+    } else {
+      setFormData({
+        description: "",
+        category: "",
+        date: "",
+        sum: ""
+      });
+    }
+  }, [initialData, isEditing]);
+
+  const formatDateForInput = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  };
+
+  const formatDateForAPI = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${month}-${day}-${year}`;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleCategoryChange = (category) => {
+    setFormData({ ...formData, category });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.amount) {
-      setStatus({ ...status, amount: "error" });
+    
+    let hasErrors = false;
+    const newStatus = { ...status };
+
+    if (!formData.description || formData.description.length < 4) {
+      newStatus.description = "error";
+      hasErrors = true;
+    } else {
+      newStatus.description = "success";
+    }
+
+    if (!formData.sum || parseFloat(formData.sum) <= 0) {
+      newStatus.sum = "error";
+      hasErrors = true;
+    } else {
+      newStatus.sum = "success";
+    }
+
+    if (!formData.category || !formData.date) {
+      hasErrors = true;
+    }
+
+    setStatus(newStatus);
+
+    if (hasErrors) {
       return;
     }
-    setStatus({ ...status, amount: "success" });
-    console.log(`${mode} mode submitted:`, formData);
-    // Сброс формы после успешной отправки (только для create)
-    if (mode === "create") {
-      setFormData({ description: "", category: "", date: "", amount: "" });
+
+    const transactionData = {
+      description: formData.description,
+      sum: parseFloat(formData.sum),
+      category: formData.category,
+      date: formatDateForAPI(formData.date)
+    };
+
+    let success = false;
+
+    if (isEditing) {
+      success = await editTransaction(initialData._id, transactionData);
+      if (success && onTransactionUpdated) {
+        onTransactionUpdated();
+      }
+    } else {
+      success = await createTransaction(transactionData);
+      if (success && onTransactionCreated) {
+        onTransactionCreated();
+      }
     }
-    // API call здесь
-  };
 
-  // Функция для переключения в режим редактирования
-  const switchToEditMode = (data) => {
-    setMode("edit");
-    setFormData({
-      description: data.description || "",
-      category: data.category || "",
-      date: data.date || "",
-      amount: data.amount || "",
-    });
+    if (success && !isEditing) {
+      setFormData({ 
+        description: "", 
+        category: "", 
+        date: "", 
+        sum: "" 
+      });
+      setStatus({
+        description: "normal",
+        sum: "normal",
+      });
+    }
   };
-
-  // Если передан пропс onEditMode, используем его как триггер
-  if (onEditMode) {
-    onEditMode(switchToEditMode);
-  }
 
   return (
+    <FormContainer>
+      <Title>
+        {isEditing ? "Редактирование" : "Новый расход"}
+      </Title>
+      <form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label htmlFor="description">Описание</Label>
+          <Input
+            name="description"
+            placeholder="Введите описание (минимум 4 символа)"
+            value={formData.description}
+            onChange={handleInputChange}
+            status={status.description}
+            disabled={loading}
+          />
+        </FormGroup>
 
-      <FormContainer>
-        <Title>{mode === "create" ? "Новый расход" : "Редактирование"}</Title>
-        <form onSubmit={handleSubmit}>
-          <FormGroup>
-            <Label htmlFor="description">Описание</Label>
-            <Input
-              name="description"
-              placeholder="Введите описание"
-              value={formData.description}
-              onChange={handleInputChange}
-              status={status.description}
-            />
-          </FormGroup>
+        <FormGroup>
+          <Label>Категория</Label>
+          <CategorySelector
+            value={formData.category}
+            onChange={handleCategoryChange}
+          />
+        </FormGroup>
 
-          <FormGroup>
-            <Label>Категория</Label>
-            <CategorySelector
-              value={formData.category}
-              onChange={handleInputChange}
-            />
-          </FormGroup>
+        <FormGroup>
+          <Label htmlFor="date">Дата</Label>
+          <Input
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleInputChange}
+            disabled={loading}
+          />
+        </FormGroup>
 
-          <FormGroup>
-            <Label htmlFor="date">Дата</Label>
-            <Input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleInputChange}
-            />
-          </FormGroup>
+        <FormGroup>
+          <Label htmlFor="sum">Сумма</Label>
+          <Input
+            type="number"
+            name="sum"
+            placeholder="Введите сумму"
+            value={formData.sum}
+            onChange={handleInputChange}
+            status={status.sum}
+            disabled={loading}
+            min="0.01"
+            step="0.01"
+          />
+        </FormGroup>
 
-          <FormGroup>
-            <Label htmlFor="amount">Сумма</Label>
-            <Input
-              type="number"
-              name="amount"
-              placeholder="Введите сумму"
-              value={formData.amount}
-              onChange={handleInputChange}
-              status={status.amount}
-            />
-          </FormGroup>
-
-          <Button type="submit" disabled={!formData.category}>
-            {mode === "create"
-              ? "Добавить новый расход"
-              : "Сохранить изменения"}
-          </Button>
-        </form>
-      </FormContainer>
-    
+        <Button 
+          type="submit" 
+          disabled={!formData.category || loading}
+        >
+          {loading 
+            ? "Загрузка..." 
+            : isEditing
+              ? "Сохранить изменения"
+              : "Добавить новый расход"
+          }
+        </Button>
+      </form>
+    </FormContainer>
   );
 };
 

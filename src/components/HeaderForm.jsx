@@ -1,5 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const LogoIcon = () => {
   return (
@@ -125,7 +129,18 @@ const Spacer = styled.div`
 `;
 
 const HeaderForm = () => {
-  const isMyExpensesActive = true;
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  
+  const isExpensesActive = location.pathname === "/expenses" || location.pathname === "/new-costs";
+  const isAnalysisActive = location.pathname === "/cost-analysis";
+  
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <Header>
@@ -133,17 +148,25 @@ const HeaderForm = () => {
         <LogoIcon />
       </LogoContainer>
       <Nav>
-        <NavItem href="/expenses" className={isMyExpensesActive ? "active" : ""}>
+        <NavItem 
+          as={Link} 
+          to="/expenses" 
+          className={isExpensesActive ? "active" : ""}
+        >
           Мои расходы
         </NavItem>
 
         <Spacer />
 
-        <NavItem href="/cost-analysis" className={!isMyExpensesActive ? "active" : ""}>
+        <NavItem 
+          as={Link} 
+          to="/cost-analysis" 
+          className={isAnalysisActive ? "active" : ""}
+        >
           Анализ расходов
         </NavItem>
 
-        <NavItem href="/" className="logout">
+        <NavItem href="#" className="logout" onClick={handleLogout}>
           Выйти
         </NavItem>
       </Nav>

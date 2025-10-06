@@ -132,6 +132,13 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const ErrorMessage = styled.div`
+  color: #ff0000;
+  font-size: 12px;
+  margin-bottom: 12px;
+  text-align: center;
+`;
+
 const AuthForm = () => {
   const [showRegistration, setShowRegistration] = React.useState(false);
   const navigate = useNavigate();
@@ -152,8 +159,6 @@ const AuthForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Убираем setAuth и используем навигацию напрямую
-    navigate("/expenses");
 
     try {
       const userData = await loginUser({ 
@@ -161,7 +166,7 @@ const AuthForm = () => {
         password: formPassword 
       });
       login(userData);
-      navigate("/");
+      navigate("/expenses");
     } catch (err) {
       setError(err.message || "Ошибка авторизации. Проверьте логин и пароль.");
     }
