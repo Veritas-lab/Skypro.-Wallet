@@ -441,12 +441,14 @@ const CostsTable = () => {
     return category ? category.apiKey : "others";
   };
 
+  // Локальная фильтрация для отображения (на случай, если API не поддерживает фильтрацию)
   const filteredTransactions = selectedCategory
     ? transactions.filter(
         (transaction) => transaction.category === getCategoryKeyById(selectedCategory)
       )
     : transactions;
 
+  // Локальная сортировка для отображения (на случай, если API не поддерживает сортировку)
   const sortedTransactions = [...filteredTransactions].sort((a, b) => {
     if (sortBy === "date") {
       const dateA = new Date(a.date);
@@ -458,12 +460,18 @@ const CostsTable = () => {
     return 0;
   });
 
+  // Функция для применения фильтров и сортировки через API
+  const applyFiltersAndSort = () => {
+    const filterValue = selectedCategory ? getCategoryKeyById(selectedCategory) : null;
+    // Исправляем параметр сортировки - в API используется "sum", а не "amount"
+    const sortValue = sortBy === "amount" ? "sum" : sortBy;
+    loadTransactions(sortValue, filterValue);
+  };
+
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId);
     setIsCategoryDropdownOpen(false);
-    
-    const filterValue = categoryId ? getCategoryKeyById(categoryId) : null;
-    loadTransactions(sortBy, filterValue);
+    applyFiltersAndSort();
   };
 
   const toggleCategoryDropdown = () => {
@@ -481,8 +489,7 @@ const CostsTable = () => {
     setSortBy(newSortBy);
     setSortOrder(newSortOrder);
     setIsSortDropdownOpen(false);
-    
-    loadTransactions(newSortBy, selectedCategory ? getCategoryKeyById(selectedCategory) : null);
+    applyFiltersAndSort();
   };
 
   const handleEdit = (transaction) => {
@@ -494,17 +501,21 @@ const CostsTable = () => {
       const success = await removeTransaction(transactionId);
       if (success) {
         console.log("Транзакция успешно удалена");
+        // После удаления применяем текущие фильтры
+        applyFiltersAndSort();
       }
     }
   };
 
   const handleTransactionCreated = () => {
-    loadTransactions(sortBy, selectedCategory ? getCategoryKeyById(selectedCategory) : null);
+    // После создания применяем текущие фильтры
+    applyFiltersAndSort();
   };
 
   const handleTransactionUpdated = () => {
     setEditingTransaction(null);
-    loadTransactions(sortBy, selectedCategory ? getCategoryKeyById(selectedCategory) : null);
+    // После обновления применяем текущие фильтры
+    applyFiltersAndSort();
   };
 
   const currentCategory = selectedCategory

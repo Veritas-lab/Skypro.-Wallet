@@ -69,8 +69,9 @@ export default function TransactionProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      const updatedTransactions = await addTransaction(transactionData, token);
-      setTransactions(updatedTransactions);
+      await addTransaction(transactionData, token);
+      // После успешного создания перезагружаем транзакции
+      await loadTransactions();
       return true;
     } catch (err) {
       setError(err.message);
@@ -79,7 +80,7 @@ export default function TransactionProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, [getToken]);
+  }, [getToken, loadTransactions]);
 
   const editTransaction = useCallback(async (id, transactionData) => {
     const token = getToken();
@@ -91,8 +92,9 @@ export default function TransactionProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      const updatedTransactions = await updateTransaction(id, transactionData, token);
-      setTransactions(updatedTransactions);
+      await updateTransaction(id, transactionData, token);
+      // После успешного обновления перезагружаем транзакции
+      await loadTransactions();
       return true;
     } catch (err) {
       setError(err.message);
@@ -101,7 +103,7 @@ export default function TransactionProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, [getToken]);
+  }, [getToken, loadTransactions]);
 
   const removeTransaction = useCallback(async (id) => {
     const token = getToken();
@@ -113,8 +115,9 @@ export default function TransactionProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      const updatedTransactions = await deleteTransaction(id, token);
-      setTransactions(updatedTransactions);
+      await deleteTransaction(id, token);
+      // После успешного удаления перезагружаем транзакции
+      await loadTransactions();
       return true;
     } catch (err) {
       setError(err.message);
@@ -123,7 +126,7 @@ export default function TransactionProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, [getToken]);
+  }, [getToken, loadTransactions]);
 
   const value = {
     transactions,

@@ -85,69 +85,69 @@ const NewCosts = ({
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    let hasErrors = false;
-    const newStatus = { ...status };
+  e.preventDefault();
+  
+  let hasErrors = false;
+  const newStatus = { ...status };
 
-    if (!formData.description || formData.description.length < 4) {
-      newStatus.description = "error";
-      hasErrors = true;
-    } else {
-      newStatus.description = "success";
-    }
+  if (!formData.description || formData.description.length < 4) {
+    newStatus.description = "error";
+    hasErrors = true;
+  } else {
+    newStatus.description = "success";
+  }
 
-    if (!formData.sum || parseFloat(formData.sum) <= 0) {
-      newStatus.sum = "error";
-      hasErrors = true;
-    } else {
-      newStatus.sum = "success";
-    }
+  if (!formData.sum || parseFloat(formData.sum) <= 0) {
+    newStatus.sum = "error";
+    hasErrors = true;
+  } else {
+    newStatus.sum = "success";
+  }
 
-    if (!formData.category || !formData.date) {
-      hasErrors = true;
-    }
+  if (!formData.category || !formData.date) {
+    hasErrors = true;
+  }
 
-    setStatus(newStatus);
+  setStatus(newStatus);
 
-    if (hasErrors) {
-      return;
-    }
+  if (hasErrors) {
+    return;
+  }
 
-    const transactionData = {
-      description: formData.description,
-      sum: parseFloat(formData.sum),
-      category: formData.category,
-      date: formatDateForAPI(formData.date)
-    };
-
-    let success = false;
-
-    if (isEditing) {
-      success = await editTransaction(initialData._id, transactionData);
-      if (success && onTransactionUpdated) {
-        onTransactionUpdated();
-      }
-    } else {
-      success = await createTransaction(transactionData);
-      if (success && onTransactionCreated) {
-        onTransactionCreated();
-      }
-    }
-
-    if (success && !isEditing) {
-      setFormData({ 
-        description: "", 
-        category: "", 
-        date: "", 
-        sum: "" 
-      });
-      setStatus({
-        description: "normal",
-        sum: "normal",
-      });
-    }
+  const transactionData = {
+    description: formData.description,
+    sum: parseFloat(formData.sum),
+    category: formData.category,
+    date: formatDateForAPI(formData.date)
   };
+
+  let success = false;
+
+  if (isEditing) {
+    success = await editTransaction(initialData._id, transactionData);
+    if (success && onTransactionUpdated) {
+      onTransactionUpdated();
+    }
+  } else {
+    success = await createTransaction(transactionData);
+    if (success && onTransactionCreated) {
+      onTransactionCreated();
+    }
+  }
+
+  if (success && !isEditing) {
+    setFormData({ 
+      description: "", 
+      category: "", 
+      date: "", 
+      sum: "" 
+    });
+    setStatus({
+      description: "normal",
+      sum: "normal",
+    });
+  }
+};
 
   return (
     <FormContainer>
