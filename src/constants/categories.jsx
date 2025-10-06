@@ -1,35 +1,41 @@
-import React from 'react';
-import { CategoryIcons } from '../icons/icons';
-
 export const CATEGORIES = [
   {
-    id: 'food',
-    name: 'Еда',
-    icon: CategoryIcons.Food,
+    id: "food",
+    name: "Еда",
+    apiValue: "food",
   },
   {
-    id: 'transport',
-    name: 'Транспорт',
-    icon: CategoryIcons.Transport,
+    id: "transport",
+    name: "Транспорт",
+    apiValue: "transport",
   },
   {
-    id: 'housing',
-    name: 'Жилье',
-    icon: CategoryIcons.Housing,
+    id: "housing",
+    name: "Жилье",
+    apiValue: "housing",
   },
   {
-    id: 'Entertainment',
-    name: 'Развлечения',
-    icon: CategoryIcons.Entertainment,
+    id: "joy",
+    name: "Развлечения",
+    apiValue: "joy",
   },
   {
-    id: 'education',
-    name: 'Образование',
-    icon: CategoryIcons.Education,
+    id: "education",
+    name: "Образование",
+    apiValue: "education",
   },
   {
-    id: 'other',
-    name: 'Другое',
-    icon: CategoryIcons.Other,
+    id: "others",
+    name: "Другое",
+    apiValue: "others",
   },
 ];
+
+export const CATEGORY_MAP = {
+  food: "Еда",
+  transport: "Транспорт",
+  housing: "Жилье",
+  joy: "Развлечения",
+  education: "Образование",
+  others: "Другое",
+};
