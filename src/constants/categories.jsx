@@ -1,3 +1,5 @@
+import React from "react";
+import { CategoryIcons } from "../icons/icons";
 export const CATEGORIES = [
   {
     id: "food",
