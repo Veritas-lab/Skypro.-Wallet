@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react";
-import { format, getDaysInMonth } from "date-fns";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { MONTHS, WEEKDAYS } from "./constants";
+import { useState } from "react";
 import styles from "./CostAnalysis.module.css";
+import { MONTHS, WEEKDAYS } from "./constants";
 
-const CalendarView = ({ mode, setMode, onPeriodChange }) => {
+const CalendarView = ({ mode, setMode }) => {
   const [dayRange, setDayRange] = useState({
     start: { month: "jul-2024", day: 10 },
     end: { month: "jul-2024", day: 10 },
@@ -14,82 +12,11 @@ const CalendarView = ({ mode, setMode, onPeriodChange }) => {
     end: { year: 2024, month: "Июль" },
   });
   const [isSelecting, setIsSelecting] = useState(false);
-  const [displayedMonths, setDisplayedMonths] = useState([]);
-  const [hasMore, setHasMore] = useState(true);
 
-  // Генерация всех месяцев (2023–2026)
-  const startYear = 2023;
-  const endYear = 2026;
-  const allMonths = [];
-  for (let year = startYear; year <= endYear; year++) {
-    MONTHS.forEach((month, index) => {
-      allMonths.push({ year, month, monthIndex: index });
-    });
-  }
-
-  // Инициализация первых 6 месяцев
-  useEffect(() => {
-    setDisplayedMonths(allMonths.slice(0, 6));
-  }, []);
-
-  // Загрузка следующих месяцев
-  const loadMoreMonths = () => {
-    const nextMonths = allMonths.slice(
-      displayedMonths.length,
-      displayedMonths.length + 6
-    );
-    if (nextMonths.length === 0) {
-      setHasMore(false);
-      return;
-    }
-    setDisplayedMonths((prev) => [...prev, ...nextMonths]);
+  const monthMap = {
+    "jul-2024": "2024-07",
+    "aug-2024": "2024-08",
   };
-
-  // Форматирование для API
-  const formatPeriod = (range, mode) => {
-    if (mode === "month") {
-      const startDate = new Date(range.start.month);
-      const endDate = new Date(range.end.month);
-      return {
-        start: format(
-          new Date(
-            startDate.getFullYear(),
-            startDate.getMonth(),
-            range.start.day
-          ),
-          "MM-dd-yyyy"
-        ),
-        end: format(
-          new Date(endDate.getFullYear(), endDate.getMonth(), range.end.day),
-          "MM-dd-yyyy"
-        ),
-      };
-    } else {
-      const startMonthIndex = MONTHS.indexOf(range.start.month);
-      const endMonthIndex = MONTHS.indexOf(range.end.month);
-      return {
-        start: format(
-          new Date(range.start.year, startMonthIndex, 1),
-          "MM-dd-yyyy"
-        ),
-        end: format(
-          new Date(
-            range.end.year,
-            endMonthIndex,
-            getDaysInMonth(new Date(range.end.year, endMonthIndex))
-          ),
-          "MM-dd-yyyy"
-        ),
-      };
-    }
-  };
-
-  // Вызов callback при изменении периода
-  useEffect(() => {
-    onPeriodChange(
-      formatPeriod(mode === "month" ? dayRange : monthRange, mode)
-    );
-  }, [dayRange, monthRange, mode, onPeriodChange]);
 
   const handleMouseDown = (type, value) => {
     setIsSelecting(true);
@@ -127,18 +54,18 @@ const CalendarView = ({ mode, setMode, onPeriodChange }) => {
     if (type === "day") {
       const range = dayRange;
       if (!range.start || !range.end) return false;
-      const startDate = new Date(range.start.month);
-      const endDate = new Date(range.end.month);
       start = new Date(
-        startDate.getFullYear(),
-        startDate.getMonth(),
-        range.start.day
+        `${monthMap[range.start.month]}-${range.start.day
+          .toString()
+          .padStart(2, "0")}`
       );
-      end = new Date(endDate.getFullYear(), endDate.getMonth(), range.end.day);
+      end = new Date(
+        `${monthMap[range.end.month]}-${range.end.day
+          .toString()
+          .padStart(2, "0")}`
+      );
       current = new Date(
-        new Date(value.month).getFullYear(),
-        new Date(value.month).getMonth(),
-        value.day
+        `${monthMap[value.month]}-${value.day.toString().padStart(2, "0")}`
       );
     } else {
       const range = monthRange;
@@ -199,69 +126,77 @@ const CalendarView = ({ mode, setMode, onPeriodChange }) => {
         }`}
         id="month-view"
       >
-        <InfiniteScroll
-          dataLength={displayedMonths.length}
-          next={loadMoreMonths}
-          hasMore={hasMore}
-          loader={<h4>Загрузка...</h4>}
-          scrollableTarget="month-view"
+        <div
+          className={styles.calendarScroll}
+          role="group"
+          aria-label="Календарь периода"
         >
-          <div
-            className={styles.calendarScroll}
-            role="group"
-            aria-label="Календарь периода"
-          >
-            {displayedMonths.map(({ year, month, monthIndex }) => {
-              const daysInMonth = getDaysInMonth(new Date(year, monthIndex));
-              const firstDay = new Date(year, monthIndex, 1).getDay();
-              const offset = firstDay === 0 ? 6 : firstDay - 1; // Смещение для первого дня недели
-              return (
-                <div
-                  key={`${year}-${month}`}
-                  className={styles.month}
-                  aria-labelledby={`${year}-${month}`}
-                >
-                  <h3 id={`${year}-${month}`} className={styles.monthTitle}>
-                    {month} {year}
-                  </h3>
-                  <div
-                    className={styles.daysGrid}
-                    role="grid"
-                    aria-label={`Даты ${month} ${year}`}
+          <div className={styles.month} aria-labelledby="jul-2024">
+            <h3 id="jul-2024" className={styles.monthTitle}>
+              Июль 2024
+            </h3>
+            <div
+              className={styles.daysGrid}
+              role="grid"
+              aria-label="Даты июля 2024"
+            >
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => {
+                const value = { month: "jul-2024", day };
+                return (
+                  <button
+                    key={`jul-${day}`}
+                    className={`${styles.day} ${
+                      isInRange("day", value) ? styles.selected : ""
+                    }`}
+                    aria-pressed={isInRange("day", value)}
+                    onClick={() => handleClick("day", value)}
+                    onMouseDown={() => handleMouseDown("day", value)}
+                    onMouseOver={() => handleMouseOver("day", value)}
+                    onMouseUp={handleMouseUp}
                   >
-                    {Array.from({ length: offset }).map((_, i) => (
-                      <div
-                        key={`empty-${i}`}
-                        className={`${styles.day} ${styles.empty}`}
-                        aria-hidden="true"
-                      ></div>
-                    ))}
-                    {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(
-                      (day) => {
-                        const value = { month: `${month}-${year}`, day };
-                        return (
-                          <button
-                            key={`${month}-${day}`}
-                            className={`${styles.day} ${
-                              isInRange("day", value) ? styles.selected : ""
-                            }`}
-                            aria-pressed={isInRange("day", value)}
-                            onClick={() => handleClick("day", value)}
-                            onMouseDown={() => handleMouseDown("day", value)}
-                            onMouseOver={() => handleMouseOver("day", value)}
-                            onMouseUp={handleMouseUp}
-                          >
-                            {day}
-                          </button>
-                        );
-                      }
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+                    {day}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </InfiniteScroll>
+          <div className={styles.month} aria-labelledby="aug-2024">
+            <h3 id="aug-2024" className={styles.monthTitle}>
+              Август 2024
+            </h3>
+            <div
+              className={styles.daysGrid}
+              role="grid"
+              aria-label="Даты августа 2024"
+            >
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div
+                  key={`aug-empty-${i}`}
+                  className={`${styles.day} ${styles.empty}`}
+                  aria-hidden="true"
+                ></div>
+              ))}
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => {
+                const value = { month: "aug-2024", day };
+                return (
+                  <button
+                    key={`aug-${day}`}
+                    className={`${styles.day} ${
+                      isInRange("day", value) ? styles.selected : ""
+                    }`}
+                    aria-pressed={isInRange("day", value)}
+                    onClick={() => handleClick("day", value)}
+                    onMouseDown={() => handleMouseDown("day", value)}
+                    onMouseOver={() => handleMouseOver("day", value)}
+                    onMouseUp={handleMouseUp}
+                  >
+                    {day}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
       <div
         className={`${styles.calendarView} ${
@@ -274,38 +209,35 @@ const CalendarView = ({ mode, setMode, onPeriodChange }) => {
           role="group"
           aria-label="Календарь периода"
         >
-          {[...Array(endYear - startYear + 1)].map((_, i) => {
-            const year = startYear + i;
-            return (
-              <div key={year}>
-                <h3 className={styles.yearTitle}>{year}</h3>
-                <div
-                  className={styles.yearGrid}
-                  role="grid"
-                  aria-label={`Месяцы ${year}`}
-                >
-                  {MONTHS.map((month) => {
-                    const value = { year, month };
-                    return (
-                      <button
-                        key={`${year}-${month}`}
-                        className={`${styles.monthItem} ${
-                          isInRange("month", value) ? styles.selected : ""
-                        }`}
-                        aria-pressed={isInRange("month", value)}
-                        onClick={() => handleClick("month", value)}
-                        onMouseDown={() => handleMouseDown("month", value)}
-                        onMouseOver={() => handleMouseOver("month", value)}
-                        onMouseUp={handleMouseUp}
-                      >
-                        {month}
-                      </button>
-                    );
-                  })}
-                </div>
+          {[2024, 2025].map((year) => (
+            <div key={year}>
+              <h3 className={styles.yearTitle}>{year}</h3>
+              <div
+                className={styles.yearGrid}
+                role="grid"
+                aria-label={`Месяцы ${year}`}
+              >
+                {MONTHS.map((month) => {
+                  const value = { year, month };
+                  return (
+                    <button
+                      key={`${year}-${month}`}
+                      className={`${styles.monthItem} ${
+                        isInRange("month", value) ? styles.selected : ""
+                      }`}
+                      aria-pressed={isInRange("month", value)}
+                      onClick={() => handleClick("month", value)}
+                      onMouseDown={() => handleMouseDown("month", value)}
+                      onMouseOver={() => handleMouseOver("month", value)}
+                      onMouseUp={handleMouseUp}
+                    >
+                      {month}
+                    </button>
+                  );
+                })}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </>
