@@ -31,24 +31,33 @@ const HiddenRadio = styled.input.attrs({ type: 'radio' })`
   display: none;
 `;
 
-const CategorySelector = ({ value, onChange, showIcons = true }) => (
-  <CategoryGroup>
-    {CATEGORIES.map((category) => (
-      <div key={category.id}>
-        <HiddenRadio
-          id={category.id}
-          name="category"
-          value={category.id}
-          checked={value === category.id}
-          onChange={onChange}
-        />
-        <CategoryButton htmlFor={category.id} checked={value === category.id}>
-          {showIcons && <category.icon />}
-          {category.name}
-        </CategoryButton>
-      </div>
-    ))}
-  </CategoryGroup>
-);
+const CategorySelector = ({ value, onChange, showIcons = true }) => {
+  const handleChange = (e) => {
+    const selectedCategory = CATEGORIES.find(cat => cat.id === e.target.value);
+    if (selectedCategory && onChange) {
+      onChange(selectedCategory.apiKey);
+    }
+  };
+
+  return (
+    <CategoryGroup>
+      {CATEGORIES.map((category) => (
+        <div key={category.id}>
+          <HiddenRadio
+            id={category.id}
+            name="category"
+            value={category.id}
+            checked={value === category.apiKey}
+            onChange={handleChange}
+          />
+          <CategoryButton htmlFor={category.id} checked={value === category.apiKey}>
+            {showIcons && <category.icon />}
+            {category.name}
+          </CategoryButton>
+        </div>
+      ))}
+    </CategoryGroup>
+  );
+};
 
 export default CategorySelector;

@@ -1,12 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import styles from "./CostAnalysis.module.css";
+import { TransactionContext } from "../../context/TransactionContext";
 
 const CostAnalysis = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState("month");
+  const { loadTransactions } = useContext(TransactionContext);
+
+  useEffect(() => {
+    loadTransactions();
+  }, [loadTransactions]);
 
   useEffect(() => {
     const handleResize = () => {
