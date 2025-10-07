@@ -543,7 +543,7 @@ button {
   }
 
   .pageHeader {
-    margin: 0;
+    margin: 0px 16px 0px 16px;
     box-sizing: border-box;
   }
 
