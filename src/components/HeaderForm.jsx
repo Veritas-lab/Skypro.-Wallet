@@ -132,11 +132,11 @@ const HeaderForm = () => {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  
-  
-  const isExpensesActive = location.pathname === "/expenses" || location.pathname === "/new-costs";
+
+  const isExpensesActive =
+    location.pathname === "/expenses" || location.pathname === "/new-costs";
   const isAnalysisActive = location.pathname === "/cost-analysis";
-  
+
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -148,9 +148,9 @@ const HeaderForm = () => {
         <LogoIcon />
       </LogoContainer>
       <Nav>
-        <NavItem 
-          as={Link} 
-          to="/expenses" 
+        <NavItem
+          as={Link}
+          to="/expenses"
           className={isExpensesActive ? "active" : ""}
         >
           Мои расходы
@@ -158,9 +158,9 @@ const HeaderForm = () => {
 
         <Spacer />
 
-        <NavItem 
-          as={Link} 
-          to="/cost-analysis" 
+        <NavItem
+          as={Link}
+          to="/cost-analysis"
           className={isAnalysisActive ? "active" : ""}
         >
           Анализ расходов

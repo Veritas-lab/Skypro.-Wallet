@@ -3,7 +3,14 @@ import styles from "./CostAnalysis.module.css";
 import MobileBackButton from "./MobileBackButton";
 import CalendarView from "./CalendarView";
 
-const PeriodCard = ({ isOpen, setIsOpen, mode, setMode }) => {
+const PeriodCard = ({
+  isOpen,
+  setIsOpen,
+  mode,
+  setMode,
+  onPeriodChange,
+  onConfirm,
+}) => {
   const calendarRef = useRef(null);
   const thumbRef = useRef(null);
 
@@ -70,8 +77,17 @@ const PeriodCard = ({ isOpen, setIsOpen, mode, setMode }) => {
       ref={calendarRef}
     >
       <div className={styles.periodInner}>
-        <MobileBackButton onClick={() => setIsOpen(false)} />
-        <CalendarView mode={mode} setMode={setMode} />
+        <MobileBackButton
+          onClick={() => {
+            setIsOpen(false);
+            onConfirm();
+          }}
+        />
+        <CalendarView
+          mode={mode}
+          setMode={setMode}
+          onPeriodChange={onPeriodChange}
+        />
       </div>
       <div className={styles.decorBar} aria-hidden="true">
         <div className={styles.thumb} ref={thumbRef}></div>
