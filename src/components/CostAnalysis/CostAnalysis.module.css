@@ -497,7 +497,7 @@ button {
   transform: translateY(0);
 }
 
-.barColumn--entertainment .bar {
+.barColumn--joy .bar {
   height: 109px;
   background: #b0aeff;
 }
@@ -507,7 +507,7 @@ button {
   background: #bcec30;
 }
 
-.barColumn--other .bar {
+.barColumn--others .bar {
   height: 212px;
   background: #ffb9b8;
 }
@@ -543,7 +543,7 @@ button {
   }
 
   .pageHeader {
-    margin: 0;
+    margin: 0px 16px 0px 16px;
     box-sizing: border-box;
   }
 
@@ -730,7 +730,7 @@ button {
     transform: translateY(0);
   }
 
-  .barColumn--entertainment .bar {
+  .barColumn--joy .bar {
     height: 60px;
     background: #b0aeff;
   }
@@ -740,7 +740,7 @@ button {
     background: #bcec30;
   }
 
-  .barColumn--other .bar {
+  .barColumn--others .bar {
     height: 117px;
     background: #ffb9b8;
   }
