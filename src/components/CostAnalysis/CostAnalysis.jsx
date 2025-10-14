@@ -40,39 +40,20 @@ const aggregateTransactions = (transactions, period) => {
       color: categoryMap[cat].color,
     }));
 
-  // Формирование строки периода
-  let dateStr = "";
-  if (transactions.length > 0) {
-    const dates = transactions.map((tx) => new Date(tx.date));
-    const minDate = new Date(Math.min(...dates));
-    const maxDate = new Date(Math.max(...dates));
-    const formatDateStr = (date) => {
-      return `${date.getDate()} ${
-        MONTHS[date.getMonth()]
-      } ${date.getFullYear()}`;
-    };
-    dateStr =
-      minDate.getTime() === maxDate.getTime()
-        ? formatDateStr(minDate)
-        : `${formatDateStr(minDate)} - ${formatDateStr(maxDate)}`;
-  } else {
-    // Используем period.start и period.end для пустого списка транзакций
-    const parseDate = (dateStr) => {
-      const [month, day, year] = dateStr.split("-").map(Number);
-      return new Date(year, month - 1, day);
-    };
-    const startDate = parseDate(period.start);
-    const endDate = parseDate(period.end);
-    const formatDateStr = (date) => {
-      return `${date.getDate()} ${
-        MONTHS[date.getMonth()]
-      } ${date.getFullYear()}`;
-    };
-    dateStr =
-      startDate.getTime() === endDate.getTime()
-        ? formatDateStr(startDate)
-        : `${formatDateStr(startDate)} - ${formatDateStr(endDate)}`;
-  }
+  // Формирование строки периода на основе period.start и period.end
+  const parseDate = (dateStr) => {
+    const [month, day, year] = dateStr.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  };
+  const startDate = parseDate(period.start);
+  const endDate = parseDate(period.end);
+  const formatDateStr = (date) => {
+    return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+  };
+  const dateStr =
+    startDate.getTime() === endDate.getTime()
+      ? formatDateStr(startDate)
+      : `${formatDateStr(startDate)} - ${formatDateStr(endDate)}`;
 
   return { total, date: dateStr, categories };
 };
