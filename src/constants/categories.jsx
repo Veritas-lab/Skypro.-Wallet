@@ -1,5 +1,5 @@
 import React from "react";
-import { CategoryIcons } from "../icons/icons";
+import { CategoryIcons } from "../icons/Icons";
 export const CATEGORIES = [
   {
     id: "food",

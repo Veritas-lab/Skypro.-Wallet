@@ -1,62 +1,17 @@
+// NewCosts.jsx
 import { useState, useContext, useEffect } from "react";
-import styled from "styled-components";
-import Input from "./base/Input";
-import Button from "./base/Button";
-import Label from "./base/Label";
-import FormGroup from "./common/FormGroup";
-import CategorySelector from "./common/CategorySelector";
-import { TransactionContext } from "../context/TransactionContext";
-
-const FormContainer = styled.div`
-  padding: 32px;
-  background-color: #fff;
-  border-radius: 30px;
-  box-shadow: 0 20px 67px -12px #00000013;
-  border: 1px solid #e0e0e0;
-`;
-
-const Title = styled.h2`
-  color: black;
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0px;
-  margin-bottom: 24px;
-`;
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  gap: 12px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
-const CancelButton = styled.button`
-  padding: 14px 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  background-color: #f8f9fa;
-  color: #666;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: #e9ecef;
-  }
-
-  @media (max-width: 768px) {
-    order: 2;
-  }
-`;
-
-const SubmitButton = styled(Button)`
-  @media (max-width: 768px) {
-    order: 1;
-  }
-`;
+import Input from "../base/Input";
+import Label from "../base/Label";
+import FormGroup from "../common/FormGroup";
+import CategorySelector from "../common/CategorySelector";
+import { TransactionContext } from "../../context/TransactionContext";
+import {
+  FormContainer,
+  Title,
+  ButtonsContainer,
+  CancelButton,
+  SubmitButton,
+} from "./NewCosts.styled";
 
 const NewCosts = ({
   initialData,
