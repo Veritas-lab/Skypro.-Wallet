@@ -160,10 +160,18 @@ const AuthForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const trimmedLogin = formLogin.trim();
+    const trimmedPassword = formPassword.trim();
+
+    if (!trimmedLogin || !trimmedPassword) {
+      setError("Логин и пароль не могут быть пустыми.");
+      return;
+    }
+
     try {
-      const userData = await loginUser({ 
-        login: formLogin, 
-        password: formPassword 
+      const userData = await loginUser({
+        login: trimmedLogin,
+        password: trimmedPassword,
       });
       login(userData);
       navigate("/expenses");
@@ -191,16 +199,20 @@ const AuthForm = () => {
           <Title>Вход</Title>
           <form onSubmit={handleSubmit}>
             <FormGroup>
-              <Input type="text"
-          placeholder="Эл.почта"
-          value={formLogin}
-          onChange={(e) => setFormLogin(e.target.value)} />
+              <Input
+                type="text"
+                placeholder="Эл.почта"
+                value={formLogin}
+                onChange={(e) => setFormLogin(e.target.value)}
+              />
             </FormGroup>
             <FormGroup>
-              <Input type="password"
-          placeholder="Пароль"
-          value={formPassword}
-          onChange={(e) => setFormPassword(e.target.value)} />
+              <Input
+                type="password"
+                placeholder="Пароль"
+                value={formPassword}
+                onChange={(e) => setFormPassword(e.target.value)}
+              />
             </FormGroup>
             {error && <ErrorMessage>{error}</ErrorMessage>}
             <StyledButton type="submit">Войти</StyledButton>

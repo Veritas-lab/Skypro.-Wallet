@@ -124,7 +124,7 @@ const ErrorMessage = styled.div`
 
 const RegistForm = ({ onLoginClick }) => {
   const navigate = useNavigate();
-    const { login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -149,12 +149,26 @@ const RegistForm = ({ onLoginClick }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const trimmedData = {
+      name: formData.name.trim(),
+      login: formData.login.trim(),
+      password: formData.password.trim(),
+    };
+
+    if (!trimmedData.name || !trimmedData.login || !trimmedData.password) {
+      setError("Все поля должны быть заполнены.");
+      return;
+    }
+
     try {
-      const user = await registerUser(formData);
+      const user = await registerUser(trimmedData);
       login(user);
       navigate("/expenses");
     } catch (err) {
-      setError(err.message || "Ошибка регистрации. Проверьте данные и попробуйте снова.");
+      setError(
+        err.message ||
+          "Ошибка регистрации. Проверьте данные и попробуйте снова."
+      );
     }
   };
 
@@ -163,27 +177,33 @@ const RegistForm = ({ onLoginClick }) => {
       <Title>Регистрация</Title>
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <Input type="text"
-          name="name"
-          placeholder="Имя"
-          value={formData.name}
-          onChange={handleChange}/>
+          <Input
+            type="text"
+            name="name"
+            placeholder="Имя"
+            value={formData.name}
+            onChange={handleChange}
+          />
         </FormGroup>
         <FormGroup>
-          <Input type="text"
-          name="login"
-          placeholder="Эл. почта"
-          value={formData.login}
-          onChange={handleChange}
-          required />
+          <Input
+            type="text"
+            name="login"
+            placeholder="Эл. почта"
+            value={formData.login}
+            onChange={handleChange}
+            required
+          />
         </FormGroup>
         <FormGroup>
-          <Input type="password"
-          name="password"
-          placeholder="Пароль"
-          value={formData.password}
-          onChange={handleChange}
-          required />
+          <Input
+            type="password"
+            name="password"
+            placeholder="Пароль"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
         </FormGroup>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <StyledButton type="submit">Зарегистрироваться</StyledButton>
