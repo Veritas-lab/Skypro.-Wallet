@@ -154,6 +154,37 @@ export const LogoutButton = styled.a`
     margin-left: auto;
   }
 
+  @media (max-width: 767px) {
+    display: none;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+export const MobileLogoutButton = styled.button`
+  color: #333;
+  text-decoration: none;
+  font-family: Montserrat;
+  transition: all 0.3s ease;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: 600;
+  font-size: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    color: #2e8b57;
+  }
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+
   &:last-child {
     border-bottom: none;
   }

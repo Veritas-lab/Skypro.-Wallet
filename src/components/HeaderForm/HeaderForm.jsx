@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   ModalContent,
   MobileNavItem,
+  MobileLogoutButton,
 } from "./HeaderForm.styled";
 
 const LogoIcon = () => {
@@ -169,8 +170,12 @@ const HeaderForm = () => {
           >
             Анализ расходов
           </NavItem>
+
+          {/* Кнопка "Выйти" для мобильной версии */}
+          <MobileLogoutButton onClick={handleLogout}>Выйти</MobileLogoutButton>
         </Nav>
 
+        {/* Кнопка "Выйти" для десктопной версии */}
         <LogoutButton href="#" onClick={handleLogout}>
           Выйти
         </LogoutButton>
