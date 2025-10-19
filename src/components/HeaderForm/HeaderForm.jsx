@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import {
+  Header,
+  LogoContainer,
+  Nav,
+  NavItem,
+  LogoutButton,
+  Spacer,
+  MobileMenuButton,
+  Overlay,
+} from "./HeaderForm.styled";
 
 const LogoIcon = () => {
   return (
@@ -18,7 +27,6 @@ const LogoIcon = () => {
         d="M13.4872 0H5.52225C2.06253 0 0 2.0615 0 5.5195V13.471C0 16.9385 2.06253 19 5.52225 19H13.4777C16.9374 19 19 16.9385 19 13.4805V5.5195C19.0095 2.0615 16.9469 0 13.4872 0ZM6.75787 14.155C6.75787 14.421 6.54876 14.63 6.28263 14.63H3.63081C3.36468 14.63 3.15557 14.421 3.15557 14.155V9.766C3.15557 9.1675 3.64031 8.683 4.23911 8.683H6.28263C6.54876 8.683 6.75787 8.892 6.75787 9.158V14.155ZM11.3011 14.155C11.3011 14.421 11.092 14.63 10.8259 14.63H8.17407C7.90794 14.63 7.69884 14.421 7.69884 14.155V5.453C7.69884 4.8545 8.18358 4.37 8.78238 4.37H10.2271C10.8259 4.37 11.3106 4.8545 11.3106 5.453V14.155H11.3011ZM15.8539 14.155C15.8539 14.421 15.6448 14.63 15.3787 14.63H12.7268C12.4607 14.63 12.2516 14.421 12.2516 14.155V10.7825C12.2516 10.5165 12.4607 10.3075 12.7268 10.3075H14.7704C15.3692 10.3075 15.8539 10.792 15.8539 11.3905V14.155Z"
         fill="black"
       />
-      {/* Остальные path элементы остаются без изменений */}
       <path
         d="M33.0783 15.192C32.193 15.192 31.3343 15.0747 30.5023 14.84C29.681 14.5947 29.0196 14.28 28.5183 13.896L29.3983 11.944C29.8783 12.296 30.449 12.5787 31.1103 12.792C31.7716 13.0053 32.433 13.112 33.0943 13.112C33.8303 13.112 34.3743 13.0053 34.7263 12.792C35.0783 12.568 35.2543 12.2747 35.2543 11.912C35.2543 11.6453 35.1476 11.4267 34.9343 11.256C34.7316 11.0747 34.465 10.9307 34.1343 10.824C33.8143 10.7173 33.377 10.6 32.8223 10.472C31.969 10.2693 31.2703 10.0667 30.7263 9.864C30.1823 9.66133 29.713 9.336 29.3183 8.888C28.9343 8.44 28.7423 7.84267 28.7423 7.096C28.7423 6.44533 28.9183 5.85867 29.2703 5.336C29.6223 4.80267 30.1503 4.38133 30.8543 4.072C31.569 3.76267 32.4383 3.608 33.4623 3.608C34.177 3.608 34.8756 3.69333 35.5583 3.864C36.241 4.03467 36.8383 4.28 37.3503 4.6L36.5503 6.568C35.5156 5.98133 34.481 5.688 33.4463 5.688C32.721 5.688 32.1823 5.80533 31.8303 6.04C31.489 6.27467 31.3183 6.584 31.3183 6.968C31.3183 7.352 31.5156 7.64 31.9103 7.832C32.3156 8.01333 32.929 8.19466 33.7503 8.376C34.6036 8.57867 35.3023 8.78133 35.8463 8.984C36.3903 9.18667 36.8543 9.50667 37.2383 9.944C37.633 10.3813 37.8303 10.9733 37.8303 11.72C37.8303 12.36 37.649 12.9467 37.2863 13.48C36.9343 14.0027 36.401 14.4187 35.6863 14.728C34.9716 15.0373 34.1023 15.192 33.0783 15.192Z"
         fill="black"
@@ -69,180 +77,6 @@ const LogoIcon = () => {
   );
 };
 
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  position: relative;
-
-  @media (min-width: 768px) {
-    padding: 20px 40px;
-    padding-left: calc(50% - 600px);
-    padding-right: calc(50% - 600px);
-  }
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  align-items: center;
-
-  svg {
-    width: 120px;
-    height: 16px;
-
-    @media (min-width: 768px) {
-      width: 144px;
-      height: 19px;
-    }
-  }
-`;
-
-const Nav = styled.nav`
-  display: ${(props) => (props.isOpen ? "flex" : "none")};
-  flex-direction: column;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  padding: 20px;
-
-  @media (min-width: 768px) {
-    display: flex;
-    flex-direction: row;
-    position: static;
-    background-color: transparent;
-    border-bottom: none;
-    box-shadow: none;
-    padding: 0;
-  }
-`;
-
-const NavItem = styled.a`
-  color: #333;
-  text-decoration: none;
-  font-family: Montserrat;
-  transition: all 0.3s ease;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
-
-  &.active {
-    color: #2e8b57;
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    font-size: 14px;
-  }
-
-  &:not(.active) {
-    font-weight: 400;
-    font-size: 14px;
-  }
-
-  &.logout {
-    font-weight: 600;
-    font-size: 14px;
-    border-bottom: none;
-    margin-top: 8px;
-    padding-top: 16px;
-    border-top: 1px solid #e0e0e0;
-  }
-
-  &:hover {
-    color: #2e8b57;
-
-    &:not(.active):not(.logout) {
-      font-weight: 600;
-    }
-  }
-
-  @media (min-width: 768px) {
-    padding: 0;
-    border-bottom: none;
-
-    &.logout {
-      margin-left: 414px;
-      margin-top: 0;
-      padding-top: 0;
-      border-top: none;
-    }
-  }
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const Spacer = styled.div`
-  width: 48px;
-  display: none;
-
-  @media (min-width: 768px) {
-    display: block;
-  }
-`;
-
-const MobileMenuButton = styled.button`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 24px;
-  height: 18px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-
-  span {
-    display: block;
-    height: 2px;
-    width: 100%;
-    background-color: #333;
-    border-radius: 1px;
-    transition: all 0.3s ease;
-
-    &:nth-child(1) {
-      transform: ${(props) =>
-        props.isOpen ? "rotate(45deg) translate(6px, 6px)" : "none"};
-    }
-
-    &:nth-child(2) {
-      opacity: ${(props) => (props.isOpen ? "0" : "1")};
-    }
-
-    &:nth-child(3) {
-      transform: ${(props) =>
-        props.isOpen ? "rotate(-45deg) translate(6px, -6px)" : "none"};
-    }
-  }
-`;
-
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  display: ${(props) => (props.isOpen ? "block" : "none")};
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-`;
-
 const HeaderForm = () => {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -287,7 +121,6 @@ const HeaderForm = () => {
 
         <Nav isOpen={isMenuOpen}>
           <NavItem
-            as={Link}
             to="/expenses"
             className={isExpensesActive ? "active" : ""}
             onClick={handleNavClick}
@@ -298,7 +131,6 @@ const HeaderForm = () => {
           <Spacer />
 
           <NavItem
-            as={Link}
             to="/cost-analysis"
             className={isAnalysisActive ? "active" : ""}
             onClick={handleNavClick}
@@ -306,9 +138,9 @@ const HeaderForm = () => {
             Анализ расходов
           </NavItem>
 
-          <NavItem href="#" className="logout" onClick={handleLogout}>
+          <LogoutButton href="#" onClick={handleLogout}>
             Выйти
-          </NavItem>
+          </LogoutButton>
         </Nav>
       </Header>
     </>

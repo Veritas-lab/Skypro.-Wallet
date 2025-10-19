@@ -1,4 +1,3 @@
-// NewCosts.jsx
 import { useState, useContext, useEffect } from "react";
 import Input from "../base/Input";
 import Label from "../base/Label";

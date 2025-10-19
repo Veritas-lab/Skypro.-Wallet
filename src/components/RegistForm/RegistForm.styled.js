@@ -1,4 +1,3 @@
-// RegistForm.styled.js
 import styled from "styled-components";
 import Button from "../base/Button";
 
@@ -116,4 +115,5 @@ export const ErrorMessage = styled.div`
   font-size: 12px;
   margin-bottom: 12px;
   text-align: center;
+  min-height: 18px;
 `;

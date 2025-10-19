@@ -1,4 +1,3 @@
-// AuthForm.styled.js
 import styled from "styled-components";
 import Button from "../base/Button";
 

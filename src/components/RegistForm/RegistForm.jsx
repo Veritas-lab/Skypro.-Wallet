@@ -1,4 +1,3 @@
-// RegistForm.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
@@ -26,6 +25,7 @@ const RegistForm = ({ onLoginClick }) => {
     password: "",
   });
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +33,7 @@ const RegistForm = ({ onLoginClick }) => {
       ...prev,
       [name]: value,
     }));
+    if (error) setError("");
   };
 
   const handleLoginClick = (e) => {
@@ -40,8 +41,15 @@ const RegistForm = ({ onLoginClick }) => {
     onLoginClick(e);
   };
 
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     const trimmedData = {
       name: formData.name.trim(),
@@ -51,6 +59,19 @@ const RegistForm = ({ onLoginClick }) => {
 
     if (!trimmedData.name || !trimmedData.login || !trimmedData.password) {
       setError("Все поля должны быть заполнены.");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!isValidEmail(trimmedData.login)) {
+      setError("Пожалуйста, введите корректный email адрес.");
+      setIsLoading(false);
+      return;
+    }
+
+    if (trimmedData.password.length < 6) {
+      setError("Пароль должен содержать минимум 6 символов.");
+      setIsLoading(false);
       return;
     }
 
@@ -59,10 +80,16 @@ const RegistForm = ({ onLoginClick }) => {
       login(user);
       navigate("/expenses");
     } catch (err) {
-      setError(
-        err.message ||
-          "Ошибка регистрации. Проверьте данные и попробуйте снова."
-      );
+      if (err.message && err.message.includes("уже зарегистрирован")) {
+        setError("Пользователь с таким email уже зарегистрирован.");
+      } else {
+        setError(
+          err.message ||
+            "Ошибка регистрации. Проверьте данные и попробуйте снова."
+        );
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -77,16 +104,18 @@ const RegistForm = ({ onLoginClick }) => {
             placeholder="Имя"
             value={formData.name}
             onChange={handleChange}
+            disabled={isLoading}
           />
         </FormGroup>
         <FormGroup>
           <Input
-            type="text"
+            type="email"
             name="login"
             placeholder="Эл. почта"
             value={formData.login}
             onChange={handleChange}
             required
+            disabled={isLoading}
           />
         </FormGroup>
         <FormGroup>
@@ -97,10 +126,13 @@ const RegistForm = ({ onLoginClick }) => {
             value={formData.password}
             onChange={handleChange}
             required
+            disabled={isLoading}
           />
         </FormGroup>
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        <StyledButton type="submit">Зарегистрироваться</StyledButton>
+        <StyledButton type="submit" disabled={isLoading}>
+          {isLoading ? "Регистрация..." : "Зарегистрироваться"}
+        </StyledButton>
       </form>
       <LinkContainer>
         <LinkParagraph>Уже есть аккаунт?</LinkParagraph>

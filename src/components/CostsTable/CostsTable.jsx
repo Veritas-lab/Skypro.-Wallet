@@ -1,4 +1,3 @@
-// CostsTable.jsx
 import React, { useState, useContext, useEffect } from "react";
 import NewCosts from "../NewCosts/NewCosts";
 import { TransactionContext } from "../../context/TransactionContext";
