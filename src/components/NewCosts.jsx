@@ -23,11 +23,47 @@ const Title = styled.h2`
   margin-bottom: 24px;
 `;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const CancelButton = styled.button`
+  padding: 14px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #e9ecef;
+  }
+
+  @media (max-width: 768px) {
+    order: 2;
+  }
+`;
+
+const SubmitButton = styled(Button)`
+  @media (max-width: 768px) {
+    order: 1;
+  }
+`;
+
 const NewCosts = ({
   initialData,
   onTransactionCreated,
   onTransactionUpdated,
   isEditing = false,
+  onCancel,
 }) => {
   const { createTransaction, editTransaction, loading } =
     useContext(TransactionContext);
@@ -42,6 +78,8 @@ const NewCosts = ({
     description: "normal",
     sum: "normal",
   });
+
+  const isMobile = window.innerWidth <= 768;
 
   useEffect(() => {
     if (initialData && isEditing) {
@@ -85,11 +123,9 @@ const NewCosts = ({
     setFormData({ ...formData, category });
   };
 
-  // NewCosts.jsx
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Добавляем trim() к описанию
     const trimmedDescription = formData.description.trim();
 
     let hasErrors = false;
@@ -150,6 +186,17 @@ const NewCosts = ({
         description: "normal",
         sum: "normal",
       });
+
+      // Автоматически закрыть форму на мобильных после успешного создания
+      if (isMobile && onCancel) {
+        onCancel();
+      }
+    }
+  };
+
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel();
     }
   };
 
@@ -203,13 +250,22 @@ const NewCosts = ({
           />
         </FormGroup>
 
-        <Button type="submit" disabled={!formData.category || loading}>
-          {loading
-            ? "Загрузка..."
-            : isEditing
-            ? "Сохранить изменения"
-            : "Добавить новый расход"}
-        </Button>
+        <ButtonsContainer>
+          <SubmitButton type="submit" disabled={!formData.category || loading}>
+            {loading
+              ? "Загрузка..."
+              : isEditing
+              ? "Сохранить изменения"
+              : "Добавить новый расход"}
+          </SubmitButton>
+
+          {/* Показывать кнопку отмены только на мобильных или при редактировании */}
+          {(isMobile || isEditing) && onCancel && (
+            <CancelButton type="button" onClick={handleCancel}>
+              Отмена
+            </CancelButton>
+          )}
+        </ButtonsContainer>
       </form>
     </FormContainer>
   );
