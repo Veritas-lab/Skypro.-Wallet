@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import NewCosts from "../NewCosts/NewCosts";
 import {
   Header,
   LogoContainer,
@@ -12,6 +12,9 @@ import {
   Spacer,
   MobileMenuButton,
   Overlay,
+  ModalOverlay,
+  ModalContent,
+  MobileNavItem,
 } from "./HeaderForm.styled";
 
 const LogoIcon = () => {
@@ -82,6 +85,7 @@ const HeaderForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isNewCostModalOpen, setIsNewCostModalOpen] = useState(false);
 
   const isExpensesActive =
     location.pathname === "/expenses" || location.pathname === "/new-costs";
@@ -105,9 +109,34 @@ const HeaderForm = () => {
     closeMenu();
   };
 
+  const openNewCostModal = () => {
+    setIsNewCostModalOpen(true);
+    closeMenu();
+  };
+
+  const closeNewCostModal = () => {
+    setIsNewCostModalOpen(false);
+  };
+
+  const handleTransactionCreated = () => {
+    closeNewCostModal();
+  };
+
   return (
     <>
       <Overlay isOpen={isMenuOpen} onClick={closeMenu} />
+
+      {isNewCostModalOpen && (
+        <ModalOverlay onClick={closeNewCostModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <NewCosts
+              onTransactionCreated={handleTransactionCreated}
+              onCancel={closeNewCostModal}
+            />
+          </ModalContent>
+        </ModalOverlay>
+      )}
+
       <Header>
         <LogoContainer>
           <LogoIcon />
@@ -128,6 +157,9 @@ const HeaderForm = () => {
             Мои расходы
           </NavItem>
 
+          {/* Ссылка "Новый расход" показывается только в мобильном меню */}
+          <MobileNavItem onClick={openNewCostModal}>Новый расход</MobileNavItem>
+
           <Spacer />
 
           <NavItem
@@ -137,11 +169,11 @@ const HeaderForm = () => {
           >
             Анализ расходов
           </NavItem>
-
-          <LogoutButton href="#" onClick={handleLogout}>
-            Выйти
-          </LogoutButton>
         </Nav>
+
+        <LogoutButton href="#" onClick={handleLogout}>
+          Выйти
+        </LogoutButton>
       </Header>
     </>
   );

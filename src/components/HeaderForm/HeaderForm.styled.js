@@ -49,11 +49,16 @@ export const Nav = styled.nav`
   @media (min-width: 768px) {
     display: flex;
     flex-direction: row;
-    position: static;
+    position: absolute;
+    left: 60%;
+    transform: translateX(-50%);
     background-color: transparent;
     border-bottom: none;
     box-shadow: none;
     padding: 0;
+    align-items: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 `;
 
@@ -64,18 +69,17 @@ export const NavItem = styled(Link)`
   transition: all 0.3s ease;
   padding: 12px 0;
   border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
 
   &.active {
     color: #2e8b57;
     font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 4px;
-    font-size: 14px;
   }
 
   &:not(.active) {
     font-weight: 400;
-    font-size: 14px;
   }
 
   &:hover {
@@ -89,6 +93,39 @@ export const NavItem = styled(Link)`
   @media (min-width: 768px) {
     padding: 0;
     border-bottom: none;
+    margin-right: 24px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+export const MobileNavItem = styled.button`
+  color: #333;
+  text-decoration: none;
+  font-family: Montserrat;
+  transition: all 0.3s ease;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  font-weight: 400;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    color: #2e8b57;
+    font-weight: 600;
+  }
+
+  @media (min-width: 768px) {
+    display: none;
   }
 
   &:last-child {
@@ -114,7 +151,7 @@ export const LogoutButton = styled.a`
   @media (min-width: 768px) {
     padding: 0;
     border-bottom: none;
-    margin-left: 414px;
+    margin-left: auto;
   }
 
   &:last-child {
@@ -183,4 +220,25 @@ export const Overlay = styled.div`
   @media (min-width: 768px) {
     display: none;
   }
+`;
+
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+`;
+
+export const ModalContent = styled.div`
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
 `;
