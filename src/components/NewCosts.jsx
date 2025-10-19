@@ -85,13 +85,17 @@ const NewCosts = ({
     setFormData({ ...formData, category });
   };
 
+  // NewCosts.jsx
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Добавляем trim() к описанию
+    const trimmedDescription = formData.description.trim();
 
     let hasErrors = false;
     const newStatus = { ...status };
 
-    if (!formData.description || formData.description.length < 4) {
+    if (!trimmedDescription || trimmedDescription.length < 4) {
       newStatus.description = "error";
       hasErrors = true;
     } else {
@@ -116,12 +120,11 @@ const NewCosts = ({
     }
 
     const transactionData = {
-      description: formData.description,
+      description: trimmedDescription,
       sum: parseFloat(formData.sum),
       category: formData.category,
       date: formatDateForAPI(formData.date),
     };
-
     let success = false;
 
     if (isEditing) {
