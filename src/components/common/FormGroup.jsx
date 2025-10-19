@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const GroupWrapper = styled.div`
   margin-bottom: 24px;
-  width: 313px;
+  width: 100%;
 `;
 
 const FormGroup = ({ children }) => <GroupWrapper>{children}</GroupWrapper>;

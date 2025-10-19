@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const InputWrapper = styled.input`
-  width: 286px;
+  width: 100%;
   padding: 12px;
   color: #000000;
   border: 1px solid ${({ status }) => (status === 'error' ? '#ff0000' : status === 'success' ? '#00ff00' : '#e0e0e0')};
