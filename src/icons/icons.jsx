@@ -5,7 +5,7 @@ import EntertainmentIcon from "./EntertainmentIcon.jsx";
 import EducationIcon from "./EducationIcon.jsx";
 import OtherIcon from "./OtherIcon.jsx";
 import LogoIcon from "./LogoIcon.jsx";
-import PenIcon from "./penIcon.jsx";
+import PenIcon from "./PenIcon.jsx";
 
 // Экспортируем объект иконок
 export const CategoryIcons = {

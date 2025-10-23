@@ -1,9 +1,22 @@
-import React from "react";
-import styled from "styled-components";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import NewCosts from "../NewCosts/NewCosts";
+import {
+  Header,
+  LogoContainer,
+  Nav,
+  NavItem,
+  LogoutButton,
+  Spacer,
+  MobileMenuButton,
+  Overlay,
+  ModalOverlay,
+  ModalContent,
+  MobileNavItem,
+  MobileLogoutButton,
+} from "./HeaderForm.styled";
 
 const LogoIcon = () => {
   return (
@@ -68,70 +81,12 @@ const LogoIcon = () => {
   );
 };
 
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 40px;
-  padding-left: calc(50% - 600px);
-  padding-right: calc(50% - 600px);
-  background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Nav = styled.nav`
-  display: flex;
-  align-items: center;
-`;
-
-const NavItem = styled.a`
-  color: #333;
-  text-decoration: none;
-  font-family: Montserrat;
-  transition: all 0.3s ease;
-
-  &.active {
-    color: #2e8b57;
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    font-size: 14px;
-  }
-
-  &:not(.active) {
-    font-weight: 400;
-    font-size: 14px;
-  }
-
-  &.logout {
-    font-weight: 600;
-    font-size: 14px;
-    margin-left: 414px;
-  }
-
-  &:hover {
-    color: #2e8b57;
-
-    &:not(.active):not(.logout) {
-      font-weight: 600;
-    }
-  }
-`;
-
-const Spacer = styled.div`
-  width: 48px;
-`;
-
 const HeaderForm = () => {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isNewCostModalOpen, setIsNewCostModalOpen] = useState(false);
 
   const isExpensesActive =
     location.pathname === "/expenses" || location.pathname === "/new-costs";
@@ -140,37 +95,92 @@ const HeaderForm = () => {
   const handleLogout = () => {
     logout();
     navigate("/login");
+    setIsMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleNavClick = () => {
+    closeMenu();
+  };
+
+  const openNewCostModal = () => {
+    setIsNewCostModalOpen(true);
+    closeMenu();
+  };
+
+  const closeNewCostModal = () => {
+    setIsNewCostModalOpen(false);
+  };
+
+  const handleTransactionCreated = () => {
+    closeNewCostModal();
   };
 
   return (
-    <Header>
-      <LogoContainer>
-        <LogoIcon />
-      </LogoContainer>
-      <Nav>
-        <NavItem
-          as={Link}
-          to="/expenses"
-          className={isExpensesActive ? "active" : ""}
-        >
-          Мои расходы
-        </NavItem>
+    <>
+      <Overlay isOpen={isMenuOpen} onClick={closeMenu} />
 
-        <Spacer />
+      {isNewCostModalOpen && (
+        <ModalOverlay onClick={closeNewCostModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <NewCosts
+              onTransactionCreated={handleTransactionCreated}
+              onCancel={closeNewCostModal}
+            />
+          </ModalContent>
+        </ModalOverlay>
+      )}
 
-        <NavItem
-          as={Link}
-          to="/cost-analysis"
-          className={isAnalysisActive ? "active" : ""}
-        >
-          Анализ расходов
-        </NavItem>
+      <Header>
+        <LogoContainer>
+          <LogoIcon />
+        </LogoContainer>
 
-        <NavItem href="#" className="logout" onClick={handleLogout}>
+        <MobileMenuButton isOpen={isMenuOpen} onClick={toggleMenu}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </MobileMenuButton>
+
+        <Nav isOpen={isMenuOpen}>
+          <NavItem
+            to="/expenses"
+            className={isExpensesActive ? "active" : ""}
+            onClick={handleNavClick}
+          >
+            Мои расходы
+          </NavItem>
+
+          {/* Ссылка "Новый расход" показывается только в мобильном меню */}
+          <MobileNavItem onClick={openNewCostModal}>Новый расход</MobileNavItem>
+
+          <Spacer />
+
+          <NavItem
+            to="/cost-analysis"
+            className={isAnalysisActive ? "active" : ""}
+            onClick={handleNavClick}
+          >
+            Анализ расходов
+          </NavItem>
+
+          {/* Кнопка "Выйти" для мобильной версии */}
+          <MobileLogoutButton onClick={handleLogout}>Выйти</MobileLogoutButton>
+        </Nav>
+
+        {/* Кнопка "Выйти" для десктопной версии */}
+        <LogoutButton href="#" onClick={handleLogout}>
           Выйти
-        </NavItem>
-      </Nav>
-    </Header>
+        </LogoutButton>
+      </Header>
+    </>
   );
 };
 
