@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import styles from "./CostAnalysis.module.css";
 import { TransactionContext } from "../../context/TransactionContext";
 import { MONTHS } from "./constants";
+import { formatDate } from "./utils";
 
 const categoryMap = {
   food: { label: "Еда", color: "#d9b6ff" },
@@ -19,7 +20,6 @@ const aggregateTransactions = (transactions, period) => {
   const categorySums = {};
   let total = 0;
 
-  // Агрегация транзакций по категориям
   transactions.forEach((tx) => {
     const cat = tx.category;
     const sum = tx.sum;
@@ -30,7 +30,6 @@ const aggregateTransactions = (transactions, period) => {
     total += sum;
   });
 
-  // Формирование массива категорий
   const categories = Object.keys(categorySums)
     .filter((cat) => categoryMap[cat])
     .map((cat) => ({
@@ -40,7 +39,6 @@ const aggregateTransactions = (transactions, period) => {
       color: categoryMap[cat].color,
     }));
 
-  // Формирование строки периода на основе period.start и period.end
   const parseDate = (dateStr) => {
     const [month, day, year] = dateStr.split("-").map(Number);
     return new Date(year, month - 1, day);
@@ -66,9 +64,8 @@ const CostAnalysis = () => {
   const { transactions, loading, error, loadTransactionsByPeriod } =
     useContext(TransactionContext);
 
-  // Инициализация начального периода (текущий месяц)
   useEffect(() => {
-    const currentDate = new Date(2025, 9, 6); // October 06, 2025
+    const currentDate = new Date(2025, 9, 6);
     const start = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
@@ -79,26 +76,18 @@ const CostAnalysis = () => {
       currentDate.getMonth() + 1,
       0
     );
-    const formatDate = (date) => {
-      const m = (date.getMonth() + 1).toString().padStart(2, "0");
-      const d = date.getDate().toString().padStart(2, "0");
-      const y = date.getFullYear();
-      return `${m}-${d}-${y}`;
-    };
     setPeriod({
       start: formatDate(start),
       end: formatDate(end),
     });
   }, []);
 
-  // Загрузка транзакций при изменении периода
   useEffect(() => {
     if (period?.start && period?.end) {
       loadTransactionsByPeriod(period.start, period.end);
     }
   }, [period, loadTransactionsByPeriod]);
 
-  // Преобразование транзакций в данные для графика
   useEffect(() => {
     if (period && transactions !== null) {
       const aggregated = aggregateTransactions(transactions, period);
@@ -106,7 +95,6 @@ const CostAnalysis = () => {
     }
   }, [transactions, period]);
 
-  // Обработка изменения размера окна и Escape
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 376 && isOpen) {
@@ -133,7 +121,6 @@ const CostAnalysis = () => {
     };
   }, [isOpen]);
 
-  // Управление состоянием оверлея
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add(styles.overlayActive);
@@ -144,12 +131,10 @@ const CostAnalysis = () => {
     }
   }, [isOpen]);
 
-  // Обработчик изменения периода из CalendarView
   const handlePeriodChange = (newPeriod) => {
     setPeriod(newPeriod);
   };
 
-  // Обработчик подтверждения выбора периода
   const handleConfirm = () => {
     setIsOpen(false);
   };
